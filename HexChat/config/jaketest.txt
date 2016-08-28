@@ -1,0 +1,2 @@
+/join #jakehoffmann
+/say hello

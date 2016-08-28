@@ -1,0 +1,623 @@
+**** BEGIN LOGGING AT Sat Aug 27 14:45:44 2016
+
+Aug 27 14:45:44 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 14:45:44 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 14:45:44 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 14:45:44 2016
+
+Aug 27 14:45:44 *	Welcome, GLHF!
+Aug 27 14:45:44 *	Your host is tmi.twitch.tv
+Aug 27 14:45:44 *	This server is rather new
+Aug 27 14:45:44 *	-
+Aug 27 14:45:44 *	-
+Aug 27 14:45:44 *	You are in a maze of twisty passages, all alike.
+Aug 27 14:45:44 *	>
+Aug 27 14:45:44 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 15:50:16 2016
+
+Aug 27 15:50:16 *	Welcome, GLHF!
+Aug 27 15:50:16 *	Your host is tmi.twitch.tv
+Aug 27 15:50:16 *	This server is rather new
+Aug 27 15:50:16 *	-
+Aug 27 15:50:16 *	-
+Aug 27 15:50:16 *	You are in a maze of twisty passages, all alike.
+Aug 27 15:50:16 *	>
+Aug 27 15:50:17 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 15:50:32 Sysinfo plugin unloaded
+Aug 27 15:50:32 Winamp plugin unloaded
+Aug 27 15:50:32 Update Checker plugin unloaded
+Aug 27 15:50:32 Python interface unloaded
+Aug 27 15:50:32 Perl interface unloaded
+Aug 27 15:50:32 mpcInfo plugin unloaded
+Aug 27 15:50:32 FiSHLiM plugin unloaded
+Aug 27 15:50:32 Exec plugin unloaded
+Aug 27 15:50:32 Do At plugin unloaded
+Aug 27 15:50:32 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 15:50:32 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 15:50:35 2016
+
+Aug 27 15:50:35 *	Welcome, GLHF!
+Aug 27 15:50:35 *	Your host is tmi.twitch.tv
+Aug 27 15:50:35 *	This server is rather new
+Aug 27 15:50:35 *	-
+Aug 27 15:50:35 *	-
+Aug 27 15:50:35 *	You are in a maze of twisty passages, all alike.
+Aug 27 15:50:35 *	>
+Aug 27 15:50:35 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 15:50:38 Sysinfo plugin unloaded
+Aug 27 15:50:38 Winamp plugin unloaded
+Aug 27 15:50:38 Update Checker plugin unloaded
+Aug 27 15:50:38 Python interface unloaded
+Aug 27 15:50:38 Perl interface unloaded
+Aug 27 15:50:38 mpcInfo plugin unloaded
+Aug 27 15:50:38 FiSHLiM plugin unloaded
+Aug 27 15:50:38 Exec plugin unloaded
+Aug 27 15:50:38 Do At plugin unloaded
+Aug 27 15:50:38 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 15:50:38 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:36:02 2016
+
+Aug 27 18:36:02 *	Welcome, GLHF!
+Aug 27 18:36:02 *	Your host is tmi.twitch.tv
+Aug 27 18:36:02 *	This server is rather new
+Aug 27 18:36:02 *	-
+Aug 27 18:36:02 *	-
+Aug 27 18:36:02 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:36:02 *	>
+Aug 27 18:36:02 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:40:51 Sysinfo plugin unloaded
+Aug 27 18:40:51 Winamp plugin unloaded
+Aug 27 18:40:51 Update Checker plugin unloaded
+Aug 27 18:40:51 Python interface unloaded
+Aug 27 18:40:51 Perl interface unloaded
+Aug 27 18:40:51 mpcInfo plugin unloaded
+Aug 27 18:40:51 FiSHLiM plugin unloaded
+Aug 27 18:40:51 Exec plugin unloaded
+Aug 27 18:40:51 Do At plugin unloaded
+Aug 27 18:40:51 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:40:51 2016
+
+Aug 27 18:40:55 
+Commands Available:
+
+Aug 27 18:40:55    ADDBUTTON : ADDBUTTON <name> <action>, adds a button under the user-list
+Aug 27 18:40:55    ADDSERVER : ADDSERVER <NewNetwork> <newserver/6667>, adds a new network with a new server to the network list
+Aug 27 18:40:55    ALLCHAN : ALLCHAN <cmd>, sends a command to all channels you're in
+Aug 27 18:40:55    ALLCHANL : ALLCHANL <cmd>, sends a command to all channels on the current server
+Aug 27 18:40:55    ALLSERV : ALLSERV <cmd>, sends a command to all servers you're in
+Aug 27 18:40:55    AWAY : AWAY [<reason>], sets you away (use /BACK to unset)
+Aug 27 18:40:55    BACK : BACK, sets you back (not away)
+Aug 27 18:40:55    BAN : BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)
+Aug 27 18:40:55    CHANOPT : CHANOPT [-quiet] <variable> [<value>]
+Aug 27 18:40:55    CHARSET : CHARSET [<encoding>], get or set the encoding used for the current connection
+Aug 27 18:40:55    CLEAR : CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command history
+Aug 27 18:40:55    CLOSE : CLOSE [-m], Closes the current tab, closing the window if this is the only open tab, or with the "-m" flag, closes all queries.
+Aug 27 18:40:55    COUNTRY : COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia
+Aug 27 18:40:55    CTCP : CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO
+Aug 27 18:40:55    CYCLE : CYCLE [<channel>], parts the current or given channel and immediately rejoins
+Aug 27 18:40:55    DCC : 
+DCC GET <nick>                      - accept an offered file
+DCC SEND [-maxcps=#] <nick> [file]  - send a file to someone
+DCC PSEND [-maxcps=#] <nick> [file] - send a file using passive mode
+DCC LIST                            - show DCC list
+DCC CHAT <nick>                     - offer DCC CHAT to someone
+DCC PCHAT <nick>                    - offer DCC CHAT using passive mode
+DCC CLOSE <type> <nick> <file>         example:
+         /dcc close send johnsmith file.tar.gz
+Aug 27 18:40:55    DEBUG :
+Aug 27 18:40:55    DEHOP : DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)
+Aug 27 18:40:55    DELBUTTON : DELBUTTON <name>, deletes a button from under the user-list
+Aug 27 18:40:55    DEOP : DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)
+Aug 27 18:40:55    DEVOICE : DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)
+Aug 27 18:40:55    DISCON : DISCON, Disconnects from server
+Aug 27 18:40:55    DNS : DNS <nick|host|ip>, Resolves an IP or hostname
+Aug 27 18:40:55    ECHO : ECHO <text>, Prints text locally
+Aug 27 18:40:55    FLUSHQ : FLUSHQ, flushes the current server's send queue
+Aug 27 18:40:55    GATE : GATE <host> [<port>], proxies through a host, port defaults to 23
+Aug 27 18:40:55    GETBOOL : GETBOOL <command> <title> <text>
+Aug 27 18:40:55    GETFILE : GETFILE [-folder] [-multi] [-save] <command> <title> [<initial>]
+Aug 27 18:40:55    GETINT : GETINT <default> <command> <prompt>
+Aug 27 18:40:55    GETSTR : GETSTR <default> <command> <prompt>
+Aug 27 18:40:55    GHOST : GHOST <nick> [password], Kills a ghosted nickname
+Aug 27 18:40:55    GUI : GUI [APPLY|ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]
+       GUI [MSGBOX <text>|MENU TOGGLE]
+Aug 27 18:40:55    HELP :
+Aug 27 18:40:55    HOP : HOP <nick>, gives chanhalf-op status to the nick (needs chanop)
+Aug 27 18:40:55    ID : ID <password>, identifies yourself to nickserv
+Aug 27 18:40:55    IGNORE : IGNORE <mask> <types..> <options..>
+    mask - host mask to ignore, eg: *!*@*.aol.com
+    types - types of data to ignore, one or all of:
+            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL
+    options - NOSAVE, QUIET
+Aug 27 18:40:55    INVITE : INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)
+Aug 27 18:40:55    JOIN : JOIN <channel>, joins the channel
+Aug 27 18:40:55    KICK : KICK <nick> [reason], kicks the nick from the current channel (needs chanop)
+Aug 27 18:40:55    KICKBAN : KICKBAN <nick> [reason], bans then kicks the nick from the current channel (needs chanop)
+Aug 27 18:40:55    KILLALL : KILLALL, immediately exit
+Aug 27 18:40:55    LAGCHECK : LAGCHECK, forces a new lag check
+Aug 27 18:40:55    LASTLOG : LASTLOG [-h] [-m] [-r] [--] <string>, searches for a string in the buffer
+    Use -h to highlight the found string(s)
+    Use -m to match case
+    Use -r when string is a Regular Expression
+    Use -- (double hyphen) to end options when searching for, say, the string '-r'
+Aug 27 18:40:55    LIST :
+Aug 27 18:40:55    LOAD : LOAD [-e] <file>, loads a plugin or script
+Aug 27 18:40:55    MDEHOP : MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)
+Aug 27 18:40:55    MDEOP : MDEOP, Mass deop's all chanops in the current channel (needs chanop)
+Aug 27 18:40:55    ME : ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)
+Aug 27 18:40:55    MENU : MENU [-eX] [-i<ICONFILE>] [-k<mod>,<key>] [-m] [-pX] [-r<X,group>] [-tX] {ADD|DEL} <path> [command] [unselect command]
+       See http://hexchat.readthedocs.org/en/latest/plugins.html#controlling-the-gui for more details.
+Aug 27 18:40:55    MKICK : MKICK, Mass kicks everyone except you in the current channel (needs chanop)
+Aug 27 18:40:55    MODE :
+Aug 27 18:40:55    MOP : MOP, Mass op's all users in the current channel (needs chanop)
+Aug 27 18:40:55    MSG : MSG <nick> <message>, sends a private message, message "." to send to last nick or prefix with "=" for dcc chat
+Aug 27 18:40:55    NAMES : NAMES [channel], Lists the nicks on the channel
+Aug 27 18:40:55    NCTCP : NCTCP <nick> <message>, Sends a CTCP notice
+Aug 27 18:40:55    NEWSERVER : NEWSERVER [-noconnect] <hostname> [<port>]
+Aug 27 18:40:55    NICK : NICK <nickname>, sets your nick
+Aug 27 18:40:55    NOTICE : NOTICE <nick/channel> <message>, sends a notice
+Aug 27 18:40:55    NOTIFY : NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it
+Aug 27 18:40:55    OP : OP <nick>, gives chanop status to the nick (needs chanop)
+Aug 27 18:40:55    PART : PART [<channel>] [<reason>], leaves the channel, by default the current one
+Aug 27 18:40:55    PING : PING <nick | channel>, CTCP pings nick or channel
+Aug 27 18:40:55    QUERY : QUERY [-nofocus] <nick> [message], opens up a new privmsg window to someone and optionally sends a message
+Aug 27 18:40:55    QUIET : QUIET <mask> [<quiettype>], quiet everyone matching the mask in the current channel if supported by the server.
+Aug 27 18:40:55    QUIT : QUIT [<reason>], disconnects from the current server
+Aug 27 18:40:55    QUOTE : QUOTE <text>, sends the text in raw form to the server
+Aug 27 18:40:55    RECONNECT : RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers
+Aug 27 18:40:55    RECV : RECV <text>, send raw data to HexChat, as if it was received from the IRC server
+Aug 27 18:40:55    RELOAD : RELOAD <name>, reloads a plugin or script
+Aug 27 18:40:55    SAY : SAY <text>, sends the text to the object in the current window
+Aug 27 18:40:55    SEND : SEND <nick> [<file>]
+Aug 27 18:40:55    SERVCHAN : SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel
+Aug 27 18:40:55    SERVER : SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 6697 for ssl connections
+Aug 27 18:40:55    SET : SET [-e] [-off|-on] [-quiet] <variable> [<value>]
+Aug 27 18:40:55    SETCURSOR : SETCURSOR [-|+]<position>, reposition the cursor in the inputbox
+Aug 27 18:40:55    SETTAB : SETTAB <new name>, change a tab's name, tab_trunc limit still applies
+Aug 27 18:40:55    SETTEXT : SETTEXT <new text>, replace the text in the input box
+Aug 27 18:40:55    SPLAY : SPLAY <soundfile>
+Aug 27 18:40:55    TOPIC : TOPIC [<topic>], sets the topic if one is given, else shows the current topic
+Aug 27 18:40:55    TRAY : 
+TRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.
+TRAY -f <filename>                  Set tray to a fixed icon.
+TRAY -i <number>                    Blink tray with an internal icon.
+TRAY -t <text>                      Set the tray tooltip.
+TRAY -b <title> <text>              Set the tray balloon.
+Aug 27 18:40:55    UNBAN : UNBAN <mask> [<mask>...], unbans the specified masks.
+Aug 27 18:40:55    UNIGNORE : UNIGNORE <mask> [QUIET]
+Aug 27 18:40:55    UNLOAD : UNLOAD <name>, unloads a plugin or script
+Aug 27 18:40:55    UNQUIET : UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the server.
+Aug 27 18:40:55    URL : URL <url>, opens a URL in your browser
+Aug 27 18:40:55    USELECT : USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist
+Aug 27 18:40:55    USERLIST :
+Aug 27 18:40:55    VOICE : VOICE <nick>, gives voice status to someone (needs chanop)
+Aug 27 18:40:55    WALLCHAN : WALLCHAN <message>, writes the message to all channels
+Aug 27 18:40:55    WALLCHOP : WALLCHOP <message>, sends the message to all chanops on the current channel
+Aug 27 18:40:55   
+Aug 27 18:40:55 
+User defined commands:
+
+Aug 27 18:40:55    ACTION : me &2
+Aug 27 18:40:55    AME : allchan me &2
+Aug 27 18:40:55    ANICK : allserv nick &2
+Aug 27 18:40:55    AMSG : allchan say &2
+Aug 27 18:40:55    BANLIST : quote MODE %c +b
+Aug 27 18:40:55    CHAT : dcc chat %2
+Aug 27 18:40:55    DIALOG : query %2
+Aug 27 18:40:55    DMSG : msg =%2 &3
+Aug 27 18:40:55    EXIT : quit
+Aug 27 18:40:55    GREP : lastlog -r -- &2
+Aug 27 18:40:55    IGNALL : ignore %2!*@* ALL
+Aug 27 18:40:55    J : join &2
+Aug 27 18:40:55    KILL : quote KILL %2 :&3
+Aug 27 18:40:55    LEAVE : part &2
+Aug 27 18:40:55    M : msg &2
+Aug 27 18:40:55    OMSG : msg @%c &2
+Aug 27 18:40:55    ONOTICE : notice @%c &2
+Aug 27 18:40:55    RAW : quote &2
+Aug 27 18:40:55    SERVHELP : quote HELP
+Aug 27 18:40:55    SPING : ping
+Aug 27 18:40:55    SQUERY : quote SQUERY %2 :&3
+Aug 27 18:40:55    SSLSERVER : server -ssl &2
+Aug 27 18:40:55    SV : echo HexChat %v %m
+Aug 27 18:40:55    UMODE : mode %n &2
+Aug 27 18:40:55    UPTIME : quote STATS u
+Aug 27 18:40:55    VER : ctcp %2 VERSION
+Aug 27 18:40:55    VERSION : ctcp %2 VERSION
+Aug 27 18:40:55    WALLOPS : quote WALLOPS :&2
+Aug 27 18:40:55    WI : quote WHOIS %2
+Aug 27 18:40:55    WII : quote WHOIS %2 %2
+Aug 27 18:40:55   
+Aug 27 18:40:55 
+Plugin defined commands:
+
+Aug 27 18:40:55    SYSINFO : SysInfo Usage:
+  /SYSINFO [-e|-o] [CLIENT|OS|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments
+  /SYSINFO SET <variable>
+
+Aug 27 18:40:55    WINAMP : Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing
+Aug 27 18:40:55    UPDCHK : Update Checker Usage:
+  /UPDCHK, check for HexChat updates
+
+Aug 27 18:40:55    RELOAD :
+Aug 27 18:40:55    UNLOAD :
+Aug 27 18:40:55    LOAD :
+Aug 27 18:40:55    PY : Usage: /PY LOAD   <filename>
+           UNLOAD <filename|name>
+           RELOAD <filename|name>
+           LIST
+           EXEC <command>
+           CONSOLE
+           ABOUT
+
+
+Aug 27 18:40:55    pl : Evaluates Perl code. Syntax: /pl <perl code>
+Aug 27 18:40:55    reloadall : Realoads all loaded Perl scripts.
+Aug 27 18:40:55    unloadall : Unloads all loaded Perl scripts.
+Aug 27 18:40:55    pl_reload : Reloads a Perl script. Syntax: /pl_reload <filename.pl>
+Aug 27 18:40:55    reload :
+Aug 27 18:40:55    unload :
+Aug 27 18:40:55    load :
+Aug 27 18:40:55    mpc_reloadthemes : no help text
+Aug 27 18:40:55    mpc_themes : no help text
+Aug 27 18:40:55    mpc : no help text
+Aug 27 18:40:55    lua : Usage: /lua load <filename>
+            unload <filename>
+            reload <filename>
+            exec <code>
+            inject <filename> <code>
+            reset
+            list
+            console
+Aug 27 18:40:55    RELOAD :
+Aug 27 18:40:55    UNLOAD :
+Aug 27 18:40:55    LOAD :
+Aug 27 18:40:55    DELKEY : Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick
+Aug 27 18:40:55    SETKEY : Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick
+Aug 27 18:40:55    EXEC : Usage: /EXEC [-O] - execute commands inside HexChat
+Aug 27 18:40:55    doat : DOAT [channel,list,/network] [command], perform a command on multiple contexts
+Aug 27 18:40:55    CHECKSUM : Usage: /CHECKSUM GET|SET
+Aug 27 18:40:55    IDENTD : IDENTD <port> <username>
+Aug 27 18:40:55    TIMER : Usage: TIMER [-refnum <num>] [-repeat <num>] <seconds> <command>
+       TIMER [-quiet] -delete <num>
+Aug 27 18:40:55   
+Aug 27 18:40:55 
+Type /HELP <command> for more information, or /HELP -l
+
+**** BEGIN LOGGING AT Sat Aug 27 18:42:49 2016
+
+Aug 27 18:42:49 *	Welcome, GLHF!
+Aug 27 18:42:49 *	Your host is tmi.twitch.tv
+Aug 27 18:42:49 *	This server is rather new
+Aug 27 18:42:49 *	-
+Aug 27 18:42:49 *	-
+Aug 27 18:42:49 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:42:49 *	>
+Aug 27 18:42:49 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:43:00 *	BOFF :Unknown command
+Aug 27 18:43:02 *	BON :Unknown command
+Aug 27 18:43:23 No python modules loaded
+Aug 27 18:43:27 Sysinfo plugin unloaded
+Aug 27 18:43:27 Winamp plugin unloaded
+Aug 27 18:43:27 Update Checker plugin unloaded
+Aug 27 18:43:27 Python interface unloaded
+Aug 27 18:43:27 Perl interface unloaded
+Aug 27 18:43:27 mpcInfo plugin unloaded
+Aug 27 18:43:27 FiSHLiM plugin unloaded
+Aug 27 18:43:27 Exec plugin unloaded
+Aug 27 18:43:27 Do At plugin unloaded
+Aug 27 18:43:27 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:43:27 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:48:17 2016
+
+Aug 27 18:48:17 *	Welcome, GLHF!
+Aug 27 18:48:17 *	Your host is tmi.twitch.tv
+Aug 27 18:48:17 *	This server is rather new
+Aug 27 18:48:17 *	-
+Aug 27 18:48:17 *	-
+Aug 27 18:48:17 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:48:17 *	>
+Aug 27 18:48:17 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 18:51:33 2016
+
+Aug 27 18:51:33 *	Welcome, GLHF!
+Aug 27 18:51:33 *	Your host is tmi.twitch.tv
+Aug 27 18:51:33 *	This server is rather new
+Aug 27 18:51:33 *	-
+Aug 27 18:51:33 *	-
+Aug 27 18:51:33 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:51:33 *	>
+Aug 27 18:51:33 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:51:50 Sysinfo plugin unloaded
+Aug 27 18:51:50 Winamp plugin unloaded
+Aug 27 18:51:50 Update Checker plugin unloaded
+Aug 27 18:51:50 Python interface unloaded
+Aug 27 18:51:50 Perl interface unloaded
+Aug 27 18:51:50 mpcInfo plugin unloaded
+Aug 27 18:51:50 FiSHLiM plugin unloaded
+Aug 27 18:51:50 Exec plugin unloaded
+Aug 27 18:51:50 Do At plugin unloaded
+Aug 27 18:51:50 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:51:50 2016
+
+Aug 27 18:53:13 Sysinfo plugin unloaded
+Aug 27 18:53:13 Winamp plugin unloaded
+Aug 27 18:53:13 Update Checker plugin unloaded
+Aug 27 18:53:13 Python interface unloaded
+Aug 27 18:53:13 Perl interface unloaded
+Aug 27 18:53:13 mpcInfo plugin unloaded
+Aug 27 18:53:13 FiSHLiM plugin unloaded
+Aug 27 18:53:13 Exec plugin unloaded
+Aug 27 18:53:13 Do At plugin unloaded
+Aug 27 18:53:13 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:53:13 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:53:42 2016
+
+Aug 27 18:53:42 *	Welcome, GLHF!
+Aug 27 18:53:42 *	Your host is tmi.twitch.tv
+Aug 27 18:53:42 *	This server is rather new
+Aug 27 18:53:42 *	-
+Aug 27 18:53:42 *	-
+Aug 27 18:53:42 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:53:42 *	>
+Aug 27 18:53:42 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 18:53:51 2016
+
+Aug 27 18:53:51 *	Welcome, GLHF!
+Aug 27 18:53:51 *	Your host is tmi.twitch.tv
+Aug 27 18:53:51 *	This server is rather new
+Aug 27 18:53:51 *	-
+Aug 27 18:53:51 *	-
+Aug 27 18:53:51 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:53:51 *	>
+Aug 27 18:53:51 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:54:00 Sysinfo plugin unloaded
+Aug 27 18:54:00 Winamp plugin unloaded
+Aug 27 18:54:00 Update Checker plugin unloaded
+Aug 27 18:54:00 Python interface unloaded
+Aug 27 18:54:00 Perl interface unloaded
+Aug 27 18:54:00 mpcInfo plugin unloaded
+Aug 27 18:54:00 FiSHLiM plugin unloaded
+Aug 27 18:54:00 Exec plugin unloaded
+Aug 27 18:54:00 Do At plugin unloaded
+Aug 27 18:54:00 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:54:00 2016
+
+Aug 27 18:54:02 Sysinfo plugin unloaded
+Aug 27 18:54:02 Winamp plugin unloaded
+Aug 27 18:54:02 Update Checker plugin unloaded
+Aug 27 18:54:02 Python interface unloaded
+Aug 27 18:54:02 Perl interface unloaded
+Aug 27 18:54:02 mpcInfo plugin unloaded
+Aug 27 18:54:02 FiSHLiM plugin unloaded
+Aug 27 18:54:02 Exec plugin unloaded
+Aug 27 18:54:02 Do At plugin unloaded
+Aug 27 18:54:02 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:54:02 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:54:19 2016
+
+Aug 27 18:54:19 *	Welcome, GLHF!
+Aug 27 18:54:19 *	Your host is tmi.twitch.tv
+Aug 27 18:54:19 *	This server is rather new
+Aug 27 18:54:19 *	-
+Aug 27 18:54:19 *	-
+Aug 27 18:54:19 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:54:19 *	>
+Aug 27 18:54:19 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 18:54:29 2016
+
+Aug 27 18:54:29 *	Welcome, GLHF!
+Aug 27 18:54:29 *	Your host is tmi.twitch.tv
+Aug 27 18:54:29 *	This server is rather new
+Aug 27 18:54:29 *	-
+Aug 27 18:54:29 *	-
+Aug 27 18:54:30 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:54:30 *	>
+Aug 27 18:54:30 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:54:33 
+Commands Available:
+
+Aug 27 18:54:33   ADDBUTTON ADDSERVER ALLCHAN   ALLCHANL  ALLSERV
+Aug 27 18:54:33   AWAY      BACK      BAN       CHANOPT   CHARSET
+Aug 27 18:54:33   CLEAR     CLOSE     COUNTRY   CTCP      CYCLE
+Aug 27 18:54:33   DCC       DEBUG     DEHOP     DELBUTTON DEOP
+Aug 27 18:54:33   DEVOICE   DISCON    DNS       ECHO      FLUSHQ
+Aug 27 18:54:33   GATE      GETBOOL   GETFILE   GETINT    GETSTR
+Aug 27 18:54:33   GHOST     GUI       HELP      HOP       ID
+Aug 27 18:54:33   IGNORE    INVITE    JOIN      KICK      KICKBAN
+Aug 27 18:54:33   KILLALL   LAGCHECK  LASTLOG   LIST      LOAD
+Aug 27 18:54:33   MDEHOP    MDEOP     ME        MENU      MKICK
+Aug 27 18:54:33   MODE      MOP       MSG       NAMES     NCTCP
+Aug 27 18:54:33   NEWSERVER NICK      NOTICE    NOTIFY    OP
+Aug 27 18:54:33   PART      PING      QUERY     QUIET     QUIT
+Aug 27 18:54:33   QUOTE     RECONNECT RECV      RELOAD    SAY
+Aug 27 18:54:33   SEND      SERVCHAN  SERVER    SET       SETCURSOR
+Aug 27 18:54:33   SETTAB    SETTEXT   SPLAY     TOPIC     TRAY
+Aug 27 18:54:33   UNBAN     UNIGNORE  UNLOAD    UNQUIET   URL
+Aug 27 18:54:33   USELECT   USERLIST  VOICE     WALLCHAN  WALLCHOP
+Aug 27 18:54:33   
+Aug 27 18:54:33 
+User defined commands:
+
+Aug 27 18:54:33   ACTION    AME       ANICK     AMSG      BANLIST
+Aug 27 18:54:33   CHAT      DIALOG    DMSG      EXIT      GREP
+Aug 27 18:54:33   IGNALL    J         KILL      LEAVE     M
+Aug 27 18:54:33   OMSG      ONOTICE   RAW       SERVHELP  SPING
+Aug 27 18:54:33   SQUERY    SSLSERVER SV        UMODE     UPTIME
+Aug 27 18:54:33   VER       VERSION   WALLOPS   WI        WII
+Aug 27 18:54:33   
+Aug 27 18:54:33 
+Plugin defined commands:
+
+Aug 27 18:54:33   SYSINFO   WINAMP    UPDCHK    RELOAD    UNLOAD
+Aug 27 18:54:33   LOAD      PY        PL        RELOADALL UNLOADALL
+Aug 27 18:54:33   PL_RELOAD RELOAD    UNLOAD    LOAD      MPC_RELOADTHEMES
+Aug 27 18:54:33   MPC_THEMESMPC       LUA       RELOAD    UNLOAD
+Aug 27 18:54:33   LOAD      DELKEY    SETKEY    EXEC      DOAT
+Aug 27 18:54:33   CHECKSUM  IDENTD    TIMER     
+Aug 27 18:54:33 
+Type /HELP <command> for more information, or /HELP -l
+
+Aug 27 18:54:43 Usage: LOAD [-e] <file>, loads a plugin or script
+Aug 27 18:54:53 Sysinfo plugin unloaded
+Aug 27 18:54:53 Winamp plugin unloaded
+Aug 27 18:54:53 Update Checker plugin unloaded
+Aug 27 18:54:53 Python interface unloaded
+Aug 27 18:54:53 Perl interface unloaded
+Aug 27 18:54:53 mpcInfo plugin unloaded
+Aug 27 18:54:53 FiSHLiM plugin unloaded
+Aug 27 18:54:53 Exec plugin unloaded
+Aug 27 18:54:53 Do At plugin unloaded
+Aug 27 18:54:53 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:54:53 2016
+
+Aug 27 18:54:56 Sysinfo plugin unloaded
+Aug 27 18:54:56 Winamp plugin unloaded
+Aug 27 18:54:56 Update Checker plugin unloaded
+Aug 27 18:54:56 Python interface unloaded
+Aug 27 18:54:56 Perl interface unloaded
+Aug 27 18:54:56 mpcInfo plugin unloaded
+Aug 27 18:54:56 FiSHLiM plugin unloaded
+Aug 27 18:54:56 Exec plugin unloaded
+Aug 27 18:54:56 Do At plugin unloaded
+Aug 27 18:54:56 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:54:57 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:01 2016
+
+Aug 27 18:55:01 *	Welcome, GLHF!
+Aug 27 18:55:01 *	Your host is tmi.twitch.tv
+Aug 27 18:55:01 *	This server is rather new
+Aug 27 18:55:01 *	-
+Aug 27 18:55:01 *	-
+Aug 27 18:55:01 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:55:01 *	>
+Aug 27 18:55:01 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 18:55:17 2016
+
+Aug 27 18:55:17 *	Welcome, GLHF!
+Aug 27 18:55:17 *	Your host is tmi.twitch.tv
+Aug 27 18:55:17 *	This server is rather new
+Aug 27 18:55:17 *	-
+Aug 27 18:55:17 *	-
+Aug 27 18:55:17 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:55:17 *	>
+Aug 27 18:55:17 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:55:21 Sysinfo plugin unloaded
+Aug 27 18:55:21 Winamp plugin unloaded
+Aug 27 18:55:21 Update Checker plugin unloaded
+Aug 27 18:55:21 Python interface unloaded
+Aug 27 18:55:21 Perl interface unloaded
+Aug 27 18:55:21 mpcInfo plugin unloaded
+Aug 27 18:55:21 FiSHLiM plugin unloaded
+Aug 27 18:55:21 Exec plugin unloaded
+Aug 27 18:55:21 Do At plugin unloaded
+Aug 27 18:55:21 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:55:21 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:30 2016
+
+Aug 27 18:55:30 *	Welcome, GLHF!
+Aug 27 18:55:30 *	Your host is tmi.twitch.tv
+Aug 27 18:55:30 *	This server is rather new
+Aug 27 18:55:30 *	-
+Aug 27 18:55:30 *	-
+Aug 27 18:55:30 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:55:30 *	>
+Aug 27 18:55:30 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:55:35 Sysinfo plugin unloaded
+Aug 27 18:55:35 Winamp plugin unloaded
+Aug 27 18:55:35 Update Checker plugin unloaded
+Aug 27 18:55:35 Python interface unloaded
+Aug 27 18:55:35 Perl interface unloaded
+Aug 27 18:55:35 mpcInfo plugin unloaded
+Aug 27 18:55:35 FiSHLiM plugin unloaded
+Aug 27 18:55:35 Exec plugin unloaded
+Aug 27 18:55:35 Do At plugin unloaded
+Aug 27 18:55:35 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:55:35 2016
+
+Aug 27 18:55:36 Sysinfo plugin unloaded
+Aug 27 18:55:36 Winamp plugin unloaded
+Aug 27 18:55:36 Update Checker plugin unloaded
+Aug 27 18:55:36 Python interface unloaded
+Aug 27 18:55:36 Perl interface unloaded
+Aug 27 18:55:36 mpcInfo plugin unloaded
+Aug 27 18:55:36 FiSHLiM plugin unloaded
+Aug 27 18:55:36 Exec plugin unloaded
+Aug 27 18:55:36 Do At plugin unloaded
+Aug 27 18:55:36 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:55:36 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:40 2016
+
+Aug 27 18:55:40 *	Welcome, GLHF!
+Aug 27 18:55:40 *	Your host is tmi.twitch.tv
+Aug 27 18:55:40 *	This server is rather new
+Aug 27 18:55:40 *	-
+Aug 27 18:55:40 *	-
+Aug 27 18:55:40 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:55:40 *	>
+Aug 27 18:55:40 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 18:56:14 2016
+
+Aug 27 18:56:14 *	Welcome, GLHF!
+Aug 27 18:56:14 *	Your host is tmi.twitch.tv
+Aug 27 18:56:14 *	This server is rather new
+Aug 27 18:56:14 *	-
+Aug 27 18:56:14 *	-
+Aug 27 18:56:14 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:56:14 *	>
+Aug 27 18:56:14 *	Capabilities acknowledged: twitch.tv/membership
+**** BEGIN LOGGING AT Sat Aug 27 18:56:43 2016
+
+Aug 27 18:56:43 *	Welcome, GLHF!
+Aug 27 18:56:43 *	Your host is tmi.twitch.tv
+Aug 27 18:56:43 *	This server is rather new
+Aug 27 18:56:43 *	-
+Aug 27 18:56:43 *	-
+Aug 27 18:56:43 *	You are in a maze of twisty passages, all alike.
+Aug 27 18:56:43 *	>
+Aug 27 18:56:43 *	Capabilities acknowledged: twitch.tv/membership
+Aug 27 18:56:49 Sysinfo plugin unloaded
+Aug 27 18:56:49 Winamp plugin unloaded
+Aug 27 18:56:49 Update Checker plugin unloaded
+Aug 27 18:56:49 Python interface unloaded
+Aug 27 18:56:49 Perl interface unloaded
+Aug 27 18:56:49 mpcInfo plugin unloaded
+Aug 27 18:56:49 FiSHLiM plugin unloaded
+Aug 27 18:56:49 Exec plugin unloaded
+Aug 27 18:56:49 Do At plugin unloaded
+Aug 27 18:56:49 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:56:49 2016
+
+Aug 27 18:56:51 Sysinfo plugin unloaded
+Aug 27 18:56:51 Winamp plugin unloaded
+Aug 27 18:56:51 Update Checker plugin unloaded
+Aug 27 18:56:51 Python interface unloaded
+Aug 27 18:56:51 Perl interface unloaded
+Aug 27 18:56:51 mpcInfo plugin unloaded
+Aug 27 18:56:51 FiSHLiM plugin unloaded
+Aug 27 18:56:51 Exec plugin unloaded
+Aug 27 18:56:51 Do At plugin unloaded
+Aug 27 18:56:51 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:56:51 2016
+
+Aug 27 18:56:53 Sysinfo plugin unloaded
+Aug 27 18:56:53 Winamp plugin unloaded
+Aug 27 18:56:53 Update Checker plugin unloaded
+Aug 27 18:56:53 Python interface unloaded
+Aug 27 18:56:53 Perl interface unloaded
+Aug 27 18:56:53 mpcInfo plugin unloaded
+Aug 27 18:56:53 FiSHLiM plugin unloaded
+Aug 27 18:56:53 Exec plugin unloaded
+Aug 27 18:56:53 Do At plugin unloaded
+Aug 27 18:56:53 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:56:53 2016
+
