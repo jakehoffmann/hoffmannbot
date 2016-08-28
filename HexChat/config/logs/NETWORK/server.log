@@ -1,0 +1,604 @@
+**** BEGIN LOGGING AT Sat Aug 27 14:45:44 2016
+
+Aug 27 14:45:44 Checksum plugin loaded
+Aug 27 14:45:44 Do At plugin loaded
+Aug 27 14:45:44 Exec plugin loaded
+Aug 27 14:45:44 FiSHLiM plugin loaded
+Aug 27 14:45:44 Lua version 1.3/5.1 loaded.
+Aug 27 14:45:44 loading themes
+Aug 27 14:45:44 no theme in homedir, checking global theme
+Aug 27 14:45:44 no theme found, using hardcoded
+Aug 27 14:45:44 mpcInfo plugin loaded
+Aug 27 14:45:44 Perl interface loaded
+Aug 27 14:45:44 Python interface loaded
+Aug 27 14:45:44 Update Checker plugin loaded
+Aug 27 14:45:44 Winamp plugin loaded
+Aug 27 14:45:44 Sysinfo plugin loaded
+**** BEGIN LOGGING AT Sat Aug 27 15:50:16 2016
+
+Aug 27 15:50:16 Checksum plugin loaded
+Aug 27 15:50:16 Do At plugin loaded
+Aug 27 15:50:16 Exec plugin loaded
+Aug 27 15:50:16 FiSHLiM plugin loaded
+Aug 27 15:50:16 Lua version 1.3/5.1 loaded.
+Aug 27 15:50:16 loading themes
+Aug 27 15:50:16 no theme in homedir, checking global theme
+Aug 27 15:50:16 no theme found, using hardcoded
+Aug 27 15:50:16 mpcInfo plugin loaded
+Aug 27 15:50:16 Perl interface loaded
+Aug 27 15:50:16 Python interface loaded
+Aug 27 15:50:16 Update Checker plugin loaded
+Aug 27 15:50:16 Winamp plugin loaded
+Aug 27 15:50:16 Sysinfo plugin loaded
+Aug 27 15:50:16 *	Looking up irc.twitch.tv
+Aug 27 15:50:16 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (50.112.138.240:6667)
+Aug 27 15:50:16 *	Connected. Now logging in.
+Aug 27 15:50:16 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 15:50:16 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 15:50:16 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 15:50:35 2016
+
+Aug 27 15:50:35 Checksum plugin loaded
+Aug 27 15:50:35 Do At plugin loaded
+Aug 27 15:50:35 Exec plugin loaded
+Aug 27 15:50:35 FiSHLiM plugin loaded
+Aug 27 15:50:35 Lua version 1.3/5.1 loaded.
+Aug 27 15:50:35 loading themes
+Aug 27 15:50:35 no theme in homedir, checking global theme
+Aug 27 15:50:35 no theme found, using hardcoded
+Aug 27 15:50:35 mpcInfo plugin loaded
+Aug 27 15:50:35 Perl interface loaded
+Aug 27 15:50:35 Python interface loaded
+Aug 27 15:50:35 Update Checker plugin loaded
+Aug 27 15:50:35 Winamp plugin loaded
+Aug 27 15:50:35 Sysinfo plugin loaded
+Aug 27 15:50:35 *	Looking up irc.twitch.tv
+Aug 27 15:50:35 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (50.112.138.240:6667)
+Aug 27 15:50:35 *	Connected. Now logging in.
+Aug 27 15:50:35 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 15:50:35 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 15:50:35 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:36:02 2016
+
+Aug 27 18:36:02 Checksum plugin loaded
+Aug 27 18:36:02 Do At plugin loaded
+Aug 27 18:36:02 Exec plugin loaded
+Aug 27 18:36:02 FiSHLiM plugin loaded
+Aug 27 18:36:02 Lua version 1.3/5.1 loaded.
+Aug 27 18:36:02 loading themes
+Aug 27 18:36:02 no theme in homedir, checking global theme
+Aug 27 18:36:02 no theme found, using hardcoded
+Aug 27 18:36:02 mpcInfo plugin loaded
+Aug 27 18:36:02 Perl interface loaded
+Aug 27 18:36:02 Python interface loaded
+Aug 27 18:36:02 Update Checker plugin loaded
+Aug 27 18:36:02 Winamp plugin loaded
+Aug 27 18:36:02 Sysinfo plugin loaded
+Aug 27 18:36:02 *	Looking up irc.twitch.tv
+Aug 27 18:36:02 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.27.187.52:6667)
+Aug 27 18:36:02 *	Connected. Now logging in.
+Aug 27 18:36:02 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:36:02 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:36:02 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:42:49 2016
+
+Aug 27 18:42:49 Checksum plugin loaded
+Aug 27 18:42:49 Do At plugin loaded
+Aug 27 18:42:49 Exec plugin loaded
+Aug 27 18:42:49 FiSHLiM plugin loaded
+Aug 27 18:42:49 Lua version 1.3/5.1 loaded.
+Aug 27 18:42:49 loading themes
+Aug 27 18:42:49 no theme in homedir, checking global theme
+Aug 27 18:42:49 no theme found, using hardcoded
+Aug 27 18:42:49 mpcInfo plugin loaded
+Aug 27 18:42:49 Perl interface loaded
+Aug 27 18:42:49 Python interface loaded
+Aug 27 18:42:49 Update Checker plugin loaded
+Aug 27 18:42:49 Winamp plugin loaded
+Aug 27 18:42:49 Sysinfo plugin loaded
+Aug 27 18:42:49 Unknown Command /py. Try /help
+Aug 27 18:42:49 *	Looking up irc.twitch.tv
+Aug 27 18:42:49 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.11.206.21:6667)
+Aug 27 18:42:49 *	Connected. Now logging in.
+Aug 27 18:42:49 *	Capabilities supported: twitch.tv/membership twitch.tv/tags twitch.tv/commands
+Aug 27 18:42:49 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:42:49 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:43:37 2016
+
+Aug 27 18:43:37 Checksum plugin loaded
+Aug 27 18:43:37 Do At plugin loaded
+Aug 27 18:43:37 Exec plugin loaded
+Aug 27 18:43:37 FiSHLiM plugin loaded
+Aug 27 18:43:37 Lua version 1.3/5.1 loaded.
+Aug 27 18:43:37 loading themes
+Aug 27 18:43:37 no theme in homedir, checking global theme
+Aug 27 18:43:37 no theme found, using hardcoded
+Aug 27 18:43:37 mpcInfo plugin loaded
+Aug 27 18:43:37 Perl interface loaded
+Aug 27 18:43:37 Python interface loaded
+Aug 27 18:43:37 Update Checker plugin loaded
+Aug 27 18:43:37 Winamp plugin loaded
+Aug 27 18:43:37 Sysinfo plugin loaded
+Aug 27 18:43:37 *	Looking up load
+**** BEGIN LOGGING AT Sat Aug 27 18:43:37 2016
+
+Aug 27 18:43:37 *	Looking up c:\Users\Jake\PycharmProjects\hoffmannbotscript\hbot_main.py
+Aug 27 18:43:37 *	Unknown host. Maybe you misspelled it?
+**** BEGIN LOGGING AT Sat Aug 27 18:44:06 2016
+
+Aug 27 18:44:06 Checksum plugin loaded
+Aug 27 18:44:06 Do At plugin loaded
+Aug 27 18:44:06 Exec plugin loaded
+Aug 27 18:44:06 FiSHLiM plugin loaded
+Aug 27 18:44:06 Lua version 1.3/5.1 loaded.
+Aug 27 18:44:06 loading themes
+Aug 27 18:44:06 no theme in homedir, checking global theme
+Aug 27 18:44:06 no theme found, using hardcoded
+Aug 27 18:44:06 mpcInfo plugin loaded
+Aug 27 18:44:06 Perl interface loaded
+Aug 27 18:44:06 Python interface loaded
+Aug 27 18:44:06 Update Checker plugin loaded
+Aug 27 18:44:06 Winamp plugin loaded
+Aug 27 18:44:06 Sysinfo plugin loaded
+Aug 27 18:44:06 *	Looking up load
+**** BEGIN LOGGING AT Sat Aug 27 18:44:06 2016
+
+Aug 27 18:44:06 *	Looking up C:\Users\Jake\PycharmProjects\hoffmannbotscript\hbot_main.py
+Aug 27 18:44:06 Unknown Command /py. Try /help
+Aug 27 18:44:06 *	Unknown host. Maybe you misspelled it?
+Aug 27 18:44:09 *	Unknown host. Maybe you misspelled it?
+Aug 27 18:44:16 Sysinfo plugin unloaded
+Aug 27 18:44:16 Winamp plugin unloaded
+Aug 27 18:44:16 Update Checker plugin unloaded
+Aug 27 18:44:16 Python interface unloaded
+Aug 27 18:44:16 Perl interface unloaded
+Aug 27 18:44:16 mpcInfo plugin unloaded
+Aug 27 18:44:16 FiSHLiM plugin unloaded
+Aug 27 18:44:16 Exec plugin unloaded
+Aug 27 18:44:16 Do At plugin unloaded
+Aug 27 18:44:16 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:44:16 2016
+
+**** ENDING LOGGING AT Sat Aug 27 18:44:16 2016
+
+Aug 27 18:44:18 Python interface unloaded
+Aug 27 18:44:18 Perl interface unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:44:18 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:45:40 2016
+
+Aug 27 18:45:40 Checksum plugin loaded
+Aug 27 18:45:40 Do At plugin loaded
+Aug 27 18:45:40 Exec plugin loaded
+Aug 27 18:45:40 FiSHLiM plugin loaded
+Aug 27 18:45:40 Lua version 1.3/5.1 loaded.
+Aug 27 18:45:40 loading themes
+Aug 27 18:45:40 no theme in homedir, checking global theme
+Aug 27 18:45:40 no theme found, using hardcoded
+Aug 27 18:45:40 mpcInfo plugin loaded
+Aug 27 18:45:40 Perl interface loaded
+Aug 27 18:45:40 Python interface loaded
+Aug 27 18:45:40 Update Checker plugin loaded
+Aug 27 18:45:40 Winamp plugin loaded
+Aug 27 18:45:40 Sysinfo plugin loaded
+Aug 27 18:45:40 *	Looking up load
+**** BEGIN LOGGING AT Sat Aug 27 18:45:40 2016
+
+Aug 27 18:45:40 *	Looking up C:\Users\Jake\PycharmProjects\hoffmannbotscript\hbot_main.py
+Aug 27 18:45:40 Unknown Command /py. Try /help
+Aug 27 18:45:40 *	Unknown host. Maybe you misspelled it?
+Aug 27 18:45:43 *	Unknown host. Maybe you misspelled it?
+Aug 27 18:45:49 ==========Hoffmannbot loaded============
+Aug 27 18:45:56 Unknown Command boff. Try /help
+Aug 27 18:46:01 ==========Hoffmannbot unloaded==========
+**** BEGIN LOGGING AT Sat Aug 27 18:47:08 2016
+
+Aug 27 18:47:08 Checksum plugin loaded
+Aug 27 18:47:08 Do At plugin loaded
+Aug 27 18:47:08 Exec plugin loaded
+Aug 27 18:47:08 FiSHLiM plugin loaded
+Aug 27 18:47:08 Lua version 1.3/5.1 loaded.
+Aug 27 18:47:08 loading themes
+Aug 27 18:47:08 no theme in homedir, checking global theme
+Aug 27 18:47:08 no theme found, using hardcoded
+Aug 27 18:47:08 mpcInfo plugin loaded
+Aug 27 18:47:08 Perl interface loaded
+Aug 27 18:47:08 Python interface loaded
+Aug 27 18:47:08 Update Checker plugin loaded
+Aug 27 18:47:08 Winamp plugin loaded
+Aug 27 18:47:08 Sysinfo plugin loaded
+Aug 27 18:47:08 *	Looking up list
+Aug 27 18:47:08 Unknown Command /py. Try /help
+Aug 27 18:47:10 *	Unknown host. Maybe you misspelled it?
+Aug 27 18:47:18 Usage: /PY LOAD   <filename>
+           UNLOAD <filename|name>
+           RELOAD <filename|name>
+           LIST
+           EXEC <command>
+           CONSOLE
+           ABOUT
+
+**** BEGIN LOGGING AT Sat Aug 27 18:47:26 2016
+
+Aug 27 18:47:26 Checksum plugin loaded
+Aug 27 18:47:26 Do At plugin loaded
+Aug 27 18:47:26 Exec plugin loaded
+Aug 27 18:47:26 FiSHLiM plugin loaded
+Aug 27 18:47:26 Lua version 1.3/5.1 loaded.
+Aug 27 18:47:26 loading themes
+Aug 27 18:47:26 no theme in homedir, checking global theme
+Aug 27 18:47:26 no theme found, using hardcoded
+Aug 27 18:47:26 mpcInfo plugin loaded
+Aug 27 18:47:26 Perl interface loaded
+Aug 27 18:47:27 Python interface loaded
+Aug 27 18:47:27 Update Checker plugin loaded
+Aug 27 18:47:27 Winamp plugin loaded
+Aug 27 18:47:27 Sysinfo plugin loaded
+Aug 27 18:47:27 *	Looking up list'
+Aug 27 18:47:27 Unknown Command '/py. Try /help
+Aug 27 18:47:27 *	Unknown host. Maybe you misspelled it?
+**** BEGIN LOGGING AT Sat Aug 27 18:47:38 2016
+
+Aug 27 18:47:38 Checksum plugin loaded
+Aug 27 18:47:38 Do At plugin loaded
+Aug 27 18:47:38 Exec plugin loaded
+Aug 27 18:47:38 FiSHLiM plugin loaded
+Aug 27 18:47:38 Lua version 1.3/5.1 loaded.
+Aug 27 18:47:38 loading themes
+Aug 27 18:47:38 no theme in homedir, checking global theme
+Aug 27 18:47:38 no theme found, using hardcoded
+Aug 27 18:47:38 mpcInfo plugin loaded
+Aug 27 18:47:38 Perl interface loaded
+Aug 27 18:47:38 Python interface loaded
+Aug 27 18:47:38 Update Checker plugin loaded
+Aug 27 18:47:38 Winamp plugin loaded
+Aug 27 18:47:38 Sysinfo plugin loaded
+Aug 27 18:47:38 *	Looking up list`
+Aug 27 18:47:38 Unknown Command `/py. Try /help
+Aug 27 18:47:38 *	Unknown host. Maybe you misspelled it?
+**** BEGIN LOGGING AT Sat Aug 27 18:48:16 2016
+
+Aug 27 18:48:16 Checksum plugin loaded
+Aug 27 18:48:16 Do At plugin loaded
+Aug 27 18:48:16 Exec plugin loaded
+Aug 27 18:48:16 FiSHLiM plugin loaded
+Aug 27 18:48:16 Lua version 1.3/5.1 loaded.
+Aug 27 18:48:16 loading themes
+Aug 27 18:48:16 no theme in homedir, checking global theme
+Aug 27 18:48:16 no theme found, using hardcoded
+Aug 27 18:48:16 mpcInfo plugin loaded
+Aug 27 18:48:16 Perl interface loaded
+Aug 27 18:48:16 Python interface loaded
+Aug 27 18:48:16 Update Checker plugin loaded
+Aug 27 18:48:16 Winamp plugin loaded
+Aug 27 18:48:16 Sysinfo plugin loaded
+Aug 27 18:48:16 Unknown Command /py. Try /help
+Aug 27 18:48:16 *	Looking up irc.twitch.tv
+Aug 27 18:48:16 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.88.254.138:6667)
+Aug 27 18:48:17 *	Connected. Now logging in.
+Aug 27 18:48:17 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:48:17 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:48:17 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:51:33 2016
+
+Aug 27 18:51:33 Checksum plugin loaded
+Aug 27 18:51:33 Do At plugin loaded
+Aug 27 18:51:33 Exec plugin loaded
+Aug 27 18:51:33 FiSHLiM plugin loaded
+Aug 27 18:51:33 Lua version 1.3/5.1 loaded.
+Aug 27 18:51:33 loading themes
+Aug 27 18:51:33 no theme in homedir, checking global theme
+Aug 27 18:51:33 no theme found, using hardcoded
+Aug 27 18:51:33 mpcInfo plugin loaded
+Aug 27 18:51:33 Perl interface loaded
+Aug 27 18:51:33 Python interface loaded
+Aug 27 18:51:33 Update Checker plugin loaded
+Aug 27 18:51:33 Winamp plugin loaded
+Aug 27 18:51:33 Sysinfo plugin loaded
+Aug 27 18:51:33 Unknown Command /LOAD. Try /help
+Aug 27 18:51:33 *	Looking up irc.twitch.tv
+Aug 27 18:51:33 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.88.208.17:6667)
+Aug 27 18:51:33 *	Connected. Now logging in.
+Aug 27 18:51:33 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:51:33 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:51:33 2016
+
+Aug 27 18:52:50 Sysinfo plugin unloaded
+Aug 27 18:52:50 Winamp plugin unloaded
+Aug 27 18:52:50 Update Checker plugin unloaded
+Aug 27 18:52:50 Python interface unloaded
+Aug 27 18:52:50 Perl interface unloaded
+Aug 27 18:52:50 mpcInfo plugin unloaded
+Aug 27 18:52:50 FiSHLiM plugin unloaded
+Aug 27 18:52:50 Exec plugin unloaded
+Aug 27 18:52:50 Do At plugin unloaded
+Aug 27 18:52:50 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:52:50 2016
+
+**** ENDING LOGGING AT Sat Aug 27 18:52:50 2016
+
+Aug 27 18:52:58 Sysinfo plugin unloaded
+Aug 27 18:52:58 Winamp plugin unloaded
+Aug 27 18:52:58 Update Checker plugin unloaded
+Aug 27 18:52:58 Python interface unloaded
+Aug 27 18:52:58 Perl interface unloaded
+Aug 27 18:52:58 mpcInfo plugin unloaded
+Aug 27 18:52:58 FiSHLiM plugin unloaded
+Aug 27 18:52:58 Exec plugin unloaded
+Aug 27 18:52:58 Do At plugin unloaded
+Aug 27 18:52:58 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:52:58 2016
+
+Aug 27 18:53:01 Sysinfo plugin unloaded
+Aug 27 18:53:01 Winamp plugin unloaded
+Aug 27 18:53:01 Update Checker plugin unloaded
+Aug 27 18:53:01 Python interface unloaded
+Aug 27 18:53:01 Perl interface unloaded
+Aug 27 18:53:01 mpcInfo plugin unloaded
+Aug 27 18:53:01 FiSHLiM plugin unloaded
+Aug 27 18:53:01 Exec plugin unloaded
+Aug 27 18:53:01 Do At plugin unloaded
+Aug 27 18:53:01 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:53:01 2016
+
+Aug 27 18:53:05 Sysinfo plugin unloaded
+Aug 27 18:53:05 Winamp plugin unloaded
+Aug 27 18:53:05 Update Checker plugin unloaded
+Aug 27 18:53:05 Python interface unloaded
+Aug 27 18:53:05 Perl interface unloaded
+Aug 27 18:53:05 mpcInfo plugin unloaded
+Aug 27 18:53:05 FiSHLiM plugin unloaded
+Aug 27 18:53:05 Exec plugin unloaded
+Aug 27 18:53:05 Do At plugin unloaded
+Aug 27 18:53:05 Checksum plugin unloaded
+**** ENDING LOGGING AT Sat Aug 27 18:53:05 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:53:41 2016
+
+Aug 27 18:53:41 Checksum plugin loaded
+Aug 27 18:53:41 Do At plugin loaded
+Aug 27 18:53:41 Exec plugin loaded
+Aug 27 18:53:41 FiSHLiM plugin loaded
+Aug 27 18:53:41 Lua version 1.3/5.1 loaded.
+Aug 27 18:53:41 loading themes
+Aug 27 18:53:41 no theme in homedir, checking global theme
+Aug 27 18:53:41 no theme found, using hardcoded
+Aug 27 18:53:41 mpcInfo plugin loaded
+Aug 27 18:53:41 Perl interface loaded
+Aug 27 18:53:42 Python interface loaded
+Aug 27 18:53:42 Update Checker plugin loaded
+Aug 27 18:53:42 Winamp plugin loaded
+Aug 27 18:53:42 Sysinfo plugin loaded
+Aug 27 18:53:42 Unknown Command /LOAD. Try /help
+Aug 27 18:53:42 *	Looking up irc.twitch.tv
+Aug 27 18:53:42 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (54.218.98.88:6667)
+Aug 27 18:53:42 *	Connected. Now logging in.
+Aug 27 18:53:42 *	Capabilities supported: twitch.tv/membership twitch.tv/tags twitch.tv/commands
+Aug 27 18:53:42 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:53:42 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:53:51 2016
+
+Aug 27 18:53:51 Checksum plugin loaded
+Aug 27 18:53:51 Do At plugin loaded
+Aug 27 18:53:51 Exec plugin loaded
+Aug 27 18:53:51 FiSHLiM plugin loaded
+Aug 27 18:53:51 Lua version 1.3/5.1 loaded.
+Aug 27 18:53:51 loading themes
+Aug 27 18:53:51 no theme in homedir, checking global theme
+Aug 27 18:53:51 no theme found, using hardcoded
+Aug 27 18:53:51 mpcInfo plugin loaded
+Aug 27 18:53:51 Perl interface loaded
+Aug 27 18:53:51 Python interface loaded
+Aug 27 18:53:51 Update Checker plugin loaded
+Aug 27 18:53:51 Winamp plugin loaded
+Aug 27 18:53:51 Sysinfo plugin loaded
+Aug 27 18:53:51 Unknown Command /LOAD. Try /help
+Aug 27 18:53:51 *	Looking up irc.twitch.tv
+Aug 27 18:53:51 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (54.218.98.88:6667)
+Aug 27 18:53:51 *	Connected. Now logging in.
+Aug 27 18:53:51 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:53:51 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:53:51 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:54:18 2016
+
+Aug 27 18:54:18 Checksum plugin loaded
+Aug 27 18:54:18 Do At plugin loaded
+Aug 27 18:54:18 Exec plugin loaded
+Aug 27 18:54:18 FiSHLiM plugin loaded
+Aug 27 18:54:18 Lua version 1.3/5.1 loaded.
+Aug 27 18:54:18 loading themes
+Aug 27 18:54:18 no theme in homedir, checking global theme
+Aug 27 18:54:18 no theme found, using hardcoded
+Aug 27 18:54:18 mpcInfo plugin loaded
+Aug 27 18:54:18 Perl interface loaded
+Aug 27 18:54:19 Python interface loaded
+Aug 27 18:54:19 Update Checker plugin loaded
+Aug 27 18:54:19 Winamp plugin loaded
+Aug 27 18:54:19 Sysinfo plugin loaded
+Aug 27 18:54:19 Unknown Command /SAY. Try /help
+Aug 27 18:54:19 *	Looking up irc.twitch.tv
+Aug 27 18:54:19 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (54.218.98.88:6667)
+Aug 27 18:54:19 *	Connected. Now logging in.
+Aug 27 18:54:19 *	Capabilities supported: twitch.tv/commands twitch.tv/membership twitch.tv/tags
+Aug 27 18:54:19 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:54:19 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:54:29 2016
+
+Aug 27 18:54:29 Checksum plugin loaded
+Aug 27 18:54:29 Do At plugin loaded
+Aug 27 18:54:29 Exec plugin loaded
+Aug 27 18:54:29 FiSHLiM plugin loaded
+Aug 27 18:54:29 Lua version 1.3/5.1 loaded.
+Aug 27 18:54:29 loading themes
+Aug 27 18:54:29 no theme in homedir, checking global theme
+Aug 27 18:54:29 no theme found, using hardcoded
+Aug 27 18:54:29 mpcInfo plugin loaded
+Aug 27 18:54:29 Perl interface loaded
+Aug 27 18:54:29 Python interface loaded
+Aug 27 18:54:29 Update Checker plugin loaded
+Aug 27 18:54:29 Winamp plugin loaded
+Aug 27 18:54:29 Sysinfo plugin loaded
+Aug 27 18:54:29 Unknown Command /LOAD. Try /help
+Aug 27 18:54:29 *	Looking up irc.twitch.tv
+Aug 27 18:54:29 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (54.218.98.88:6667)
+Aug 27 18:54:29 *	Connected. Now logging in.
+Aug 27 18:54:29 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:54:29 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:54:29 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:01 2016
+
+Aug 27 18:55:01 Checksum plugin loaded
+Aug 27 18:55:01 Do At plugin loaded
+Aug 27 18:55:01 Exec plugin loaded
+Aug 27 18:55:01 FiSHLiM plugin loaded
+Aug 27 18:55:01 Lua version 1.3/5.1 loaded.
+Aug 27 18:55:01 loading themes
+Aug 27 18:55:01 no theme in homedir, checking global theme
+Aug 27 18:55:01 no theme found, using hardcoded
+Aug 27 18:55:01 mpcInfo plugin loaded
+Aug 27 18:55:01 Perl interface loaded
+Aug 27 18:55:01 Python interface loaded
+Aug 27 18:55:01 Update Checker plugin loaded
+Aug 27 18:55:01 Winamp plugin loaded
+Aug 27 18:55:01 Sysinfo plugin loaded
+Aug 27 18:55:01 Unknown Command /LOAD. Try /help
+Aug 27 18:55:01 *	Looking up irc.twitch.tv
+Aug 27 18:55:01 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.32.156.153:6667)
+Aug 27 18:55:01 *	Connected. Now logging in.
+Aug 27 18:55:01 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:55:01 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:55:01 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:17 2016
+
+Aug 27 18:55:17 Checksum plugin loaded
+Aug 27 18:55:17 Do At plugin loaded
+Aug 27 18:55:17 Exec plugin loaded
+Aug 27 18:55:17 FiSHLiM plugin loaded
+Aug 27 18:55:17 Lua version 1.3/5.1 loaded.
+Aug 27 18:55:17 loading themes
+Aug 27 18:55:17 no theme in homedir, checking global theme
+Aug 27 18:55:17 no theme found, using hardcoded
+Aug 27 18:55:17 mpcInfo plugin loaded
+Aug 27 18:55:17 Perl interface loaded
+Aug 27 18:55:17 Python interface loaded
+Aug 27 18:55:17 Update Checker plugin loaded
+Aug 27 18:55:17 Winamp plugin loaded
+Aug 27 18:55:17 Sysinfo plugin loaded
+Aug 27 18:55:17 Unknown Command /load. Try /help
+Aug 27 18:55:17 *	Looking up irc.twitch.tv
+Aug 27 18:55:17 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.32.156.153:6667)
+Aug 27 18:55:17 *	Connected. Now logging in.
+Aug 27 18:55:17 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:55:17 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:55:17 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:30 2016
+
+Aug 27 18:55:30 Checksum plugin loaded
+Aug 27 18:55:30 Do At plugin loaded
+Aug 27 18:55:30 Exec plugin loaded
+Aug 27 18:55:30 FiSHLiM plugin loaded
+Aug 27 18:55:30 Lua version 1.3/5.1 loaded.
+Aug 27 18:55:30 loading themes
+Aug 27 18:55:30 no theme in homedir, checking global theme
+Aug 27 18:55:30 no theme found, using hardcoded
+Aug 27 18:55:30 mpcInfo plugin loaded
+Aug 27 18:55:30 Perl interface loaded
+Aug 27 18:55:30 Python interface loaded
+Aug 27 18:55:30 Update Checker plugin loaded
+Aug 27 18:55:30 Winamp plugin loaded
+Aug 27 18:55:30 Sysinfo plugin loaded
+Aug 27 18:55:30 Cannot access D:\hoffmannbot\HexChat\config\jaketest
+Aug 27 18:55:30 Remote host closed socket
+Aug 27 18:55:30 *	Looking up irc.twitch.tv
+Aug 27 18:55:30 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.32.156.153:6667)
+Aug 27 18:55:30 *	Connected. Now logging in.
+Aug 27 18:55:30 *	Capabilities supported: twitch.tv/commands twitch.tv/membership twitch.tv/tags
+Aug 27 18:55:30 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:55:30 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:55:40 2016
+
+Aug 27 18:55:40 Checksum plugin loaded
+Aug 27 18:55:40 Do At plugin loaded
+Aug 27 18:55:40 Exec plugin loaded
+Aug 27 18:55:40 FiSHLiM plugin loaded
+Aug 27 18:55:40 Lua version 1.3/5.1 loaded.
+Aug 27 18:55:40 loading themes
+Aug 27 18:55:40 no theme in homedir, checking global theme
+Aug 27 18:55:40 no theme found, using hardcoded
+Aug 27 18:55:40 mpcInfo plugin loaded
+Aug 27 18:55:40 Perl interface loaded
+Aug 27 18:55:40 Python interface loaded
+Aug 27 18:55:40 Update Checker plugin loaded
+Aug 27 18:55:40 Winamp plugin loaded
+Aug 27 18:55:40 Sysinfo plugin loaded
+Aug 27 18:55:40 No channel joined. Try /join #<channel>
+Aug 27 18:55:40 *	Looking up irc.twitch.tv
+Aug 27 18:55:40 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (52.32.156.153:6667)
+Aug 27 18:55:40 *	Connected. Now logging in.
+Aug 27 18:55:40 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:55:40 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:55:40 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:56:14 2016
+
+Aug 27 18:56:14 Checksum plugin loaded
+Aug 27 18:56:14 Do At plugin loaded
+Aug 27 18:56:14 Exec plugin loaded
+Aug 27 18:56:14 FiSHLiM plugin loaded
+Aug 27 18:56:14 Lua version 1.3/5.1 loaded.
+Aug 27 18:56:14 loading themes
+Aug 27 18:56:14 no theme in homedir, checking global theme
+Aug 27 18:56:14 no theme found, using hardcoded
+Aug 27 18:56:14 mpcInfo plugin loaded
+Aug 27 18:56:14 Perl interface loaded
+Aug 27 18:56:14 Python interface loaded
+Aug 27 18:56:14 Update Checker plugin loaded
+Aug 27 18:56:14 Winamp plugin loaded
+Aug 27 18:56:14 Sysinfo plugin loaded
+Aug 27 18:56:14 Not connected. Try /server <host> [<port>]
+Aug 27 18:56:14 No channel joined. Try /join #<channel>
+Aug 27 18:56:14 *	Looking up irc.twitch.tv
+Aug 27 18:56:14 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (54.213.255.121:6667)
+Aug 27 18:56:14 *	Connected. Now logging in.
+Aug 27 18:56:14 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:56:14 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:56:14 2016
+
+**** BEGIN LOGGING AT Sat Aug 27 18:56:43 2016
+
+Aug 27 18:56:43 Checksum plugin loaded
+Aug 27 18:56:43 Do At plugin loaded
+Aug 27 18:56:43 Exec plugin loaded
+Aug 27 18:56:43 FiSHLiM plugin loaded
+Aug 27 18:56:43 Lua version 1.3/5.1 loaded.
+Aug 27 18:56:43 loading themes
+Aug 27 18:56:43 no theme in homedir, checking global theme
+Aug 27 18:56:43 no theme found, using hardcoded
+Aug 27 18:56:43 mpcInfo plugin loaded
+Aug 27 18:56:43 Perl interface loaded
+Aug 27 18:56:43 Python interface loaded
+Aug 27 18:56:43 Update Checker plugin loaded
+Aug 27 18:56:43 Winamp plugin loaded
+Aug 27 18:56:43 Sysinfo plugin loaded
+Aug 27 18:56:43 No python modules loaded
+Aug 27 18:56:43 ==========Hoffmannbot loaded============
+Aug 27 18:56:43 ==========Hoffmannbot unloaded==========
+Aug 27 18:56:43 *	Looking up irc.twitch.tv
+Aug 27 18:56:43 *	Connecting to irc-production-388322493.us-west-2.elb.amazonaws.com (54.213.255.121:6667)
+Aug 27 18:56:43 *	Connected. Now logging in.
+Aug 27 18:56:43 *	Capabilities supported: twitch.tv/tags twitch.tv/commands twitch.tv/membership
+Aug 27 18:56:43 *	Capabilities requested: twitch.tv/membership 
+**** ENDING LOGGING AT Sat Aug 27 18:56:43 2016
+
