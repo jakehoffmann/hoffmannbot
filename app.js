@@ -1,0 +1,68 @@
+var myApp = angular.module('myApp', ['ngRoute']);
+
+myApp.config(function ($routeProvider) {
+    
+    $routeProvider
+    .when('/', {
+        templateUrl: 'pages/home.html',
+        controller: 'mainController'
+    })
+    .when('/hoffmannbot/', {
+        templateUrl: 'pages/hoffmannbot.html',
+        controller: 'mainController'
+    })
+    .when('/contact/', {
+        templateUrl: 'pages/contact.html',
+        controller: 'mainController'
+    })
+    .when('/hoffmannbot/get/', {
+        templateUrl: 'pages/get.html',
+        controller: 'authController'
+    })
+    .when('/hoffmannbot/commands', {
+        templateUrl: 'pages/commands.html',
+        controller: 'mainController'
+    })
+    .when('/hoffmannbot/about', {
+        templateUrl: 'pages/about.html',
+        controller: 'mainController'
+    })
+    .when('/login', {
+        templateUrl: 'pages/login.html',
+        controller: 'mainController'
+    })
+});
+
+myApp.controller('mainController', ["$scope", "$http", function ($scope, $http) {
+    
+}]);
+
+myApp.controller('authController', ["$scope", "$http", "$location", "Auth", function ($scope, $http, $location, Auth) {
+    if (!Auth.isAuthed()) {
+        $location.url('/login');
+    } 
+    $scope.auth = Auth.auth;
+}]);
+
+myApp.factory('Auth', function() {
+    var twitch_username;
+    return { 
+        isAuthed: function () {
+            twitch_username = localStorage.getItem('token') || ''; // check this
+            if ( twitch_username === '' ) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        },
+        auth: function () {
+            var client_id='49mrp5ljn2nj44sx1czezi44ql151h2',
+                force_verify='true',
+                scope='channel_editor',
+                redirect_uri='http://localhost', // change this to go to a route that sets the localstorage
+                response_type='code',
+                url='https://api.twitch.tv/kraken/oauth2/authorize?response_type='+response_type+'&force_verify='+force_verify+'&client_id='+client_id+'&redirect_uri='+redirect_uri+'&scope='+scope;
+            window.location.replace(url); 
+        }
+}});
