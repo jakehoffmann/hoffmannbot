@@ -1,3 +1,0 @@
-/py list
-/py load C:\Users\Jake\PycharmProjects\hoffmannbotscript\hbot_main.py
-/py unload C:\Users\Jake\PycharmProjects\hoffmannbotscript\hbot_main.py
