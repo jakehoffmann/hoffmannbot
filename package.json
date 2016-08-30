@@ -1,7 +1,6 @@
 {
   "name": "hoffmannbot_server",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -14,6 +13,7 @@
     "hjs": "~0.0.6",
     "less-middleware": "1.0.x",
     "morgan": "~1.7.0",
+    "pg": "^6.1.0",
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.4"
   }

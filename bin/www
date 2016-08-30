@@ -6,13 +6,16 @@
 
 var app = require('../app');
 var debug = require('debug')('hoffmannbot_server:server');
-// var http = require('http');
+var http = require('http');
+
+/*
 var fs = require('fs');
 var https = require('https');
 var options = {
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.crt')
 }
+*/
 
 /**
  * Get port from environment and store in Express.

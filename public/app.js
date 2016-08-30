@@ -38,6 +38,12 @@ myApp.controller('mainController', ["$scope", "$http", function ($scope, $http) 
 }]);
 
 myApp.controller('authController', ["$scope", "$http", "$location", "Auth", function ($scope, $http, $location, Auth) {
+    console.log('code = ', $location.search().code);
+    if ($location.search().code) {
+        localStorage.setItem('code', $location.search().code);
+        // POST code to server so a token can be retrieved from Twitch
+        
+    }
     if (!Auth.isAuthed()) {
         $location.url('/login');
     } 
@@ -45,11 +51,11 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
 }]);
 
 myApp.factory('Auth', function() {
-    var twitch_username;
+    var code;
     return { 
         isAuthed: function () {
-            twitch_username = localStorage.getItem('token') || ''; // check this
-            if ( twitch_username === '' ) {
+            code = localStorage.getItem('code') || '';
+            if ( code === '' ) {
                 return false;
             }
             else {
@@ -60,7 +66,7 @@ myApp.factory('Auth', function() {
             var client_id='49mrp5ljn2nj44sx1czezi44ql151h2',
                 force_verify='true',
                 scope='channel_editor',
-                redirect_uri='http://localhost', // change this to go to a route that sets the localstorage
+                redirect_uri='hoffmannbot.herokuapp.com/pages/get.html',
                 response_type='code',
                 url='https://api.twitch.tv/kraken/oauth2/authorize?response_type='+response_type+'&force_verify='+force_verify+'&client_id='+client_id+'&redirect_uri='+redirect_uri+'&scope='+scope;
             window.location.replace(url); 
