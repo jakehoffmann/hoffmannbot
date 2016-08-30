@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var helmet = require('helmet');
+var url = require('url');
 
 var pg = require('pg');
 // postgres config, parse the heroku-provided env variable DATABASE_URL
