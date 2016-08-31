@@ -68,6 +68,7 @@ myApp.factory('Auth', ['$location', function($location) {
             }
         },
         auth: function () {
+            console.log(encodeURI('http://hoffmannbot.herokuapp.com/#/hoffmannbot/get/'));
             var client_id='49mrp5ljn2nj44sx1czezi44ql151h2',
                 force_verify='true',
                 scope='channel_editor',
