@@ -52,10 +52,15 @@ myApp.controller('authController', ["$scope", "$http", "$location", "$routeParam
 }]);
 
 myApp.factory('Auth', function() {
-    var code;
+    var code = '';
     return { 
         isAuthed: function () {
-            code = localStorage.getItem('code') || '';
+            if ($location.search().code) {
+                code = $location.search().code;
+            }
+            else if (localStorage.getItem('code')) {
+                code = localStorage.getItem('code');
+            }
             if ( code === '' ) {
                 return false;
             }
