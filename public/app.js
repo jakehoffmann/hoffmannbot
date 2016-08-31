@@ -51,7 +51,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "$routeParam
     $scope.auth = Auth.auth;
 }]);
 
-myApp.factory('Auth', function() {
+myApp.factory('Auth', ['$location', function($location) {
     var code = '';
     return { 
         isAuthed: function () {
@@ -76,4 +76,4 @@ myApp.factory('Auth', function() {
                 url='https://api.twitch.tv/kraken/oauth2/authorize?response_type='+response_type+'&force_verify='+force_verify+'&client_id='+client_id+'&redirect_uri='+redirect_uri+'&scope='+scope;
             window.location.replace(url); 
         }
-}});
+}}]);
