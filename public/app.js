@@ -66,7 +66,7 @@ myApp.factory('Auth', function() {
             var client_id='49mrp5ljn2nj44sx1czezi44ql151h2',
                 force_verify='true',
                 scope='channel_editor',
-                redirect_uri='hoffmannbot.herokuapp.com/pages/get.html',
+                redirect_uri='http://hoffmannbot.herokuapp.com/#/hoffmannbot/get',
                 response_type='code',
                 url='https://api.twitch.tv/kraken/oauth2/authorize?response_type='+response_type+'&force_verify='+force_verify+'&client_id='+client_id+'&redirect_uri='+redirect_uri+'&scope='+scope;
             window.location.replace(url); 
