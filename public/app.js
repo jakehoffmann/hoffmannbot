@@ -57,15 +57,14 @@ myApp.factory('Auth', function() {
         isAuthed: function () {
             if ($location.search().code) {
                 code = $location.search().code;
+                return true;
             }
             else if (localStorage.getItem('code')) {
                 code = localStorage.getItem('code');
-            }
-            if ( code === '' ) {
-                return false;
+                return true;
             }
             else {
-                return true;
+                return false;
             }
         },
         auth: function () {
