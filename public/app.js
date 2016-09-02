@@ -41,7 +41,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
     $scope.code = $location.search().code;
     console.log('code = ', $scope.code);
     console.log($location.url());
-    if (code) {
+    if ($scope.code) {
         localStorage.setItem('code', $scope.code);
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
         $http({
