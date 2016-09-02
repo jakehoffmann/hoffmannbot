@@ -50,7 +50,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            data: 'code='+code;
+            data: 'code='+code
         }).then(function successCallback(response) {
             console.log('success response');
         }, function errorCallback(response) {
