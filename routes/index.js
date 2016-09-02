@@ -35,9 +35,8 @@ router.post('/auth', function(req, res, next) {
     console.log('node code: ', req.body.code);
     
     var response = { 'twitch_username': '', 'summoners':[] };
-    console.log('here');
+   
     pool.connect(function(err, client, done) {
-        console.log('SUPERHERE');
         if (err) {
             return console.error('error fetching client from pool', err);
         }
@@ -49,7 +48,7 @@ router.post('/auth', function(req, res, next) {
                             return console.error('errur running query');
                         }
         }); */
-        query = client.query('SELECT twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
+        query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
         query.on('error', function(error) {
             console.log('error with query (312)'); 
         });
