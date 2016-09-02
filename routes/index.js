@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/auth', function(req, res, next) {
     console.log('authorizing...');
-    console.log('node code: ', req.params.code);
+    console.log('node code: ', req.body.code);
     
     var response = { 'twitch_username': '', 'summoners':[] };
     pool.connect(function(err, client, done) {
@@ -16,14 +16,14 @@ router.post('/auth', function(req, res, next) {
             return console.error('error fetching client from pool', err);
         }
 /*      client.query('SELECT twitch_username FROM users WHERE code=$1',
-                     [req.params.code],
+                     [req.body.code],
                      function(err, row) {
                         // done(); // maybe don't release client yet
                         if(err) {
                             return console.error('errur running query');
                         }
         }); */
-        query = client.query('SELECT twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.params.code]);
+        query = client.query('SELECT twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
         query.on('row', function(row) {
             response['summoners'].push(row.summoner);
             response['twitch_username'] = row.twitch_username;
@@ -47,7 +47,7 @@ router.post('/auth', function(req, res, next) {
                                        grant_type: 'authorization-code',
                                        redirect_uri: 'http://hoffmannbot.herokuapp.com/#/hoffmannbot/get/',
                                       //redirect_uri: 'http%3A%2F%2Fhoffmannbot.herokuapp.com%2F%23%2Fhoffmannbot%2Fget%2F',
-                                       code: req.params.code}},
+                                       code: req.body.code}},
                                 function(err,httpResponse,body){
                     if (err) {
                         console.log('error here 313');
