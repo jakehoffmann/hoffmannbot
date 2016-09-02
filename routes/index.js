@@ -30,6 +30,7 @@ router.post('/auth', function(req, res, next) {
         });
         query.on('end', function(result) {
             if (result.rowCount === 0) {
+                console.log('')
                 // No such user found with this code. POST to Twitch for token and possibly make a new user
    
                 /*
@@ -53,6 +54,8 @@ router.post('/auth', function(req, res, next) {
                         console.log('error here 313');
                     }
                     console.log('BODY: ', body); // either this or the response should be the JSON token
+                    console.log('response: ', httpResponse);
+                    res.send(200); // need another response here, testing!
                 });
 
                           
