@@ -24,6 +24,9 @@ router.post('/auth', function(req, res, next) {
                         }
         }); */
         query = client.query('SELECT twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
+        query.on('error', function(error) {
+            console.log('error with query (312)'); 
+        });
         query.on('row', function(row) {
             response['summoners'].push(row.summoner);
             response['twitch_username'] = row.twitch_username;
@@ -51,7 +54,7 @@ router.post('/auth', function(req, res, next) {
                                        code: req.body.code}},
                                 function(err,httpResponse,body){
                     if (err) {
-                        console.log('error here 313');
+                        console.log('error here (313)');
                     }
                     console.log('BODY: ', body); // either this or the response should be the JSON token
                     console.log('response: ', httpResponse);
