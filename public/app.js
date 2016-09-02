@@ -38,16 +38,21 @@ myApp.controller('mainController', ["$scope", "$http", function ($scope, $http) 
 }]);
 
 myApp.controller('authController', ["$scope", "$http", "$location", "Auth", function ($scope, $http, $location, Auth) {
-    console.log('code = ', $location.search().code);
+    var code = $location.search().code;
+    console.log('code = ', code);
     console.log($location.url());
-    if ($location.search().code) {
-        localStorage.setItem('code', $location.search().code);
+    if (code) {
+        localStorage.setItem('code', code);
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
         $http({
             method: 'POST',
-            url: '/auth'
+            url: '/auth',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: 'code='+code;
         }).then(function successCallback(response) {
-            
+            console.log('success response');
         }, function errorCallback(response) {
             console.log('error sending request to server in authController')
         });
