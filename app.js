@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var helmet = require('helmet');
 var url = require('url');
 var request = require('request');
+
 var pg = require('pg');
 // postgres config, parse the heroku-provided env variable DATABASE_URL
 var params = url.parse(process.env.DATABASE_URL);
@@ -28,7 +29,8 @@ pool.on('error', function (err, client) {
   // this is a rare occurrence but can happen if there is a network partition
   // between your application and the database, the database restarts, etc.
   // and so you might want to handle it and at least log it out
-  console.error('idle client error', err.message, err.stack)
+    console.error('idle client error', err.message, err.stack);
+    console.log('idle client error');
 })
 
 var routes = require('./routes/index');

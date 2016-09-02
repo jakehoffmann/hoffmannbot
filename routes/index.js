@@ -1,6 +1,30 @@
 var express = require('express');
 var router = express.Router();
 
+var pg = require('pg');
+// postgres config, parse the heroku-provided env variable DATABASE_URL
+var params = url.parse(process.env.DATABASE_URL);
+var auth = params.auth.split(':');
+
+var config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+var pool = new pg.Pool(config);
+pool.on('error', function (err, client) {
+  // if an error is encountered by a client while it sits idle in the pool
+  // the pool itself will emit an error event with both the error and
+  // the client which emitted the original error
+  // this is a rare occurrence but can happen if there is a network partition
+  // between your application and the database, the database restarts, etc.
+  // and so you might want to handle it and at least log it out
+    console.error('idle client error', err.message, err.stack);
+})
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
