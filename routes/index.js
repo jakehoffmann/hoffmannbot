@@ -11,7 +11,9 @@ router.post('/auth', function(req, res, next) {
     console.log('node code: ', req.body.code);
     
     var response = { 'twitch_username': '', 'summoners':[] };
+    console.log('here');
     pool.connect(function(err, client, done) {
+        console.log('SUPERHERE');
         if (err) {
             return console.error('error fetching client from pool', err);
         }
