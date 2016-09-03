@@ -84,9 +84,9 @@ router.post('/auth', function(req, res, next) {
                     }
                     console.log('BODY: ', body); // either this or the response should be the JSON token
                     token = body.access_token;
-                    
+                    console.log('token!!!: ', body.access_token);
                     res.send(200); // need another response here, testing!
-                    request.get( { url:'https://api.twitch.tv/kraken/channel',
+                    request.get( { url:'https://api.twitch.tv/kraken/user',
                                    headers: {
                                        'Accept': 'application/vnd.twitchtv.v3+json',
                                        'Authorization': 'OAuth ' + body.access_token
