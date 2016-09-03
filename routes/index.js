@@ -95,7 +95,7 @@ router.post('/auth', function(req, res, next) {
                                     if (err) {
                                         console.log('error (314)');
                                     }
-                                    console.log('Username: ', body.display_name);
+                                    console.log('Username: ', body);
                                 });
                 });
                                    
