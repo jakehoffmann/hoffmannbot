@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var url = require('url');
+var request = require('request');
 var pg = require('pg');
 // postgres config, parse the heroku-provided env variable DATABASE_URL
 var params = url.parse(process.env.DATABASE_URL);
