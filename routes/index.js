@@ -76,7 +76,7 @@ router.post('/auth', function(req, res, next) {
                     }
                     console.log('BODY: ', body); // either this or the response should be the JSON token
                     token = JSON.parse(body).access_token;
-                    console.log('token!!!: ', token);
+                    console.log('token: ', token);
                     res.send(200); // need another response here, testing!
                     
                     // now GET the user info. In particular, we're looking for the twitch username 
@@ -90,7 +90,8 @@ router.post('/auth', function(req, res, next) {
                                     if (err) {
                                         console.log('error (314)');
                                     }
-                                    console.log('Username: ', body.name);
+                                    twitch_username = JSON.parse(body).name;
+                                    console.log('Username: ', twitch_username);
                                 });
                 });
                                    
