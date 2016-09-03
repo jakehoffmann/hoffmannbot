@@ -92,8 +92,11 @@ router.post('/auth', function(req, res, next) {
                                     }
                                     twitch_username = JSON.parse(body).name;
                                     console.log('Username: ', twitch_username);
-                                    query = client.query('INSERT INTO users (twitch_username, code, token) VALUES ($1, $2, $3) ON CONFLICT (twitch_username) DO UPDATE SET code = EXCLUDED.code AND token = EXCLUDED.token',
+                                    query = client.query('INSERT INTO users (twitch_username, code, token) VALUES ($1, $2, $3) ON CONFLICT (twitch_username) DO UPDATE SET code = EXCLUDED.code, token = EXCLUDED.token',
                                                          [twitch_username, req.body.code, token]);
+                                    query.on('error', function(err) {
+                                       console.error('There was an error inserting/updating a (user,code,token)'); 
+                                    });
                                 });
                 });
                                    
