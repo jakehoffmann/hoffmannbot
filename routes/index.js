@@ -62,14 +62,6 @@ router.post('/auth', function(req, res, next) {
                 console.log('')
                 // No such user found with this code. POST to Twitch for token and possibly make a new user
    
-                /*
-                request.post('https://api.twitch.tv/kraken/oauth2/token', function(error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        console.log(body);
-                    }
-                })
-                */
-                
                 var token;
                 // this request goes to twitch kraken and gets the access token for the auth'd user
                 request.post( { url:'https://api.twitch.tv/kraken/oauth2/token',
@@ -86,6 +78,8 @@ router.post('/auth', function(req, res, next) {
                     token = JSON.parse(body).access_token;
                     console.log('token!!!: ', token);
                     res.send(200); // need another response here, testing!
+                    
+                    // now GET the user info. In particular, we're looking for the twitch username 
                     request.get( { url:'https://api.twitch.tv/kraken/user',
                                    headers: {
                                        'Accept': 'application/vnd.twitchtv.v3+json',
@@ -96,7 +90,7 @@ router.post('/auth', function(req, res, next) {
                                     if (err) {
                                         console.log('error (314)');
                                     }
-                                    console.log('Username: ', body);
+                                    console.log('Username: ', body.name);
                                 });
                 });
                                    
