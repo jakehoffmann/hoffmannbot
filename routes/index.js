@@ -70,23 +70,36 @@ router.post('/auth', function(req, res, next) {
                 })
                 */
                 
-               // I might have to send the redirect_uri unencoded
+                var token;
+                // this request goes to twitch kraken and gets the access token for the auth'd user
                 request.post( { url:'https://api.twitch.tv/kraken/oauth2/token',
-                                form: {client_id: '49mrp5ljn2nj44sx1czezi44ql151h2',
-                                       client_secret: 'mz513m1xu5ga9mhrxuvb9sbwjgjw2ys',
-                                       grant_type: 'authorization_code',
-                                       redirect_uri: 'http://hoffmannbot.herokuapp.com/#/hoffmannbot/get/',
-                                      //redirect_uri: 'http%3A%2F%2Fhoffmannbot.herokuapp.com%2F%23%2Fhoffmannbot%2Fget%2F',
-                                       code: req.body.code}},
-                                function(err,httpResponse,body){
+                                form: { client_id: '49mrp5ljn2nj44sx1czezi44ql151h2',
+                                        client_secret: 'mz513m1xu5ga9mhrxuvb9sbwjgjw2ys',
+                                        grant_type: 'authorization_code',
+                                        redirect_uri: 'http://hoffmannbot.herokuapp.com/#/hoffmannbot/get/',
+                                        code: req.body.code}},
+                                function(err, httpResponse, body) {
                     if (err) {
                         console.log('error here (313)');
                     }
                     console.log('BODY: ', body); // either this or the response should be the JSON token
+                    token = body.access_token;
                     res.send(200); // need another response here, testing!
                 });
-
-                          
+                
+                request.get( { url:'https://api.twitch.tv/kraken/channel',
+                               headers: {
+                                   'Accept: application/vnd.twitchtv.v3+json',
+                                   'Authorization: OAuth ' + token
+                               }
+                             },
+                            function(err, httpResponse, body) {
+                                if (err) {
+                                    console.log('error (314)');
+                                }
+                                console.log('Username: ', body.display_name);
+                            });
+                                          
             }
             else {
                 res.json(response);
