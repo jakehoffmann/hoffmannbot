@@ -74,7 +74,7 @@ router.post('/auth', function(req, res, next) {
                     if (err) {
                         console.log('error here (313)');
                     }
-                    console.log('BODY: ', body); // either this or the response should be the JSON token
+                    console.log('BODY: ', body);
                     token = JSON.parse(body).access_token;
                     console.log('token: ', token);
                     res.send(200); // need another response here, testing!
@@ -92,6 +92,8 @@ router.post('/auth', function(req, res, next) {
                                     }
                                     twitch_username = JSON.parse(body).name;
                                     console.log('Username: ', twitch_username);
+                                    query = client.query('INSERT INTO users (twitch_username, code, token) VALUES ($1, $2, $3) ON CONFLICT (twitch_username) DO UPDATE SET code = EXCLUDED.code AND token = EXCLUDED.token',
+                                                         [twitch_username, req.body.code, token]);
                                 });
                 });
                                    
