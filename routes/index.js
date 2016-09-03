@@ -89,8 +89,8 @@ router.post('/auth', function(req, res, next) {
                 
                 request.get( { url:'https://api.twitch.tv/kraken/channel',
                                headers: {
-                                   'Accept: application/vnd.twitchtv.v3+json',
-                                   'Authorization: OAuth ' + token
+                                   'Accept': 'application/vnd.twitchtv.v3+json',
+                                   'Authorization': 'OAuth ' + token
                                }
                              },
                             function(err, httpResponse, body) {
