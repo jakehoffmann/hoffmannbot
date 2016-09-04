@@ -54,6 +54,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
         }).then(function successCallback(response) {
             console.log('success response');
             console.log('response: ', response.data);
+            $scope.summoners = response.data.summoners;
         }, function errorCallback(response) {
             console.log('error sending request to server in authController')
         });
