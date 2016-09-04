@@ -3,6 +3,8 @@
 
 <head>
     <title>HoffmannBot</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
     <script src="//code.angularjs.org/1.5.7/angular.min.js"></script>
     <script src="//code.angularjs.org/1.5.7/angular-route.min.js"></script>
@@ -12,6 +14,7 @@
 </head>
 
 <body>
+    <div class="container">
     <div ng-controller="mainController">
         <div>
             <ul id="nav">
@@ -21,6 +24,7 @@
             </ul>
         </div>
         <div ng-view></div>
+    </div>
     </div>
 </body>
 
