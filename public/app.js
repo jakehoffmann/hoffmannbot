@@ -53,7 +53,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
             data: 'code='+$scope.code
         }).then(function successCallback(response) {
             console.log('success response');
-            console.log('response: ', response);
+            console.log('response: ', response.data);
         }, function errorCallback(response) {
             console.log('error sending request to server in authController')
         });
