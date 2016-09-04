@@ -59,7 +59,7 @@ router.post('/auth', function(req, res, next) {
         });
         query.on('end', function(result) {
             if (result.rowCount === 0) {
-                console.log('')
+                console.log('No such user found with this code.');
                 // No such user found with this code. POST to Twitch for token and possibly make a new user
    
                 var token;
@@ -77,7 +77,6 @@ router.post('/auth', function(req, res, next) {
                     console.log('BODY: ', body);
                     token = JSON.parse(body).access_token;
                     console.log('token: ', token);
-                    res.send(200); // need another response here, testing!
                     
                     // now GET the user info. In particular, we're looking for the twitch username 
                     request.get( { url:'https://api.twitch.tv/kraken/user',
@@ -91,11 +90,22 @@ router.post('/auth', function(req, res, next) {
                                         console.log('error (314)');
                                     }
                                     twitch_username = JSON.parse(body).name;
+                                    response.twitch_username = twitch_username;
                                     console.log('Username: ', twitch_username);
                                     query = client.query('INSERT INTO users (twitch_username, code, token) VALUES ($1, $2, $3) ON CONFLICT (twitch_username) DO UPDATE SET code = EXCLUDED.code, token = EXCLUDED.token',
                                                          [twitch_username, req.body.code, token]);
                                     query.on('error', function(err) {
                                        console.error('There was an error inserting/updating a (user,code,token)'); 
+                                    });
+                                    query = client.query('SELECT users.twitch_username, summoner FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
+                                    query.on('error', function(error) {
+                                       console.error('error finding summoners for user'); 
+                                    });
+                                    query.on('row', function(row) {
+                                        response.summoners.push(row.summoner);
+                                    });
+                                    query.on('end', function(result) {
+                                        res.json(response);
                                     });
                                 });
                 });
