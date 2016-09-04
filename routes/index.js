@@ -105,6 +105,7 @@ router.post('/auth', function(req, res, next) {
                                         response.summoners.push(row.summoner);
                                     });
                                     query.on('end', function(result) {
+                                        console.log(response);
                                         res.json(response);
                                     });
                                 });
