@@ -41,6 +41,9 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
     $scope.code = $location.search().code;
     console.log('code = ', $scope.code);
     console.log($location.url());
+    console.log($scope.summoners);
+    
+    // if the user is returning from agreeing to give our access (ie. code is in query strings) ...
     if ($scope.code) {
         localStorage.setItem('code', $scope.code);
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
@@ -62,7 +65,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
     if (!Auth.isAuthed()) {
         $location.url('/login');
     } 
-    $scope.auth = Auth.auth;
+    $scope.auth = Auth.auth; // do I need this line?
 }]);
 
 myApp.factory('Auth', ['$location', function($location) {
