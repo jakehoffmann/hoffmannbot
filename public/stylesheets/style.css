@@ -1,3 +1,4 @@
+/*
 ul {
     list-style-type: none;
     margin: 0;
@@ -28,8 +29,7 @@ a:active {
 a:link {
     text-decoration: none
 }
-
-/* my experimentation below (tags with clickable Xs on them) */
+*/
 
 .tag {
   font-size: 18px;
@@ -52,7 +52,7 @@ a:link {
   margin: 0 0 0 .3em;
 }
 .tag a .glyphicon-white {
-  color: #000;
-  margin-bottom: 3px;
+  color: red;
+  margin-bottom: 2px;
 }
 

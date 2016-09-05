@@ -9,8 +9,12 @@
 <br />
 
 <div ng-repeat="sum in summoners">
-    <span class="tag label label-info">
+    <span class="tag label label-danger">
         <span>{{ sum }}</span>
         <a><i class="remove glyphicon glyphicon-remove glyphicon-white"></i></a>
     </span>
 </div>
+<form>
+    <input type="text" class="form-control" id="newSummoner" placeholder="new summoner name">
+    <input type="submit" class="btn btn-default">
+</form>
