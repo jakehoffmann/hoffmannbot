@@ -41,8 +41,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
     $scope.code = $location.search().code;
     console.log('code = ', $scope.code);
     console.log($location.url());
-    console.log($scope.summoners);
-    
+       
     // if the user is returning from agreeing to give our access (ie. code is in query strings) ...
     if ($scope.code) {
         localStorage.setItem('code', $scope.code);
@@ -66,6 +65,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
         $location.url('/login');
     } 
     $scope.auth = Auth.auth; // do I need this line?
+    console.log($scope.summoners);
 }]);
 
 myApp.factory('Auth', ['$location', function($location) {
