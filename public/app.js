@@ -37,14 +37,15 @@ myApp.controller('mainController', ["$scope", "$http", function ($scope, $http) 
     
 }]);
 
-myApp.controller('authController', ["$scope", "$http", "$location", "Auth", function ($scope, $http, $location, Auth) {
+myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "state", function ($scope, $http, $location, Auth, state) {
     $scope.code = $location.search().code;
     console.log('code = ', $scope.code);
     console.log($location.url());
+    $scope.state = state;
        
     // if the user is returning from agreeing to give our access (ie. code is in query strings) ...
     if ($scope.code) {
-        localStorage.setItem('code', $scope.code);
+        sessionStorage.setItem('code', $scope.code);
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
         $http({
             method: 'POST',
@@ -56,7 +57,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
         }).then(function successCallback(response) {
             console.log('success response');
             console.log('response: ', response.data);
-            $scope.summoners = response.data.summoners;
+            $scope.state.summoners = response.data.summoners;
         }, function errorCallback(response) {
             console.log('error sending request to server in authController')
         });
@@ -65,7 +66,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", func
         $location.url('/login');
     } 
     $scope.auth = Auth.auth; // do I need this line?
-    console.log($scope.summoners);
+    console.log($scope.state.summoners);
 }]);
 
 myApp.factory('Auth', ['$location', function($location) {
@@ -76,8 +77,8 @@ myApp.factory('Auth', ['$location', function($location) {
                 code = $location.search().code;
                 return true;
             }
-            else if (localStorage.getItem('code')) {
-                code = localStorage.getItem('code');
+            else if (sessionStorage.getItem('code')) {
+                code = sessionStorage.getItem('code');
                 return true;
             }
             else {
@@ -94,3 +95,9 @@ myApp.factory('Auth', ['$location', function($location) {
             window.location.replace(url); 
         }
 }}]);
+
+myApp.factory('state', [], function() {
+    return {
+        summoners: [];
+    }
+});
