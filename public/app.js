@@ -98,6 +98,6 @@ myApp.factory('Auth', ['$location', function($location) {
 
 myApp.factory('state', [], function() {
     return {
-        summoners: [];
+        summoners: []
     }
 });
