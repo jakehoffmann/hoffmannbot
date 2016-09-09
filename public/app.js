@@ -49,7 +49,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         addSummoner.addSummoner(twitch_username, summonerName)
         .then(
         function (response) {
-            $scope.summoners.push(response.addedSummoner);
+            $scope.summoners.push(response.data.addedSummoner);
             console.log('response:', response);
             console.log('added summoner: ', response.data.addedSummoner);
         },
@@ -57,10 +57,15 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
             console.error('Error response while trying to add summoner', error);
         });    
     };
-    
-    $scope.$watch('state', function() {
+
+    // is there a more compact way to do these?
+    $scope.$watch('code', function() {
         state.code = $scope.code;
+    });
+    $scope.$watch('summoners', function() {
         state.summoners = $scope.summoners;
+    });
+    $scope.$watch('user', function() {
         state.user = $scope.user;
     });
        
