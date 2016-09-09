@@ -141,7 +141,7 @@ myApp.factory('addSummoner', ['$http', 'state', function ($http, state) {
     factory.addSummoner = function(twitch_username, summonerName) {
         return  $http({
                 method: 'POST',
-                url: '/api/summoner/add/'+twitch_username+'/'+summoner,
+                url: '/api/summoner/add/'+twitch_username+'/'+summonerName,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
