@@ -146,7 +146,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
             return console.error('error fetching client from pool', err);
         } 
         if ( req.params.action == 'add' ) {
-            client.query('INSERT INTO summoners (twitch_username,summoner) VALUES (?,?)', [req.params.user, req.params.summoner], function(err, result) {
+            client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner], function(err, result) {
                 done();
                 if(err) {
                     return console.error('error running query', err);
