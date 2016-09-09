@@ -17,7 +17,7 @@ myApp.config(function ($routeProvider) {
     })
     .when('/hoffmannbot/get/', {
         templateUrl: 'pages/get.html',
-        controller: 'authController'
+        controller: 'authController',
     })
     .when('/hoffmannbot/commands', {
         templateUrl: 'pages/commands.html',
@@ -29,23 +29,23 @@ myApp.config(function ($routeProvider) {
     })
     .when('/login', {
         templateUrl: 'pages/login.html',
-        controller: 'mainController'
+        controller: 'authController'
     })
 });
 
-myApp.controller('mainController', ["$scope", "$http", function ($scope, $http) {
-    
+myApp.controller('mainController', ['$scope', '$http', 'Auth', function ($scope, $http, Auth) {
+    $scope.checkAuth = Auth.isAuthed;
 }]);
 
 myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "state", function ($scope, $http, $location, Auth, state) {
     $scope.code = $location.search().code;
-    console.log('code = ', $scope.code);
-    console.log($location.url());
     $scope.state = state;
+    $scope.auth = Auth.auth;
        
-    // if the user is returning from agreeing to give our access (ie. code is in query strings) ...
+    // if the user is returning from agreeing to give us access (ie. code is in query strings) ...
     if ($scope.code) {
-        sessionStorage.setItem('code', $scope.code);
+ //       sessionStorage.setItem('code', $scope.code);
+        state.code = $scope.code;
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
         $http({
             method: 'POST',
@@ -65,11 +65,10 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     if (!Auth.isAuthed()) {
         $location.url('/login');
     } 
-    $scope.auth = Auth.auth; // do I need this line?
     console.log($scope.state.summoners);
 }]);
 
-myApp.factory('Auth', ['$location', function($location) {
+myApp.factory('Auth', ['$location', 'state', function($location, state) {
     var code = '';
     return { 
         isAuthed: function () {
@@ -77,8 +76,10 @@ myApp.factory('Auth', ['$location', function($location) {
                 code = $location.search().code;
                 return true;
             }
-            else if (sessionStorage.getItem('code')) {
-                code = sessionStorage.getItem('code');
+//            else if (sessionStorage.getItem('code')) {
+            else if (state.code !== '') {
+//                code = sessionStorage.getItem('code');
+                code = state.code;
                 return true;
             }
             else {
@@ -98,6 +99,20 @@ myApp.factory('Auth', ['$location', function($location) {
 
 myApp.factory('state', function () {
     return {
+        code: '',
         summoners: []
     }
+});
+
+myApp.factory('codeToServer', function () {
+   return {
+       
+   } 
+});
+
+myApp.directive('subnav', function () {
+   return {
+       template: ,
+       replace: true
+   } 
 });

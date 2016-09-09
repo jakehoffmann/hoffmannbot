@@ -7,13 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-    <script src="//code.angularjs.org/1.5.7/angular.min.js"></script>
-    <script src="//code.angularjs.org/1.5.7/angular-route.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.1.3/ui-bootstrap.min.js"></script>
-    <script src="app.js"></script>
 </head>
 
-<body>
+<body class="ng-cloak"> <!-- Perhaps expand usage of this (see ngCloak doc) -->
     <div class="container" ng-controller="mainController">
         <nav class="navbar">
             <a class="navbar-brand" href="#/">HoffmannBot</a>
@@ -24,6 +20,10 @@
         </nav>
         <div ng-view></div>
     </div>
+    <script src="//code.angularjs.org/1.5.7/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.5.7/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.1.3/ui-bootstrap.min.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
