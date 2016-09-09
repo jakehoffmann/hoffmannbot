@@ -50,8 +50,8 @@ router.post('/auth', function(req, res, next) {
                         }
         }); */
         query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
-        query.on('error', function(error) {
-            console.log('error with query (312)'); 
+        query.on('error', function(err) {
+            console.log('error with query (312)', err); 
         });
         query.on('row', function(row) {
             response['summoners'].push(row.summoner);
@@ -72,7 +72,7 @@ router.post('/auth', function(req, res, next) {
                                         code: req.body.code}},
                                 function(err, httpResponse, body) {
                     if (err) {
-                        console.log('error here (313)');
+                        console.error('error here (313)', err);
                     }
                     console.log('BODY: ', body);
                     token = JSON.parse(body).access_token;
@@ -95,11 +95,11 @@ router.post('/auth', function(req, res, next) {
                                     query = client.query('INSERT INTO users (twitch_username, code, token) VALUES ($1, $2, $3) ON CONFLICT (twitch_username) DO UPDATE SET code = EXCLUDED.code, token = EXCLUDED.token',
                                                          [twitch_username, req.body.code, token]);
                                     query.on('error', function(err) {
-                                       console.error('There was an error inserting/updating a (user,code,token)'); 
+                                       console.error('There was an error inserting/updating a (user,code,token)', err); 
                                     });
                                     query = client.query('SELECT users.twitch_username, summoner FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
-                                    query.on('error', function(error) {
-                                       console.error('error finding summoners for user'); 
+                                    query.on('error', function(err) {
+                                       console.error('error finding summoners for user', err); 
                                     });
                                     query.on('row', function(row) {
                                         response.summoners.push(row.summoner);
@@ -130,7 +130,7 @@ router.post('/api/add/:user', function(req, res, next) {
         client.query('INSERT INTO users (twitch_username) VALUES (?)', [req.params.user], function(err, result) {
             done();
             if(err) {
-                return console.error('error running query');
+                return console.error('error running query', err);
             }
             res.send(200);
             console.log('inserted twitch username ', req.params.user);
@@ -149,7 +149,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
             client.query('INSERT INTO summoners (twitch_username,summoner) VALUES (?,?)', [req.params.user, req.params.summoner], function(err, result) {
                 done();
                 if(err) {
-                    return console.error('error running query');
+                    return console.error('error running query', err);
                 }
             });
             res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
@@ -158,7 +158,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
             client.query('DELETE FROM summoners WHERE twitch_username=? AND summoner=?', [req.params.user, req.params.summoner], function(err, result) {
                 done();
                 if(err) {
-                    return console.error('error running query');
+                    return console.error('error running query', err);
                 }
             });
             res.send(200);
