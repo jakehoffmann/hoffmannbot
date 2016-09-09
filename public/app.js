@@ -44,13 +44,18 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.user = state.user;
     $scope.auth = Auth.auth;
     $scope.inputSummoner = "new summoner name";
-//    $scope.add = addSummoner.addSummoner;
-    $scope.add = addSummoner.addSummoner($scope.user, $scope.inputSummoner).then(function (response) {
-        $scope.summoners.push(response.addedSummoner);
-        console.log('added summoner: ', response.addedSummoner);
-    }, function (error) {
-        console.error('Error response while trying to add summoner', error);
-    });
+
+    $scope.add = function (twitch_username, summonerName) {
+        addSummoner.addSummoner(twitch_username, summonerName)
+        .then(
+        function (response) {
+            $scope.summoners.push(response.addedSummoner);
+            console.log('added summoner: ', response.addedSummoner);
+        },
+        function (error) {
+            console.error('Error response while trying to add summoner', error);
+        });    
+    };
     
     $scope.$watch('state', function() {
         state.code = $scope.code;
