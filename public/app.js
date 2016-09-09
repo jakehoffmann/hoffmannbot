@@ -44,14 +44,14 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.user = state.user;
     $scope.auth = Auth.auth;
     $scope.inputSummoner = "new summoner name";
-    $scope.add = addSummoner.addSummoner;
-    /*    $scope.add = addSummoner.addSummoner($scope.state.user, $scope.inputSummoner).then(function (response) {
-        $scope.state.summoners.push(response.addedSummoner);
+//    $scope.add = addSummoner.addSummoner;
+    $scope.add = addSummoner.addSummoner($scope.user, $scope.inputSummoner).then(function (response) {
+        $scope.summoners.push(response.addedSummoner);
         console.log('added summoner: ', response.addedSummoner);
     }, function (error) {
         console.error('Error response while trying to add summoner', error);
     });
-*/    
+    
     $scope.$watch('state', function() {
         state.code = $scope.code;
         state.summoners = $scope.summoners;
@@ -72,8 +72,8 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         }).then(function successCallback(response) {
             console.log('success response');
             console.log('response: ', response.data);
-            $scope.state.summoners = response.data.summoners;
-            $scope.state.user = response.data.twitch_username;
+            $scope.summoners = response.data.summoners;
+            $scope.user = response.data.twitch_username;
         }, function errorCallback(response) {
             console.log('error sending request to server in authController')
         });
@@ -81,7 +81,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     if (!Auth.isAuthed()) {
         $location.url('/login');
     } 
-    console.log($scope.state.summoners);
+    console.log($scope.summoners);
 }]);
 
 myApp.factory('Auth', ['$location', 'state', function($location, state) {
