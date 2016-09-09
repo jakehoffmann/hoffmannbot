@@ -51,7 +51,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         function (response) {
             $scope.summoners.push(response.addedSummoner);
             console.log('response:', response);
-            console.log('added summoner: ', response.addedSummoner);
+            console.log('added summoner: ', response.data.addedSummoner);
         },
         function (error) {
             console.error('Error response while trying to add summoner', error);
