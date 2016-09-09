@@ -110,9 +110,11 @@ myApp.factory('codeToServer', function () {
    } 
 });
 
+/*
 myApp.directive('subnav', function () {
    return {
        template: ,
        replace: true
    } 
 });
+*/
