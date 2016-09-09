@@ -135,7 +135,7 @@ myApp.directive('subnav', function () {
 */
 
 // Sends http request to server to add a summoner for a user
-myApp.factory('addSummoner', ['$http', state, function ($http, state) {
+myApp.factory('addSummoner', ['$http', 'state', function ($http, state) {
     var factory = {};
     
     factory.addSummoner = function(twitch_username, summonerName) {
