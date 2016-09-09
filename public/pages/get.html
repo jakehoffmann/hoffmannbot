@@ -15,7 +15,7 @@ Your summoners
     </span>
 </div>
 <br />
-<form class="form-inline" ng-submit="add(state.user, inputSummoner).then(function(response) {state.summoners.push(response.addedSummoner); console.log('added summoner: ', response.addedSummoner);}, function(error) {console.error('Error response while trying to add summoner', error);});">
+<form class="form-inline" ng-submit="add(user,inputSummoner).then(function(response) {summoners.push(response.addedSummoner); console.log('added summoner: ', response.addedSummoner);}, function(error) {console.error('Error response while trying to add summoner', error);});">
     <div class="form-group">
         <input type="text" class="form-control" id="newSummoner" ng-model="inputSummoner">
         <input type="submit" class="btn btn-default" value="Add">
