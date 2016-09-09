@@ -64,8 +64,8 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     });
        
     // if the user is returning from agreeing to give us access (ie. code is in query strings) ...
-    if ($scope.code) {
-        state.code = $scope.code;
+    if ($location.search().code) {
+        $scope.code = $location.search().code;
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
         $http({
             method: 'POST',
