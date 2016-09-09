@@ -50,6 +50,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         .then(
         function (response) {
             $scope.summoners.push(response.addedSummoner);
+            console.log('response:', response);
             console.log('added summoner: ', response.addedSummoner);
         },
         function (error) {
