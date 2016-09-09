@@ -37,14 +37,29 @@ myApp.controller('mainController', ['$scope', '$http', 'Auth', function ($scope,
     $scope.checkAuth = Auth.isAuthed;
 }]);
 
-myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "state", function ($scope, $http, $location, Auth, state) {
+myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "state", 'addSummoner', function ($scope, $http, $location, Auth, state, addSummoner) {
     $scope.code = $location.search().code;
-    $scope.state = state;
+    $scope.code = state.code;
+    $scope.summoners = state.summoners;
+    $scope.user = state.user;
     $scope.auth = Auth.auth;
+    $scope.inputSummoner = "new summoner name";
+    $scope.add = addSummoner.addSummoner;
+    /*    $scope.add = addSummoner.addSummoner($scope.state.user, $scope.inputSummoner).then(function (response) {
+        $scope.state.summoners.push(response.addedSummoner);
+        console.log('added summoner: ', response.addedSummoner);
+    }, function (error) {
+        console.error('Error response while trying to add summoner', error);
+    });
+*/    
+    $scope.$watch('state', function() {
+        state.code = $scope.code;
+        state.summoners = $scope.summoners;
+        state.user = $scope.user;
+    });
        
     // if the user is returning from agreeing to give us access (ie. code is in query strings) ...
     if ($scope.code) {
- //       sessionStorage.setItem('code', $scope.code);
         state.code = $scope.code;
         // POST code to server so a token can be retrieved from Twitch and used to access authed users data
         $http({
@@ -58,6 +73,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
             console.log('success response');
             console.log('response: ', response.data);
             $scope.state.summoners = response.data.summoners;
+            $scope.state.user = response.data.twitch_username;
         }, function errorCallback(response) {
             console.log('error sending request to server in authController')
         });
@@ -76,9 +92,7 @@ myApp.factory('Auth', ['$location', 'state', function($location, state) {
                 code = $location.search().code;
                 return true;
             }
-//            else if (sessionStorage.getItem('code')) {
             else if (state.code !== '') {
-//                code = sessionStorage.getItem('code');
                 code = state.code;
                 return true;
             }
@@ -99,6 +113,7 @@ myApp.factory('Auth', ['$location', 'state', function($location, state) {
 
 myApp.factory('state', function () {
     return {
+        user: '',
         code: '',
         summoners: []
     }
@@ -118,3 +133,28 @@ myApp.directive('subnav', function () {
    } 
 });
 */
+
+// Sends http request to server to add a summoner for a user
+myApp.factory('addSummoner', ['$http', state, function ($http, state) {
+    var factory = {};
+    
+    factory.addSummoner = function(twitch_username, summonerName) {
+        return  $http({
+                method: 'POST',
+                url: '/api/summoner/add/'+twitch_username+'/'+summoner,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: 'code='+state.code
+            });
+    };
+    return factory;
+}]);
+
+
+
+
+
+
+
+

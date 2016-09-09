@@ -152,7 +152,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
                     return console.error('error running query');
                 }
             });
-            res.send(200);
+            res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
         }
         else if ( req.params.action == 'remove' ) {
             client.query('DELETE FROM summoners WHERE twitch_username=? AND summoner=?', [req.params.user, req.params.summoner], function(err, result) {
