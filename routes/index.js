@@ -151,11 +151,12 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
         if (err) {
             return console.error('error fetching client from pool', err);
         }
-        console.log('code: ', req.data.code);
+        
+        console.log('code: ', req.body.code);
         
         // The following query is for validating the code submitted with the username
         query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1 AND users.twitch_username=$2', 
-                             [req.data.code, req.params.user]);
+                             [req.body.code, req.params.user]);
         query.on('error', function(err) {
             console.log('error with query (312)', err); 
         });
