@@ -31,6 +31,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+// This endpoint takes care of server side oauth and responds with the twitch 
+//   username, corresponding summoner names, [app settings, etc.]
 router.post('/auth', function(req, res, next) {
     console.log('authorizing...');
     console.log('node code: ', req.body.code);
@@ -51,7 +53,7 @@ router.post('/auth', function(req, res, next) {
         }); */
         query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
         query.on('error', function(err) {
-            console.log('error with query (312)', err); 
+            console.error('error with query (312)', err); 
         });
         query.on('row', function(row) {
             response['summoners'].push(row.summoner);
@@ -87,7 +89,7 @@ router.post('/auth', function(req, res, next) {
                                  },
                                 function(err, httpResponse, body) {
                                     if (err) {
-                                        console.log('error (314)');
+                                        console.error('error (314)');
                                     }
                                     twitch_username = JSON.parse(body).name;
                                     response.twitch_username = twitch_username;
@@ -120,6 +122,9 @@ router.post('/auth', function(req, res, next) {
     
 });
 
+
+// Don't believe this endpoint is needed
+/*
 router.post('/api/add/:user', function(req, res, next) {
     console.log('here 1');
 
@@ -137,6 +142,7 @@ router.post('/api/add/:user', function(req, res, next) {
         });
     });
 });
+*/
 
 router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
     console.log('here 2');
@@ -144,30 +150,58 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
     pool.connect(function(err, client, done) {
         if (err) {
             return console.error('error fetching client from pool', err);
-        } 
-        if ( req.params.action == 'add' ) {
-            client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
-                        function(err, result) {
-                done();
-                if(err) {
-                    return console.error('error running query', err);
-                }
-            });
-            res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
         }
-        else if ( req.params.action == 'remove' ) {
-            client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2', [req.params.user, req.params.summoner], 
-                           function(err, result) {
-                done();
-                if(err) {
-                    return console.error('error running query', err);
+        console.log('code: ', req.data.code);
+        
+        // The following query is for validating the code submitted with the username
+        query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1 AND users.twitch_username=$2', 
+                             [req.data.code, req.params.user]);
+        query.on('error', function(err) {
+            console.log('error with query (312)', err); 
+        });
+
+        // Do not need a query.on('row') as the data is not important, only its existence
+        /*
+        query.on('row', function(row) {
+            response['summoners'].push(row.summoner);
+            response['twitch_username'] = row.twitch_username;
+        });
+        */
+        
+        query.on('end', function(result) {
+            if (result.rowCount === 0) {
+                console.log('Incorrect code.');
+                res.status(401).send('Incorrect code.');
+                // No such user found with this code. POST to Twitch for token and possibly make a new user
+            }
+            else {
+                if ( req.params.action == 'add' ) {
+                    client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
+                                function(err, result) {
+                        done();
+                        if(err) {
+                            return console.error('error running query', err);
+                        }
+                    });
+                    res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
                 }
-            });
-            res.json({'user': req.params.user, 'removedSummoner': req.params.summoner});
-        }
+                else if ( req.params.action == 'remove' ) {
+                    client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2', [req.params.user, req.params.summoner], 
+                                   function(err, result) {
+                        done();
+                        if(err) {
+                            return console.error('error running query', err);
+                        }
+                    });
+                    res.json({'user': req.params.user, 'removedSummoner': req.params.summoner});
+                }
+            }
+        })
     })
 });
 
+// I believe this endpoint is also not needed
+/*
 router.get('/api/read/:user', function(req, res, next) {
     console.log('here 3');
     
@@ -183,23 +217,8 @@ router.get('/api/read/:user', function(req, res, next) {
         done();
     })
     res.json(response);
-
-/*
-    response = {"summoners":[]};
-    var db = new sqlite3.Database('testdb.db');
-    db.serialize(function() { 
-        db.each("SELECT summoner FROM summoners WHERE twitch_username=?", 
-                req.params.user, 
-                function(err, row) {
-                    response["summoners"].push(row.summoner);  
-                },
-                function() {
-                    res.json(response);
-                })
-    });
-    db.close();
-*/
     
 });
+*/
 
 module.exports = router;
