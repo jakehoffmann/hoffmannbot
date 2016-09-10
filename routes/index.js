@@ -146,7 +146,8 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
             return console.error('error fetching client from pool', err);
         } 
         if ( req.params.action == 'add' ) {
-            client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner], function(err, result) {
+            client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
+                        function(err, result) {
                 done();
                 if(err) {
                     return console.error('error running query', err);
@@ -155,13 +156,14 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
             res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
         }
         else if ( req.params.action == 'remove' ) {
-            client.query('DELETE FROM summoners WHERE twitch_username=? AND summoner=?', [req.params.user, req.params.summoner], function(err, result) {
+            client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2', [req.params.user, req.params.summoner], 
+                           function(err, result) {
                 done();
                 if(err) {
                     return console.error('error running query', err);
                 }
             });
-            res.send(200);
+            res.json({'user': req.params.user, 'removedSummoner': req.params.summoner});
         }
     })
 });

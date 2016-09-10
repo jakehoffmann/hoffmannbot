@@ -37,7 +37,7 @@ myApp.controller('mainController', ['$scope', '$http', 'Auth', function ($scope,
     $scope.checkAuth = Auth.isAuthed;
 }]);
 
-myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "state", 'addSummoner', function ($scope, $http, $location, Auth, state, addSummoner) {
+myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "state", 'editSummoners', function ($scope, $http, $location, Auth, state, editSummoners) {
     $scope.code = $location.search().code;
     $scope.code = state.code;
     $scope.summoners = state.summoners;
@@ -45,17 +45,30 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.auth = Auth.auth;
     $scope.inputSummoner = "new summoner name";
 
-    $scope.add = function (twitch_username, summonerName) {
-        addSummoner.addSummoner(twitch_username, summonerName)
+    $scope.add = function(twitch_username, summonerName) {
+        editSummoners.editSummoners('add', twitch_username, summonerName)
         .then(
-        function (response) {
+        function(response) {
             $scope.summoners.push(response.data.addedSummoner);
-            console.log('response:', response);
+            console.log('response: ', response);
             console.log('added summoner: ', response.data.addedSummoner);
         },
-        function (error) {
-            console.error('Error response while trying to add summoner', error);
+        function(err) {
+            console.error('Error response while trying to add summoner', err);
         });    
+    };
+    
+    $scope.remove = function(twitch_username, summonerName) {
+        editSummoners.editSummoners('remove', twitch_username, summonerName)
+        .then(
+        function(response) {    
+            var index = $scope.summoners.indexOf(summonerName);
+            $scope.summoners.splice(index, 1);
+            console.log('response: ', response.data.removedSummoner);
+        },
+        function(err) {
+           console.error('Error response while trying to remove summoner', err); 
+        });
     };
 
     // is there a more compact way to do these?
@@ -130,12 +143,6 @@ myApp.factory('state', function () {
     }
 });
 
-myApp.factory('codeToServer', function () {
-   return {
-       
-   } 
-});
-
 /*
 myApp.directive('subnav', function () {
    return {
@@ -146,13 +153,13 @@ myApp.directive('subnav', function () {
 */
 
 // Sends http request to server to add a summoner for a user
-myApp.factory('addSummoner', ['$http', 'state', function ($http, state) {
+myApp.factory('editSummoners', ['$http', 'state', function ($http, state) {
     var factory = {};
     
-    factory.addSummoner = function(twitch_username, summonerName) {
+    factory.editSummoners = function(action, twitch_username, summonerName) {
         return  $http({
                 method: 'POST',
-                url: '/api/summoner/add/'+twitch_username+'/'+summonerName,
+                url: '/api/summoner/'+action+'/'+twitch_username+'/'+summonerName,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -162,7 +169,26 @@ myApp.factory('addSummoner', ['$http', 'state', function ($http, state) {
     return factory;
 }]);
 
+// sends oauth code to server (this is a work in progress, will replace the analogous 
+//   http call in authController)
 
+/*
+myApp.factory('sendCode', ['$http', function ($http) {
+    var factory = {};
+    
+    factory.sendCode = function(code) {
+        return $http({
+            method: 'POST',
+            url: '/auth',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: 'code='+$scope.code
+        });
+    };
+    return factory;
+}]);
+*/
 
 
 
