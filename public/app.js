@@ -64,7 +64,8 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         function(response) {    
             var index = $scope.summoners.indexOf(summonerName);
             $scope.summoners.splice(index, 1);
-            console.log('response: ', response.data.removedSummoner);
+            console.log('response: ', response);
+            console.log('removed summoner: ', response.data.removedSummoner);
         },
         function(err) {
            console.error('Error response while trying to remove summoner', err); 
