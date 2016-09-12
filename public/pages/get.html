@@ -23,6 +23,7 @@ Your summoners
         <input type="submit" class="btn btn-default" value="Add" ng-disabled="(inputSummoner.length < 3) || (inputSummoner.length > 16) || (summoners.length > 6)">
     </div>
 </form>
+<br />
 <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length > 2) && (inputSummoner.length !== 0)">
     Summoner names must be at least 3 characters long!
 </div>
