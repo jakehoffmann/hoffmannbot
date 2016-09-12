@@ -177,7 +177,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
             }
             else if (result.rowCount === 7) {
                 console.log('Have reached maximum summoners for this user.');
-                res.status.(409).send('Maximum number of summoners reached for this user.');
+                res.status(409).send('Maximum number of summoners reached for this user.');
             }
             else {
                 if ( req.params.action == 'add' ) {
