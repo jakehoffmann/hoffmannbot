@@ -23,13 +23,13 @@ Your summoners
         <input type="submit" class="btn btn-default" value="Add" ng-disabled="(inputSummoner.length < 3) || (inputSummoner.length > 16) || (summoners.length > 6)">
     </div>
 </form>
-<div class="alert alert-danger col-lg-6" role="alert" ng-hide="(inputSummoner.length > 2) && (inputSummoner.length !== 0)">
+<div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length > 2) && (inputSummoner.length !== 0)">
     Summoner names must be at least 3 characters long!
 </div>
-<div class="alert alert-danger col-lg-6" role="alert" ng-hide="(inputSummoner.length < 17)">
+<div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length < 17)">
     Summoner names must no more than 16 characters long!
 </div>
-<div class="alert alert-danger col-lg-6" role="alert" ng-hide="(summoners.length < 8)">
+<div class="alert alert-danger col-xs-6" role="alert" ng-hide="(summoners.length < 8)">
     You've reached the maximum (7) number of summoners! 
 </div>
  
