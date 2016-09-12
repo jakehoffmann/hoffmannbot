@@ -20,13 +20,13 @@ Your summoners
 <form class="form-inline" ng-submit="add(user, inputSummoner)">
     <div class="form-group">
         <input type="text" class="form-control" id="newSummoner" onfocus="this.select()" ng-model="inputSummoner">
-        <input type="submit" class="btn btn-default" value="Add" ng-disabled="(newSummoner.length < 3) || (newSummoner.length > 16) || (summoners.length > 6)">
+        <input type="submit" class="btn btn-default" value="Add" ng-disabled="(inputSummoner.length < 3) || (inputSummoner.length > 16) || (summoners.length > 6)">
     </div>
 </form>
-<div class="alert alert-danger" role="alert" ng-hide="(newSummoner.length > 2)">
+<div class="alert alert-danger" role="alert" ng-hide="(inputSummoner.length > 2)">
     Summoner names must be at least 3 characters long!
 </div>
-<div class="alert alert-danger" role="alert" ng-hide="(newSummoner.length < 17)">
+<div class="alert alert-danger" role="alert" ng-hide="(inputSummoner.length < 17)">
     Summoner names must no more than 16 characters long!
 </div>
 <div class="alert alert-danger" role="alert" ng-hide="(summoners.length < 8)">
