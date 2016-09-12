@@ -175,6 +175,10 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
                 res.status(401).send('Incorrect code.');
                 // No such user found with this code. POST to Twitch for token and possibly make a new user
             }
+            else if (result.rowCount === 7) {
+                console.log('Have reached maximum summoners for this user.');
+                res.status.(409).send('Maximum number of summoners reached for this user.');
+            }
             else {
                 if ( req.params.action == 'add' ) {
                     client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
