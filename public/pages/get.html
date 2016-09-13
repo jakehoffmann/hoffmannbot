@@ -28,9 +28,12 @@ Your summoners
     Summoner names must be at least 3 characters long!
 </div>
 <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length < 17)">
-    Summoner names must no more than 16 characters long!
+    Summoner names must be no more than 16 characters long!
 </div>
 <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(summoners.length < 8)">
     You've reached the maximum (7) number of summoners! 
+</div>
+<div class="alert alert-danger col-xs-6" role="alert" ng-hide="!(summoners.includes(inputSummoner))">
+    This summoner name has already been registered! 
 </div>
  

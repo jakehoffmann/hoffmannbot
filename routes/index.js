@@ -164,7 +164,10 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
         // Do not need a query.on('row') as the data is not important, only its existence
         /*
         query.on('row', function(row) {
-            response['summoners'].push(row.summoner);
+            if (req.params.action === 'remove' && 
+                row.summoner !== req.params.summoner) {
+                response['summoners'].push(row.summoner);
+            }
             response['twitch_username'] = row.twitch_username;
         });
         */
@@ -180,6 +183,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
                 res.status(409).send('Maximum number of summoners reached for this user.');
             }
             else {
+                req.params.summoner = req.params.summoner.toLowerCase().replace(/\s+/g, '');
                 if ( req.params.action == 'add' ) {
                     client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
                                 function(err, result) {
