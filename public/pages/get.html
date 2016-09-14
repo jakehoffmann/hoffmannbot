@@ -17,23 +17,27 @@ Your summoners
     </span>
 </div>
 <br />
-<form class="form-inline" ng-submit="add(user, inputSummoner)">
+<form class="form-inline" ng-submit="add(user, inputSummoner); inputSummoner='';">
     <div class="form-group">
         <input type="text" class="form-control" id="newSummoner" onfocus="this.select()" ng-model="inputSummoner">
         <input type="submit" class="btn btn-default" value="Add" ng-disabled="(inputSummoner.length < 3) || (inputSummoner.length > 16) || (summoners.length > 6)">
     </div>
 </form>
 <br />
-<div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length > 2) && (inputSummoner.length === 0)">
+<div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length > 2) || (inputSummoner.length === 0)">
     Summoner names must be at least 3 characters long!
+    <br />
 </div>
 <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length < 17)">
     Summoner names must be no more than 16 characters long!
+    <br />
 </div>
 <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(summoners.length < 8)">
-    You've reached the maximum (7) number of summoners! 
+    You've reached the maximum (7) number of summoners!
+    <br />
 </div>
 <div class="alert alert-danger col-xs-6" role="alert" ng-hide="!(summoners.includes(inputSummoner))">
-    This summoner name has already been registered! 
+    This summoner name has already been registered!
+    <br />
 </div>
  
