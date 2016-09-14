@@ -155,59 +155,73 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
         console.log('code: ', req.body.code);
         
         // The following query is for validating the code submitted with the username
-        query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1 AND users.twitch_username=$2', 
-                             [req.body.code, req.params.user]);
-        query.on('error', function(err) {
-            console.log('error with query (312)', err); 
-        });
+        query = client.query('SELECT twitch_username, code FROM users WHERE code=$1 and twitch_username=$2', [req.body.code, req.params.user]);
 
-        // Do not need a query.on('row') as the data is not important, only its existence
-        /*
-        query.on('row', function(row) {
-            if (req.params.action === 'remove' && 
-                row.summoner !== req.params.summoner) {
-                response['summoners'].push(row.summoner);
-            }
-            response['twitch_username'] = row.twitch_username;
+        query.on('error', function(err) {
+            console.error('Error while validating code.', err);
         });
-        */
         
         query.on('end', function(result) {
             if (result.rowCount === 0) {
                 console.log('Incorrect code.');
                 res.status(401).send('Incorrect code.');
-                // No such user found with this code. POST to Twitch for token and possibly make a new user
-            }
-            else if (result.rowCount === 7) {
-                console.log('Have reached maximum summoners for this user.');
-                res.status(409).send('Maximum number of summoners reached for this user.');
             }
             else {
-                req.params.summoner = req.params.summoner.toLowerCase().replace(/\s+/g, '');
-                if ( req.params.action == 'add' ) {
-                    client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
-                                function(err, result) {
-                        done();
-                        if(err) {
-                            return console.error('error running query', err);
+                query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1 AND users.twitch_username=$2', 
+                             [req.body.code, req.params.user]);
+        
+                query.on('error', function(err) {
+                    console.log('error with query (312)', err); 
+                });
+
+                // Do not need a query.on('row') as the data is not important, only its existence
+                /*
+                query.on('row', function(row) {
+                    if (req.params.action === 'remove' && 
+                    row.summoner !== req.params.summoner) {
+                        response['summoners'].push(row.summoner);
+                    }
+                    response['twitch_username'] = row.twitch_username;
+                });
+                */
+        
+       
+                query.on('end', function(result) {
+                    req.params.summoner = req.params.summoner.toLowerCase().replace(/\s+/g, '');
+                    if ( req.params.action == 'add' ) {
+                        if (result.rowCount === 7) {
+                            console.log('Have reached maximum summoners for this user.');
+                            res.status(409).send('Maximum number of summoners reached for this user.');
                         }
-                    });
-                    res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
-                }
-                else if ( req.params.action == 'remove' ) {
-                    client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2', [req.params.user, req.params.summoner], 
-                                   function(err, result) {
-                        done();
-                        if(err) {
-                            return console.error('error running query', err);
-                        }
-                    });
-                    res.json({'user': req.params.user, 'removedSummoner': req.params.summoner});
-                }
+                        client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
+                          function(err, result) {
+                              done();
+                              if(err) {
+                                  return console.error('error running query', err);
+                              }
+                        });
+                        res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
+
+                    }
+                    else if ( req.params.action == 'remove' ) {
+                        client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2', [req.params.user, req.params.summoner], 
+                          function(err, result) {
+                              done();
+                              if(err) {
+                                  return console.error('error running query', err);
+                              }
+                          });
+                        res.json({'user': req.params.user, 'removedSummoner': req.params.summoner});
+
+                    }
+                });
             }
-        })
-    })
+        
+        });
+    });
 });
+    
+
 
 // I believe this endpoint is also not needed
 /*
