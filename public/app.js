@@ -44,6 +44,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.user = state.user;
     $scope.auth = Auth.auth;
     $scope.inputSummoner = "new summoner";
+    $scope.region = 'BR';
 
     $scope.add = function(twitch_username, summonerName) {
         editSummoners.editSummoners('add', twitch_username, summonerName)

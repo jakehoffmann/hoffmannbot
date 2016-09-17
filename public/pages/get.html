@@ -20,6 +20,19 @@ Your summoners
 <form class="form-inline" ng-submit="add(user, inputSummoner); inputSummoner='';">
     <div class="form-group">
         <input type="text" class="form-control" id="newSummoner" onfocus="this.select()" ng-model="inputSummoner">
+        <select name="region" class="form-control" ng-model="region">
+            <option value="NA">NA</option>
+            <option value="BR">BR</option>
+            <option value="EUNE">EUNE</option>
+            <option value="EUW">EUW</option>
+            <option value="JP">JP</option> 
+            <option value="KR">KR</option>  
+            <option value="LAN">LAN</option>
+            <option value="LAS">LAS</option>
+            <option value="OCE">OCE</option>
+            <option value="TR">TR</option>
+            <option value="RU">RU</option>
+        </select>
         <input type="submit" class="btn btn-default" value="Add" ng-disabled="(inputSummoner.length < 3) || (inputSummoner.length > 16) || (summoners.length > 6)">
     </div>
 </form>

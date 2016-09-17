@@ -3,13 +3,13 @@ import requests
 import time
 import calendar
 import json
-# import sqlite3
 import psycopg2
 import urllib.parse
 import logging
 import random
 import sys
 import os
+
 # When loading via Hexchat, the file path of the loaded script isn't included in the paths
 #  that modules are loaded from. I include it explicitly in the following line(s).
 # sys.path.append(r'D:\hoffmannbot')
@@ -26,19 +26,13 @@ __module_name__ = "hoffmannbot"
 __module_version__ = "1.0"
 __module_description__ = "Twitch Chat Bot with Jake's custom commands"
 
-# connecting to sqlite3 database
-# conn = sqlite3.connect(r"D:\hoffmannbot\hoffmannbot_server\database.db", timeout=10)
-# c = conn.cursor()
-
 # connecting to postgres database
 urllib.parse.uses_netloc.append("postgres")
-
 
 # url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 url = urllib.parse.urlparse('postgres://apujurenpledps:I8ReS0Zp3289k4V-HTeEDkSLf_@ec2-54-243-217-22.compute-1.amazonaws.com:5432/d4kg1tud3ujhui')
 ###############################
 ###############################    Remove the above line for production, OBVIOUSLY
-
 
 conn = psycopg2.connect(
     database=url.path[1:],
@@ -47,7 +41,6 @@ conn = psycopg2.connect(
     host=url.hostname,
     port=url.port
 )
-
 c = conn.cursor()
 
 # variables to make sure I don't spam Twitch chat
@@ -216,6 +209,35 @@ def update_cb(userdata):
     return 1
 
 
+def refresh_channels():
+    """checks for IRC channels to /join and /part
+
+    Retrieves the list of twitch users that are using the bot and /join's new ones and /part's ones that have decided
+     not to use the bot anymore.
+    """
+
+    c.execute('SELECT twitch_username FROM users')
+    updated_channels = c.fetchall()
+    current_channels = hexchat.get_list("channels")
+
+    for channel in current_channels[:]:
+        print('looking at '+channel.channel[1:])
+        if (channel.channel[1:],) in updated_channels:
+            print('remove: ' + channel.channel)
+            current_channels.remove(channel)
+            updated_channels.remove((channel.channel[1:],))
+        if channel.channel == 'Twitch':
+            current_channels.remove(channel)
+
+    for channel in current_channels:
+        logging.debug('Executed command: part ' + channel.channel)
+        hexchat.command('part ' + channel.channel)
+
+    for channel in updated_channels:
+        logging.debug('Executed command: join #' + channel[0])
+        hexchat.command('join #' + channel[0])
+
+
 # new version of update_cb that uses database instead of memory
 def update_database_cb(userdata):
     print('Recaching API data')
@@ -312,10 +334,19 @@ def update_database_cb(userdata):
                           [1, time.time(), active_game_length, active_game_champId, result['gameId'],
                            summoners[index][0]])
                 for rune in active_game_runes:
-                    c.execute('INSERT OR REPLACE INTO currentRunes (count, runeId, summoner, gameId) VALUES (%s,%s,%s,%s)',
+                    # c.execute('INSERT OR REPLACE INTO currentRunes (count, runeId, summoner, gameId) '
+                    #           'VALUES (%s,%s,%s,%s)',
+                    #           [rune['count'], rune['runeId'], summoners[index][0], result['gameId']])
+                    c.execute('INSERT INTO currentRunes (count, runeId, summoner, gameId) '
+                              'VALUES (%s,%s,%s,%s) '
+                              'ON CONFLICT DO NOTHING',
                               [rune['count'], rune['runeId'], summoners[index][0], result['gameId']])
                 for ban in result['bannedChampions']:
-                    c.execute('INSERT OR REPLACE INTO currentBans (championId, summoner, gameId) VALUES (%s,%s,%s)',
+                    # c.execute('INSERT OR REPLACE INTO currentBans (championId, summoner, gameId) VALUES (%s,%s,%s)',
+                    #           [ban['championId'], summoners[index][0], result['gameId']])
+                    c.execute('INSERT INTO currentBans (championId, summoner, gameId) '
+                              'VALUES (%s,%s,%s) '
+                              'ON CONFLICT DO NOTHING',
                               [ban['championId'], summoners[index][0], result['gameId']])
                 conn.commit()
 
@@ -506,6 +537,10 @@ def channel_message_cb(word, word_eol, userdata):
             matchId=row[9]
         )
         hexchat.command('say ' + lastgame)
+        return hexchat.EAT_ALL
+
+    elif command == '!refresh':
+        refresh_channels()
         return hexchat.EAT_ALL
 
     elif command == '!currentgame' or command == '!current':
@@ -720,6 +755,8 @@ def channelmessage_cb(word, word_eol, userdata):
         title_base = word[1][7:]
         update_title()
         return hexchat.EAT_ALL
+    elif command == '!hi':
+        hexchat.command('say Hello, I\'m here!')
     elif command == "!test":
         print(hexchat.get_info('channel'))
         hexchat.command('say hello '+hexchat.get_info('channel'))
@@ -758,9 +795,11 @@ print('==========Hoffmannbot loaded============')
 #     RUNES[runes_data['data'][rune]['id']] = runes_data['data'][rune]['name']
 # logging.debug(RUNES)
 
+refresh_channels()
+
 ### database versions
-hexchat.hook_timer(3000, update_database_cb)
-# hexchat.hook_print('Channel Message', channel_message_cb)
+# hexchat.hook_timer(3000, update_database_cb)
+hexchat.hook_print('Channel Message', channel_message_cb)
 
 ### local only versions
 # update_cb('')
