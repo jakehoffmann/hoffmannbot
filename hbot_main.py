@@ -14,8 +14,7 @@ import os
 #  that modules are loaded from. I include it explicitly in the following line(s).
 # sys.path.append(r'D:\hoffmannbot')
 sys.path.append(os.getcwd()+'\\..')
-print(os.getcwd()+'\\..')
-
+logging.debug('Directory added to sys.path: '+os.getcwd()+'\\..')
 
 from static_data import RUNES, CHAMPIONS
 from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
@@ -33,7 +32,13 @@ __module_description__ = "Twitch Chat Bot with Jake's custom commands"
 
 # connecting to postgres database
 urllib.parse.uses_netloc.append("postgres")
-url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+
+
+# url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+url = urllib.parse.urlparse('postgres://apujurenpledps:I8ReS0Zp3289k4V-HTeEDkSLf_@ec2-54-243-217-22.compute-1.amazonaws.com:5432/d4kg1tud3ujhui')
+###############################
+###############################    Remove the above line for production, OBVIOUSLY
+
 
 conn = psycopg2.connect(
     database=url.path[1:],
@@ -151,6 +156,7 @@ def load_data():
 
 
 # might want to hide this in a file. easy locally but need a heroku solution
+# the solution: put it in heroku ENV variables
 def fetch_key():
     key = '50992d27-0c22-4d2d-b529-903be10b4e64'
     return key
@@ -232,10 +238,10 @@ def update_database_cb(userdata):
     summoners = c.fetchall()
 
     for index in range(len(summoners)):
-        c.execute('SELECT summonerId FROM summonerInfo WHERE summoner=?',
+        c.execute('SELECT summonerId FROM summonerInfo WHERE summoner=%s',
                   [summoners[index][0]])
         summoner_info = c.fetchone()
-        c.execute('SELECT last_command_use FROM users WHERE twitch_username=?', [summoners[index][1]])
+        c.execute('SELECT last_command_use FROM users WHERE twitch_username=%s', [summoners[index][1]])
         last_command_use = c.fetchone()[0]
 
         # summoner_info_query_wait = random.randint(0, min(siq_cap, summoner_info_query_base * 2 ** last_command_use))
@@ -246,28 +252,36 @@ def update_database_cb(userdata):
                 temp_summoner_name = ''.join(summoners[index][0].split()).lower()
                 temp_cache_time = time.time()
                 print('summoner info for '+temp_summoner_name+' cached')
-                c.execute('INSERT OR REPLACE INTO summonerInfo (summoner, summonerId)'
-                          'VALUES (?,?)', [temp_summoner_name, result[temp_summoner_name]['id']])
-                c.execute('UPDATE summoners SET info_cache_time=? WHERE summoner=?',
+                # c.execute('INSERT OR REPLACE INTO summonerInfo (summoner, summonerId)'
+                #           'VALUES (%s,%s)', [temp_summoner_name, result[temp_summoner_name]['id']])
+                c.execute('INSERT INTO summonerInfo (summoner, summonerId) '
+                          'VALUES (%s, %s) '
+                          'ON CONFLICT (summonerId) '
+                          'DO UPDATE SET summoner=EXCLUDED.summoner, summonerId=EXCLUDED.summonerId',
+                          [temp_summoner_name, result[temp_summoner_name]['id']])
+                c.execute('UPDATE summoners SET info_cache_time=%s WHERE summoner=%s',
                           [temp_cache_time, temp_summoner_name])
                 conn.commit()
             else:
                 continue
-        c.execute('SELECT summonerId FROM summonerInfo WHERE summoner=?',
+        c.execute('SELECT summonerId FROM summonerInfo WHERE summoner=%s',
                   [summoners[index][0]])
         summoner_info = c.fetchone()
-
         # match_list_query_wait = random.randint(0, min(ml_cap, match_list_query_base * 2 ** last_command_use))
         match_list_query_wait = match_list_query_base
         if summoners[index][3] == 0 or (time.time() - summoners[index][3] > match_list_query_wait):
             result = api.get_matchlist(summoner_info[0])
             if not isinstance(result, int):
-                c.execute('UPDATE summoners SET match_list_cache_time=? WHERE summoner=?',
+                c.execute('UPDATE summoners SET match_list_cache_time=%s WHERE summoner=%s',
                           [time.time(), summoners[index][0]])
                 if result['totalGames'] != 0:
                     for match in result['matches']:
-                        c.execute('INSERT OR REPLACE INTO matchList (matchId, timestamp, summonerId, lane) '
-                                  'VALUES (?,?,?,?)',
+                        # c.execute('INSERT OR REPLACE INTO matchList (matchId, timestamp, summonerId, lane) '
+                        #           'VALUES (%s,%s,%s,%s)',
+                        #           [match['matchId'], match['timestamp'], summoner_info[0], match['lane']])
+                        c.execute('INSERT INTO matchList (matchId, timestamp, summonerId, lane) '
+                                  'VALUES (%s, %s, %s, %s) '
+                                  'ON CONFLICT DO NOTHING',    # is it correct to do nothing here? I think so.
                                   [match['matchId'], match['timestamp'], summoner_info[0], match['lane']])
                 conn.commit()
                 print('match list cached for '+summoners[index][0])
@@ -280,10 +294,10 @@ def update_database_cb(userdata):
             result = api.get_current_game(summoner_info[0])
             if result == 404:
                 print('current game for ' + summoners[index][0] + ' not found')
-                c.execute('UPDATE summoners SET current_game_exists=?, current_game_cache_time=? '
-                          'WHERE summoner=?', [0, time.time(), summoners[index][0]])
-                c.execute('DELETE from currentRunes where summoner=?', [summoners[index][0]])
-                c.execute('DELETE from currentBans where summoner=?', [summoners[index][0]])
+                c.execute('UPDATE summoners SET current_game_exists=%s, current_game_cache_time=%s '
+                          'WHERE summoner=%s', [0, time.time(), summoners[index][0]])
+                c.execute('DELETE from currentRunes where summoner=%s', [summoners[index][0]])
+                c.execute('DELETE from currentBans where summoner=%s', [summoners[index][0]])
                 conn.commit()
                 # TODO: update title if necessary
             elif not isinstance(result, int):
@@ -293,15 +307,15 @@ def update_database_cb(userdata):
                     if ''.join(participants['summonerName'].split()).lower() == summoners[index][0]:
                         active_game_champId = participants['championId']
                         active_game_runes = participants['runes']
-                c.execute('UPDATE summoners SET current_game_exists=?, current_game_cache_time=?, gameLength=?,'
-                          ' championId=?, gameId=? WHERE summoner=?',
+                c.execute('UPDATE summoners SET current_game_exists=%s, current_game_cache_time=%s, gameLength=%s,'
+                          ' championId=%s, gameId=%s WHERE summoner=%s',
                           [1, time.time(), active_game_length, active_game_champId, result['gameId'],
                            summoners[index][0]])
                 for rune in active_game_runes:
-                    c.execute('INSERT OR REPLACE INTO currentRunes (count, runeId, summoner, gameId) VALUES (?,?,?,?)',
+                    c.execute('INSERT OR REPLACE INTO currentRunes (count, runeId, summoner, gameId) VALUES (%s,%s,%s,%s)',
                               [rune['count'], rune['runeId'], summoners[index][0], result['gameId']])
                 for ban in result['bannedChampions']:
-                    c.execute('INSERT OR REPLACE INTO currentBans (championId, summoner, gameId) VALUES (?,?,?)',
+                    c.execute('INSERT OR REPLACE INTO currentBans (championId, summoner, gameId) VALUES (%s,%s,%s)',
                               [ban['championId'], summoners[index][0], result['gameId']])
                 conn.commit()
 
@@ -313,23 +327,26 @@ def update_database_cb(userdata):
             result = api.get_match_info((unstored_matches.pop(0))[0])
             if not isinstance(result, int):
                 print('Updating matches from match list')
+                logging.debug(result['matchId'])
+                logging.debug(result['matchCreation'])
+                logging.debug(result['matchDuration'])
                 c.execute('INSERT INTO match (matchId,matchCreation,matchDuration) '
-                          'VALUES (?,?,?)', [result['matchId'], result['matchCreation'], result['matchDuration']])
+                          'VALUES (%s,%s,%s)', [result['matchId'], result['matchCreation'], result['matchDuration']])
                 for participantIdentity in result['participantIdentities']:
                     c.execute('INSERT INTO participantIdentities (matchId,participantId,summonerId) '
-                              'VALUES (?,?,?)',
+                              'VALUES (%s,%s,%s)',
                               [result['matchId'],
                                participantIdentity['participantId'],
                                participantIdentity['player']['summonerId']])
                 for participant in result['participants']:
                     c.execute('INSERT INTO participants '
                               '(matchId,championId,participantId,kills,deaths,assists,winner) '
-                              'VALUES (?,?,?,?,?,?,?)',
+                              'VALUES (%s,%s,%s,%s,%s,%s,%s)',
                               [result['matchId'], participant['championId'], participant['participantId'],
                                participant['stats']['kills'], participant['stats']['deaths'],
                                participant['stats']['assists'], int(participant['stats']['winner'])])
                     for rune in participant['runes']:
-                        c.execute('INSERT INTO runes (participantId,matchId,rank,runeId) VALUES (?,?,?,?)',
+                        c.execute('INSERT INTO runes (participantId,matchId,rank,runeId) VALUES (%s,%s,%s,%s)',
                                   [participant['participantId'],
                                    result['matchId'],
                                    rune['rank'],
@@ -410,7 +427,7 @@ def channel_message_cb(word, word_eol, userdata):
 
     command = word[1].split()[0]  # the first word of a Twitch chat message, possibly a command
     channel = hexchat.get_info('channel')[1:]  # the channel in which the command was used
-    c.execute('SELECT alias FROM users WHERE twitch_username=?', [channel])
+    c.execute('SELECT alias FROM users WHERE twitch_username=%s', [channel])
     is_valid_user = c.fetchone()
     if is_valid_user is None:
         hexchat.command('say I\'m not supposed to be in this channel!')
@@ -440,7 +457,7 @@ def channel_message_cb(word, word_eol, userdata):
                   'AND participantIdentities.matchId = participants.matchId '
                   'INNER JOIN match ON participants.matchId = match.matchId '
                   'INNER JOIN matchList ON participants.matchId = matchList.matchId '
-                  'WHERE summoners.twitch_username = ? '
+                  'WHERE summoners.twitch_username = %s '
                   'ORDER BY matchCreation DESC '
                   'LIMIT 1', [channel])
         row = c.fetchone()
@@ -498,7 +515,7 @@ def channel_message_cb(word, word_eol, userdata):
 
         logging.debug('currentgame')
         c.execute('SELECT summoner,gameId,gameLength,championId FROM summoners '
-                  'WHERE twitch_username=? AND current_game_exists=1', [channel])
+                  'WHERE twitch_username=%s AND current_game_exists=1', [channel])
         current_game = c.fetchone()
         if current_game is None:
             logging.debug('no current game found for twitch username: ' + channel)
@@ -512,13 +529,13 @@ def channel_message_cb(word, word_eol, userdata):
 
         rune_list = ''
         for row in c.execute('SELECT count,runeId FROM currentRunes '
-                             'WHERE summoner=? AND gameId=?', [current_game[0], current_game[1]]):
+                             'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]]):
             rune_list += str(row[0])+'x '+RUNES[row[1]]+', '
         rune_list = rune_list[:-2]
 
         banned_champ_list = ''
         for row in c.execute('SELECT championId FROM currentBans '
-                             'WHERE summoner=? AND gameId=?', [current_game[0], current_game[1]]):
+                             'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]]):
             banned_champ_list += CHAMPIONS[row[0]]
 
         minutes = (active_game_length // 60) + 3
@@ -718,6 +735,7 @@ def loaded_cb(userdata):
 def unload_cb(userdata):
     conn.commit()
     c.close()
+    conn.close()
     print('==========Hoffmannbot unloaded==========')
 
 
@@ -741,7 +759,7 @@ print('==========Hoffmannbot loaded============')
 # logging.debug(RUNES)
 
 ### database versions
-# hexchat.hook_timer(3000, update_database_cb)
+hexchat.hook_timer(3000, update_database_cb)
 # hexchat.hook_print('Channel Message', channel_message_cb)
 
 ### local only versions
