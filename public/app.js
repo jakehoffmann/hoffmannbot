@@ -49,7 +49,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.repeatEntry = function () {
         console.log($scope.inputSummoner, $scope.region);
         console.log($scope.summoners);
-        return $scope.summoners.includes({ 'summoners': $scope.inputSummoner,
+        return $scope.summoners.includes({ 'summoner': $scope.inputSummoner,
                                            'region': $scope.region });
     }
     $scope.showSummoners = function() {
