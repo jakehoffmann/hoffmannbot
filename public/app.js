@@ -51,7 +51,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         .then(
         function(response) {
             $scope.summoners.push({'summoner': response.data.addedSummoner,
-                                   'region: response.data.region'response
+                                   'region': response.data.region
                                   });
             console.log('response: ', response);
             console.log('added summoner, region: ',
