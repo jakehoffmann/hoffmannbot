@@ -342,3 +342,5 @@ T 1474180946 22*	26jtv removes channel operator status from 18hoffmannbot
 T 1474181014 22*	26jtv gives channel operator status to 18hoffmannbot
 T 1474185814 24*	jakehoffmann (jakehoffmann@jakehoffmann.tmi.twitch.tv24) has left
 T 1474185814 22*	26jtv removes channel operator status from 18jakehoffmann
+T 1474186034 Python interface unloaded
+T 1474186034 Perl interface unloaded

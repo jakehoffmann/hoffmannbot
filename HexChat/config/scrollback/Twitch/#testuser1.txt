@@ -1,3 +1,4 @@
 T 1474143290 19*	Now talking on 22#testuser1
 T 1474144118 19*	You have left channel 22#testuser1
 T 1474144690 19*	Now talking on 22#testuser1
+T 1474186034 FiSHLiM	hexchat_print called without a valid context.

@@ -49,10 +49,10 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.repeatEntry = function () {
         console.log($scope.inputSummoner, $scope.region);
         console.log($scope.summoners);
+        var filteredSummoner = $scope.inputSummoner.toLowerCase().replace(/\s+/g, '');
         for (var i = 0; i < $scope.summoners.length; i++) {
-            if ($scope.summoners[i].summoner == $scope.inputSummoner &&
+            if ($scope.summoners[i].summoner == filteredSummoner &&
                 $scope.summoners[i].region == $scope.region) {
-                console.log('TRUE!!!');
                 return true;
             }
         }
