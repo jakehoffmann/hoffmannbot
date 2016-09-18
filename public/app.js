@@ -49,8 +49,12 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.repeatEntry = function () {
         console.log($scope.inputSummoner, $scope.region);
         console.log($scope.summoners);
-        return $scope.summoners.includes({ 'summoner': $scope.inputSummoner,
-                                           'region': $scope.region });
+        for (var i = 0; i < $scope.summoners.length; i++) {
+            if ($scope.summoners.summoner == $scope.inputSummoner &&
+                $scope.summoners.region == %scope.region) {
+                return true;
+            }
+        }
     }
     $scope.showSummoners = function() {
         for (var i = 0; i < $scope.summoners.length; i++)
