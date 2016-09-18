@@ -49,7 +49,7 @@ Your summoners
     You've reached the maximum (7) number of summoners!
     <br />
 </div>
-<div class="alert alert-danger col-xs-6" role="alert" ng-hide="!(summoners.includes({'summoner': inputSummoner, 'region': region}))">
+<div class="alert alert-danger col-xs-6" role="alert" ng-show="repeatEntry()">
     This summoner name has already been registered for this region!
     <br />
 </div>

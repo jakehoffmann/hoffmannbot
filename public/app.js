@@ -46,6 +46,10 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
 
+    $scope.repeatEntry = function () {
+        return $scope.summoners.includes({ 'summoners': $scope.inputSummoner,
+                                           'region': $scope.region });
+    }
     $scope.showSummoners = function() {
         for (var i = 0; i < $scope.summoners.length; i++)
             console.log($scope.summoners[i].summoner, ', ', $scope.summoners[i].region);
