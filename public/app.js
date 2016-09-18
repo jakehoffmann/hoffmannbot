@@ -46,7 +46,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
 
-    $scope.add = function(twitch_username, summonerName) {
+    $scope.add = function(twitch_username, summonerName, region) {
         editSummoners.editSummoners('add', twitch_username, summonerName, region)
         .then(
         function(response) {
@@ -59,7 +59,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         });    
     };
     
-    $scope.remove = function(twitch_username, summonerName) {
+    $scope.remove = function(twitch_username, summonerName, region) {
         editSummoners.editSummoners('remove', twitch_username, summonerName, region)
         .then(
         function(response) {    
