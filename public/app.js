@@ -51,7 +51,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         console.log($scope.summoners);
         for (var i = 0; i < $scope.summoners.length; i++) {
             if ($scope.summoners.summoner == $scope.inputSummoner &&
-                $scope.summoners.region == %scope.region) {
+                $scope.summoners.region == $scope.region) {
                 return true;
             }
         }
