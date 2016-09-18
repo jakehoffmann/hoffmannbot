@@ -144,7 +144,7 @@ router.post('/api/add/:user', function(req, res, next) {
 });
 */
 
-router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
+router.post('/api/summoner/:action/:user/:summoner/:region', function(req, res, next) {
     console.log('here 2');
 
     pool.connect(function(err, client, done) {
@@ -193,7 +193,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
                             console.log('Have reached maximum summoners for this user.');
                             res.status(409).send('Maximum number of summoners reached for this user.');
                         }
-                        client.query('INSERT INTO summoners (twitch_username, summoner) VALUES ($1, $2)', [req.params.user, req.params.summoner],
+                        client.query('INSERT INTO summoners (twitch_username, summoner, region) VALUES ($1, $2, $3)', [req.params.user, req.params.summoner, req.params.region],
                           function(err, result) {
                               done();
                               if(err) {
@@ -204,7 +204,7 @@ router.post('/api/summoner/:action/:user/:summoner', function(req, res, next) {
 
                     }
                     else if ( req.params.action == 'remove' ) {
-                        client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2', [req.params.user, req.params.summoner], 
+                        client.query('DELETE FROM summoners WHERE twitch_username=$1 AND summoner=$2 AND region=$3', [req.params.user, req.params.summoner, req.params.region], 
                           function(err, result) {
                               done();
                               if(err) {

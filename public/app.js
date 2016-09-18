@@ -44,10 +44,10 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.user = state.user;
     $scope.auth = Auth.auth;
     $scope.inputSummoner = "new summoner";
-    $scope.region = 'BR';
+    $scope.region = 'NA';
 
     $scope.add = function(twitch_username, summonerName) {
-        editSummoners.editSummoners('add', twitch_username, summonerName)
+        editSummoners.editSummoners('add', twitch_username, summonerName, region)
         .then(
         function(response) {
             $scope.summoners.push(response.data.addedSummoner);
@@ -60,7 +60,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     };
     
     $scope.remove = function(twitch_username, summonerName) {
-        editSummoners.editSummoners('remove', twitch_username, summonerName)
+        editSummoners.editSummoners('remove', twitch_username, summonerName, region)
         .then(
         function(response) {    
             var index = $scope.summoners.indexOf(summonerName);
@@ -158,10 +158,10 @@ myApp.directive('subnav', function () {
 myApp.factory('editSummoners', ['$http', 'state', function ($http, state) {
     var factory = {};
     
-    factory.editSummoners = function(action, twitch_username, summonerName) {
+    factory.editSummoners = function(action, twitch_username, summonerName, region) {
         return  $http({
                 method: 'POST',
-                url: '/api/summoner/'+action+'/'+twitch_username+'/'+summonerName,
+                url: '/api/summoner/'+action+'/'+twitch_username+'/'+summonerName+'/'+region,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },

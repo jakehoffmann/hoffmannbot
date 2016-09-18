@@ -332,3 +332,9 @@ T 1474146416 Executed command: part #testuser3
 T 1474146416 Executed command: part #testuser2
 T 1474146416 Executed command: join #dj9123
 T 1474149230 ==========Hoffmannbot unloaded==========
+T 1474153992 24*	jakehoffmann (jakehoffmann@jakehoffmann.tmi.twitch.tv24) has left
+T 1474153992 22*	26jtv removes channel operator status from 18jakehoffmann
+T 1474154052 23*	jakehoffmann (jakehoffmann@jakehoffmann.tmi.twitch.tv23) has joined
+T 1474154052 22*	26jtv gives channel operator status to 18jakehoffmann
+T 1474170606 22*	26jtv removes channel operator status from 18hoffmannbot
+T 1474170667 22*	26jtv gives channel operator status to 18hoffmannbot
