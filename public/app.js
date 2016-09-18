@@ -50,9 +50,12 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         editSummoners.editSummoners('add', twitch_username, summonerName, region)
         .then(
         function(response) {
-            $scope.summoners.push(response.data.addedSummoner);
+            $scope.summoners.push({'summoner': response.data.addedSummoner,
+                                   'region: response.data.region'response
+                                  });
             console.log('response: ', response);
-            console.log('added summoner: ', response.data.addedSummoner);
+            console.log('added summoner, region: ',
+                        response.data.addedSummoner, ', ', response.data.region);
         },
         function(err) {
             console.error('Error response while trying to add summoner', err);
