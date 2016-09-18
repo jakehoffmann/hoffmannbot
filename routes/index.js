@@ -51,12 +51,12 @@ router.post('/auth', function(req, res, next) {
                             return console.error('errur running query');
                         }
         }); */
-        query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
+        query = client.query('SELECT users.twitch_username, summoner, region, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
         query.on('error', function(err) {
             console.error('error with query (312)', err); 
         });
         query.on('row', function(row) {
-            response['summoners'].push(row.summoner);
+            response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             response['twitch_username'] = row.twitch_username;
         });
         query.on('end', function(result) {
@@ -167,7 +167,7 @@ router.post('/api/summoner/:action/:user/:summoner/:region', function(req, res, 
                 res.status(401).send('Incorrect code.');
             }
             else {
-                query = client.query('SELECT users.twitch_username, summoner, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1 AND users.twitch_username=$2', 
+                query = client.query('SELECT users.twitch_username, summoner, region, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1 AND users.twitch_username=$2', 
                              [req.body.code, req.params.user]);
         
                 query.on('error', function(err) {
@@ -200,7 +200,7 @@ router.post('/api/summoner/:action/:user/:summoner/:region', function(req, res, 
                                   return console.error('error running query', err);
                               }
                         });
-                        res.json({'user': req.params.user, 'addedSummoner': req.params.summoner});
+                        res.json({'user': req.params.user, 'addedSummoner': req.params.summoner, 'region': req.params.region});
 
                     }
                     else if ( req.params.action == 'remove' ) {
@@ -211,7 +211,7 @@ router.post('/api/summoner/:action/:user/:summoner/:region', function(req, res, 
                                   return console.error('error running query', err);
                               }
                           });
-                        res.json({'user': req.params.user, 'removedSummoner': req.params.summoner});
+                        res.json({'user': req.params.user, 'removedSummoner':  req.params.summoner, 'region': req.params.region});
 
                     }
                 });

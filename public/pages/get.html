@@ -10,8 +10,8 @@
 Your summoners
 <div ng-repeat="sum in summoners">
     <span class="tag label label-primary">
-        <span>{{ sum }} ({{ region }})</span>
-        <a ng-click="remove(user, sum)"> 
+        <span>{{ sum.summoner }} ({{ sum.region }})</span>
+        <a ng-click="remove(user, sum.summoner, sum.region)"> 
             <i class="remove glyphicon glyphicon-remove glyphicon-white"></i>
         </a>
     </span>

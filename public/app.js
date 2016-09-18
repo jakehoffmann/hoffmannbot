@@ -141,7 +141,7 @@ myApp.factory('state', function () {
     return {
         user: '',
         code: '',
-        summoners: []
+        summoners: [{}] // list of objects with properties 'summoner', and 'region'
     }
 });
 
