@@ -338,3 +338,5 @@ T 1474154052 23*	jakehoffmann (jakehoffmann@jakehoffmann.tmi.twitch.tv23) has 
 T 1474154052 22*	26jtv gives channel operator status to 18jakehoffmann
 T 1474170606 22*	26jtv removes channel operator status from 18hoffmannbot
 T 1474170667 22*	26jtv gives channel operator status to 18hoffmannbot
+T 1474180946 22*	26jtv removes channel operator status from 18hoffmannbot
+T 1474181014 22*	26jtv gives channel operator status to 18hoffmannbot
