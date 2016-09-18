@@ -57,11 +57,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
             }
         }
     }
-    $scope.showSummoners = function() {
-        for (var i = 0; i < $scope.summoners.length; i++)
-            console.log($scope.summoners[i].summoner, ', ', $scope.summoners[i].region);
-    }
-    
+
     $scope.add = function(twitch_username, summonerName, region) {
         editSummoners.editSummoners('add', twitch_username, summonerName, region)
         .then(
