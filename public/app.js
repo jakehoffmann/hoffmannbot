@@ -165,15 +165,6 @@ myApp.factory('state', function () {
     }
 });
 
-/*
-myApp.directive('subnav', function () {
-   return {
-       template: ,
-       replace: true
-   } 
-});
-*/
-
 // Sends http request to server to add a summoner for a user
 myApp.factory('editSummoners', ['$http', 'state', function ($http, state) {
     var factory = {};
@@ -212,8 +203,12 @@ myApp.factory('sendCode', ['$http', function ($http) {
 }]);
 */
 
-
-
+myApp.directive('secondaryNav', function () {
+   return {
+       templateUrl: 'pages/hoffbotNav.html',
+       replace: true
+   } 
+});
 
 
 
