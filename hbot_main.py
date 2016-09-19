@@ -461,9 +461,10 @@ def channel_message_cb(word, word_eol, userdata):
     c.execute('SELECT alias FROM users WHERE twitch_username=%s', [channel])
     is_valid_user = c.fetchone()
     if is_valid_user is None:
-        hexchat.command('say I\'m not supposed to be in this channel!')
+        hexchat.command('say I\'m not supposed to be in this channel, goodbye!')
+        hexchat.command('part ' + '#' + channel)
         return hexchat.EAT_ALL
-    alias = is_valid_user[0]
+    alias = is_valid_user[0] if is_valid_user[0] != 'noalias' else channel
 
     if command == '!lastgame' or command == '!last':
         if (time.time() - lastgame_timeout) <= 5:
@@ -477,7 +478,6 @@ def channel_message_cb(word, word_eol, userdata):
             hexchat.command('say !lastgame is Jake-only for testing at the moment :)')
             return hexchat.EAT_ALL
 
-        # channel = hexchat.get_info('channel')[1:]  # the channel in which the command was used
         c.execute('SELECT kills,deaths,assists,matchCreation,matchDuration,participants.championId,winner,lane,'
                   'summoners.summoner, participants.matchId '
                   'FROM summoners '
@@ -495,7 +495,7 @@ def channel_message_cb(word, word_eol, userdata):
         if row is None:
             logging.debug('no games found for twitch username: ' + channel)
             hexchat.command('say No games found for {user}.'.format(
-                user=alias if alias != 'noalias' else channel
+                user=alias
             ))
             return hexchat.EAT_ALL
 
@@ -523,7 +523,7 @@ def channel_message_cb(word, word_eol, userdata):
 
         lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} [{days}{hours}{minutes} ago,\
          account: {account}, http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/{matchId}]'.format(
-            user=alias if alias != 'noalias' else channel,
+            user=alias,
             kills=row[0],
             deaths=row[1],
             assists=row[2],
@@ -543,6 +543,9 @@ def channel_message_cb(word, word_eol, userdata):
         refresh_channels()
         return hexchat.EAT_ALL
 
+    elif command == '!hi':
+        hexchat.command('say Hello, I\'m here!')
+
     elif command == '!currentgame' or command == '!current':
         if (time.time() - currentgame_timeout) <= 5:
             return hexchat.EAT_ALL
@@ -555,7 +558,7 @@ def channel_message_cb(word, word_eol, userdata):
         if current_game is None:
             logging.debug('no current game found for twitch username: ' + channel)
             hexchat.command('say {user} is not in a game.'.format(
-                user=alias if alias != 'noalias' else channel
+                user=alias
             ))
             return hexchat.EAT_ALL
         logging.debug('active summoner: {}'.format(current_game[0]))

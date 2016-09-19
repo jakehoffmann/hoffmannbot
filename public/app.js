@@ -78,10 +78,10 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         editSummoners.editSummoners('remove', twitch_username, summonerName, region)
         .then(
         function(response) {    
-            var index = $scope.summoners.indexOf(summonerName);
+            var index = $scope.summoners.indexOf({'summoner': response.data.removedSummoner, 'region': response.data.region});
             $scope.summoners.splice(index, 1);
             console.log('response: ', response);
-            console.log('removed summoner: ', response.data.removedSummoner);
+            console.log('removed summoner: ', response.data.removedSummoner, ', ', response.data.region);
         },
         function(err) {
            console.error('Error response while trying to remove summoner', err); 
