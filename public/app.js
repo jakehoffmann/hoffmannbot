@@ -47,8 +47,6 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
     $scope.region = 'NA';
 
     $scope.repeatEntry = function () {
-        console.log($scope.inputSummoner, $scope.region);
-        console.log($scope.summoners);
         var filteredSummoner = $scope.inputSummoner.toLowerCase().replace(/\s+/g, '');
         for (var i = 0; i < $scope.summoners.length; i++) {
             if ($scope.summoners[i].summoner == filteredSummoner &&
@@ -86,7 +84,6 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
                     break;
                 }
             }
-            console.log('index: ', index, 'obj at index: ', $scope.summoners[index]);
             $scope.summoners.splice(index, 1);
             console.log('response: ', response);
             console.log('removed summoner: ', response.data.removedSummoner, ', ', response.data.region);
