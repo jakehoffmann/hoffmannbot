@@ -79,6 +79,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
         .then(
         function(response) {    
             var index = $scope.summoners.indexOf({'summoner': response.data.removedSummoner, 'region': response.data.region});
+            console.log('index: ', index, 'obj at index: ', $scope.summoners[index]);
             $scope.summoners.splice(index, 1);
             console.log('response: ', response);
             console.log('removed summoner: ', response.data.removedSummoner, ', ', response.data.region);
