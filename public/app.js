@@ -81,7 +81,7 @@ myApp.controller('authController', ["$scope", "$http", "$location", "Auth", "sta
 //            var index = $scope.summoners.indexOf({'summoner': response.data.removedSummoner, 'region': response.data.region});
             var index;
             for (var i; i < $scope.summoners.length; i++) {
-                if ( angular.equals($scope.summoners[i], {'summoner': response.data.removedSummoner, 'region': response.data.region})) {
+                if ( $scope.summoners[i].summoner == response.data.removedSummoner && $scope.summoners[i].region == response.data.region ) {
                     index = i;
                     break;
                 }
