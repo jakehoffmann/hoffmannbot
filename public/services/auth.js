@@ -1,4 +1,4 @@
-myApp.factory('Auth', ['$location', '$window', 'userState', function($location, $window, userState) {
+myApp.factory('auth', ['$location', '$window', 'userState', function($location, $window, userState) {
     var code = '';
     return { 
         isAuthed: function () {
