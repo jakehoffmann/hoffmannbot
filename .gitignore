@@ -2,3 +2,4 @@
 __pycache__/
 HexChat/config/logs
 HexChat/config/scrollback
+node_modules
