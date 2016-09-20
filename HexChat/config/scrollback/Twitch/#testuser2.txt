@@ -1,3 +1,0 @@
-T 1474143298 19*	Now talking on 22#testuser2
-T 1474144118 19*	You have left channel 22#testuser2
-T 1474144189 19*	Now talking on 22#testuser2

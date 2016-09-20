@@ -221,13 +221,14 @@ def refresh_channels():
     current_channels = hexchat.get_list("channels")
 
     for channel in current_channels[:]:
-        print('looking at '+channel.channel[1:])
+        print('looking at '+channel.channel)
+        if channel.channel == 'Twitch':
+            current_channels.remove(channel)
         if (channel.channel[1:],) in updated_channels:
             print('remove: ' + channel.channel)
             current_channels.remove(channel)
             updated_channels.remove((channel.channel[1:],))
-        if channel.channel == 'Twitch':
-            current_channels.remove(channel)
+
 
     for channel in current_channels:
         logging.debug('Executed command: part ' + channel.channel)
@@ -393,13 +394,14 @@ def update_database_cb(userdata):
                 #  than only being concerned with disk space). This is due to Heroku PostgreSQL row-restriction on
                 #  hobby plans.
                 for participant in result['participants']:
+                    print(participant['runes'])
                     c.execute('INSERT INTO participants '
-                              '(matchId,championId,participantId,kills,deaths,assists,winner.runes) '
+                              '(matchId,championId,participantId,kills,deaths,assists,winner,runes) '
                               'VALUES (%s,%s,%s,%s,%s,%s,%s,%s)',
                               [result['matchId'], participant['championId'], participant['participantId'],
                                participant['stats']['kills'], participant['stats']['deaths'],
                                participant['stats']['assists'], int(participant['stats']['winner']),
-                               participant['runes']])
+                               json.dumps(participant['runes'])])
 
                 conn.commit()
                 logging.debug('cached a match. match id: ' + str(result['matchId']))
@@ -540,7 +542,7 @@ def channel_message_cb(word, word_eol, userdata):
             champ = CHAMPIONS['champId']
 
         lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} [{days}{hours}{minutes} ago,\
-         account: {account}, http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/{matchId}]'.format(
+        account: {account}, http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/{matchId}]'.format(
             user=alias,
             kills=row[0],
             deaths=row[1],
@@ -584,14 +586,16 @@ def channel_message_cb(word, word_eol, userdata):
         active_game_champ = CHAMPIONS[current_game[3]]
 
         rune_list = ''
-        for row in c.execute('SELECT count,runeId FROM currentRunes '
-                             'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]]):
+        c.execute('SELECT count,runeId FROM currentRunes '
+                  'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]])
+        for row in c:
             rune_list += str(row[0])+'x '+RUNES[row[1]]+', '
         rune_list = rune_list[:-2]
 
         banned_champ_list = ''
-        for row in c.execute('SELECT championId FROM currentBans '
-                             'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]]):
+        c.execute('SELECT championId FROM currentBans '
+                  'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]])
+        for row in c:
             banned_champ_list += CHAMPIONS[row[0]]
 
         minutes = (active_game_length // 60) + 3
@@ -605,6 +609,8 @@ def channel_message_cb(word, word_eol, userdata):
         return hexchat.EAT_ALL
 
 
+# ---- OLD VERSION ---- #
+# ----             ---- #
 # this function is called every time somebody types in chat
 def channelmessage_cb(word, word_eol, userdata):
     global r
@@ -819,7 +825,7 @@ print('==========Hoffmannbot loaded============')
 refresh_channels()
 
 ### database versions
-# hexchat.hook_timer(3000, update_database_cb)
+hexchat.hook_timer(3000, update_database_cb)
 hexchat.hook_print('Channel Message', channel_message_cb)
 # hexchat.hook_timer(300000, refresh_channels)    # refresh the channel list every 5 mins (300k milliseconds)
 

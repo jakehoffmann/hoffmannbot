@@ -1,2 +1,4 @@
 *.pyc
 __pycache__/
+HexChat/config/logs
+HexChat/config/scrollback

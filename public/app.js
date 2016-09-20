@@ -157,11 +157,12 @@ myApp.factory('Auth', ['$location', 'state', function($location, state) {
         }
 }}]);
 
+// maintains the user state
 myApp.factory('state', function () {
     return {
         user: '',
         code: '',
-        summoners: [] // list of objects with properties 'summoner', and 'region'
+        summoners: [] // array of objects with properties 'summoner', and 'region'
     }
 });
 
