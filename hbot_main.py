@@ -369,20 +369,38 @@ def update_database_cb(userdata):
                               [result['matchId'],
                                participantIdentity['participantId'],
                                participantIdentity['player']['summonerId']])
+
+                # The following 'for' loop is used when each rune type gets its own row in a separate rune table. To be
+                #  row-economical, we may store runes as a JSON row in the participants table.
+
+                # for participant in result['participants']:
+                #     c.execute('INSERT INTO participants '
+                #               '(matchId,championId,participantId,kills,deaths,assists,winner) '
+                #               'VALUES (%s,%s,%s,%s,%s,%s,%s)',
+                #               [result['matchId'], participant['championId'], participant['participantId'],
+                #                participant['stats']['kills'], participant['stats']['deaths'],
+                #                participant['stats']['assists'], int(participant['stats']['winner'])])
+                #     for rune in participant['runes']:
+                #         c.execute('INSERT INTO runes (participantId,matchId,rank,runeId) VALUES (%s,%s,%s,%s)',
+                #                   [participant['participantId'],
+                #                    result['matchId'],
+                #                    rune['rank'],
+                #                    rune['runeId']
+                #                    ])
+
+                # The following 'for' loop is the alternative to the above. This will store runes as a JSON row in
+                #  the participant table. Again, this is to be conservative with the amount of rows we create (rather
+                #  than only being concerned with disk space). This is due to Heroku PostgreSQL row-restriction on
+                #  hobby plans.
                 for participant in result['participants']:
                     c.execute('INSERT INTO participants '
-                              '(matchId,championId,participantId,kills,deaths,assists,winner) '
-                              'VALUES (%s,%s,%s,%s,%s,%s,%s)',
+                              '(matchId,championId,participantId,kills,deaths,assists,winner.runes) '
+                              'VALUES (%s,%s,%s,%s,%s,%s,%s,%s)',
                               [result['matchId'], participant['championId'], participant['participantId'],
                                participant['stats']['kills'], participant['stats']['deaths'],
-                               participant['stats']['assists'], int(participant['stats']['winner'])])
-                    for rune in participant['runes']:
-                        c.execute('INSERT INTO runes (participantId,matchId,rank,runeId) VALUES (%s,%s,%s,%s)',
-                                  [participant['participantId'],
-                                   result['matchId'],
-                                   rune['rank'],
-                                   rune['runeId']
-                                   ])
+                               participant['stats']['assists'], int(participant['stats']['winner']),
+                               participant['runes']])
+
                 conn.commit()
                 logging.debug('cached a match. match id: ' + str(result['matchId']))
 
@@ -803,6 +821,7 @@ refresh_channels()
 ### database versions
 # hexchat.hook_timer(3000, update_database_cb)
 hexchat.hook_print('Channel Message', channel_message_cb)
+# hexchat.hook_timer(300000, refresh_channels)    # refresh the channel list every 5 mins (300k milliseconds)
 
 ### local only versions
 # update_cb('')
