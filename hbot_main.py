@@ -19,8 +19,8 @@ logging.debug('Directory added to sys.path: '+os.getcwd()+'\\..')
 from static_data import RUNES, CHAMPIONS
 from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
 
-# logging.basicConfig(filename='D:\hoffmannbot\logs\log.txt', level=logging.DEBUG)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(filename='D:\hoffmannbot\logs\log.txt', level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 __module_name__ = "hoffmannbot"
 __module_version__ = "1.0"
@@ -51,17 +51,25 @@ lastgame_timeout = 0
 # TODO: remove this once I clean up its instances
 SUMMONERS = {}
 
+
 class RiotAPI(object):
 
-    def __init__(self, api_key, region=REGIONS['north_america'], platform=PLATFORMS['north_america']):
+    def __init__(self, api_key):
+                 # region=REGIONS['north_america'], platform=PLATFORMS['north_america']):
         self.api_key = api_key
-        self.region = region
-        self.platform = platform
+        # self.region = region
+        # self.platform = platform
         self.lastRequestTime = 0
 
-
-# API request to riot server using the normal base URL for their API
-    def _request(self, api_url, spectator=0, params={}):
+    def _request(self, api_url, region, spectator=0, params={}):
+        """
+        Launches request to the Riot API
+        :param api_url: API key
+        :param region: the region where the request is being made, eg. NA, EUW, EUNE
+        :param spectator: whether this is a request for current game info (spectator server)
+        :param params: URL query strings
+        :return: returns an integer on failure, json response on success
+        """
         global last_request_time
         diff = time.time() - last_request_time
         if diff <= 5:
@@ -73,8 +81,8 @@ class RiotAPI(object):
         if not spectator:
             response = requests.get(
                 URL['base'].format(
-                    proxy=self.region,
-                    region=self.region,
+                    proxy=REGIONS[region],      # proxy and region are the same at this time
+                    region=REGIONS[region],
                     url=api_url
                 ),
                 params=args
@@ -82,8 +90,8 @@ class RiotAPI(object):
         else:
             response = requests.get(
                 URL['spectator_base'].format(
-                    proxy=self.region,
-                    platform=self.platform,
+                    proxy=REGIONS[region],      # proxy and region are the same at this time
+                    platform=PLATFORMS[region],
                     url=api_url
                 ),
                 params=args
@@ -99,39 +107,36 @@ class RiotAPI(object):
         logging.debug(response.url)
         return response.json()
 
-
 # get info about a summoner
-    def get_summoner_by_name(self, name):
+    def get_summoner_by_name(self, name, region):
         api_url = URL['summoner_by_name'].format(
             version=API_VERSIONS['summoner'],
             names=name
         )
-        return self._request(api_url)
-
+        return self._request(api_url, region)
 
 # get match history. hardcoded in to be only last 10 games. Edit the endIndex to change this
-    def get_matchlist(self, summonerid):
+    def get_matchlist(self, summonerid, region):
         api_url = URL['matchlist'].format(
             version=API_VERSIONS['matchlist'],
             id=summonerid
         )
-        return self._request(api_url,  params={'rankedQueues': 'TEAM_BUILDER_DRAFT_RANKED_5x5',
-                                               'beginIndex': '0', 'endIndex': '10'})
-
+        return self._request(api_url, region, params={'rankedQueues': 'TEAM_BUILDER_DRAFT_RANKED_5x5',
+                                                      'beginIndex': '0', 'endIndex': '10'})
 
 # get current game info. uses special request due to the base URL being unique in Riot API
-    def get_current_game(self, summonerid):
+    def get_current_game(self, summonerid, region):
         api_url = URL['currentgame'].format(
             id=summonerid
         )
-        return self._request(api_url, spectator=1)
+        return self._request(api_url, region, spectator=1)
 
-    def get_match_info(self, matchId):
+    def get_match_info(self, matchId, region):
         api_url = URL['match'].format(
             version=API_VERSIONS['match'],
             matchId=matchId
         )
-        return self._request(api_url)
+        return self._request(api_url, region)
 
 
 def load_data():
@@ -155,60 +160,6 @@ def fetch_key():
     return key
 
 
-# this gets called automatically every X minutes (via hook_timer at bottom of script)
-# updates the database with information from Riot API
-def update_cb(userdata):
-    logging.debug('Recaching API data')
-
-    global r
-    global matchList
-    global matchInfo
-    global current_game_info
-
-    api = RiotAPI('50992d27-0c22-4d2d-b529-903be10b4e64')
-    for index in range(len(SUMMONERS)):
-        if not r[index] or (time.time() - r[index].get('cacheTime', 0)) > 300:
-            result = api.get_summoner_by_name(SUMMONERS[index])
-            if not isinstance(result, int):
-                logging.debug('summoner info for '+SUMMONERS[index]+' cached')
-                r[index] = result
-                r[index]['cacheTime'] = time.time()
-            else:
-                continue
-        if not matchList[index] or (time.time() - matchList[index].get('cacheTime', 0)) > 300:
-            summ_id = r[index][SUMMONERS[index]]['id']
-            result = api.get_matchlist(summ_id)
-            if not isinstance(result, int):
-                logging.debug('summoner matchlist for ' + SUMMONERS[index] + ' cached')
-                matchList[index] = result
-                matchList[index]['cacheTime'] = time.time()
-            else:
-                continue
-        if not matchInfo[index] or (time.time() - matchInfo[index].get('cacheTime', 0)) > 300:
-            matchId = matchList[index]['matches'][0]['matchId']
-            result = api.get_match_info(matchId)
-            if not isinstance(result, int):
-                logging.debug('summoner matchinfo for ' + SUMMONERS[index] + ' cached')
-                matchInfo[index] = result
-                matchInfo[index]['cacheTime'] = time.time()
-        if not current_game_info[index] or (time.time() - current_game_info[index].get('cacheTime', 0)) > 60:
-            summ_id = r[index][SUMMONERS[index]]['id']
-            result = api.get_current_game(summ_id)
-            if result == 404:
-                logging.debug('current game for ' + SUMMONERS[index] + ' not found!')
-                current_game_info[index] = {}
-                current_game_info[index]['cacheTime'] = time.time()
-                if index == len(SUMMONERS)-1:
-                    update_title()
-            elif not isinstance(result, int):
-                logging.debug('current game info for ' + SUMMONERS[index] + ' cached')
-                current_game_info[index] = result
-                current_game_info[index]['cacheTime'] = time.time()
-                update_title(index)
-
-    return 1
-
-
 def refresh_channels():
     """checks for IRC channels to /join and /part
 
@@ -221,22 +172,79 @@ def refresh_channels():
     current_channels = hexchat.get_list("channels")
 
     for channel in current_channels[:]:
-        print('looking at '+channel.channel)
+        print('looking at ' + channel.channel)
+        print(type(channel.channel))
         if channel.channel == 'Twitch':
             current_channels.remove(channel)
-        if (channel.channel[1:],) in updated_channels:
-            print('remove: ' + channel.channel)
+        elif channel.channel == '':
+            current_channels.remove(channel)
+        elif (channel.channel[1:],) in updated_channels:
+            print('remove from channels to join and channels to part lists: ' + channel.channel)
             current_channels.remove(channel)
             updated_channels.remove((channel.channel[1:],))
 
-
     for channel in current_channels:
-        logging.debug('Executed command: part ' + channel.channel)
+        print('Executed command: part ' + channel.channel)
         hexchat.command('part ' + channel.channel)
 
     for channel in updated_channels:
-        logging.debug('Executed command: join #' + channel[0])
+        print('Executed command: join #' + channel[0])
         hexchat.command('join #' + channel[0])
+
+
+# this gets called automatically every X minutes (via hook_timer at bottom of script)
+# updates the database with information from Riot API
+def update_cb(userdata):
+
+    logging.debug('Recaching API data')
+    #
+    # global r
+    # global matchList
+    # global matchInfo
+    # global current_game_info
+    #
+    # api = RiotAPI('50992d27-0c22-4d2d-b529-903be10b4e64')
+    # for index in range(len(SUMMONERS)):
+    #     if not r[index] or (time.time() - r[index].get('cacheTime', 0)) > 300:
+    #         result = api.get_summoner_by_name(SUMMONERS[index])
+    #         if not isinstance(result, int):
+    #             logging.debug('summoner info for '+SUMMONERS[index]+' cached')
+    #             r[index] = result
+    #             r[index]['cacheTime'] = time.time()
+    #         else:
+    #             continue
+    #     if not matchList[index] or (time.time() - matchList[index].get('cacheTime', 0)) > 300:
+    #         summ_id = r[index][SUMMONERS[index]]['id']
+    #         result = api.get_matchlist(summ_id)
+    #         if not isinstance(result, int):
+    #             logging.debug('summoner matchlist for ' + SUMMONERS[index] + ' cached')
+    #             matchList[index] = result
+    #             matchList[index]['cacheTime'] = time.time()
+    #         else:
+    #             continue
+    #     if not matchInfo[index] or (time.time() - matchInfo[index].get('cacheTime', 0)) > 300:
+    #         matchId = matchList[index]['matches'][0]['matchId']
+    #         result = api.get_match_info(matchId)
+    #         if not isinstance(result, int):
+    #             logging.debug('summoner matchinfo for ' + SUMMONERS[index] + ' cached')
+    #             matchInfo[index] = result
+    #             matchInfo[index]['cacheTime'] = time.time()
+    #     if not current_game_info[index] or (time.time() - current_game_info[index].get('cacheTime', 0)) > 60:
+    #         summ_id = r[index][SUMMONERS[index]]['id']
+    #         result = api.get_current_game(summ_id)
+    #         if result == 404:
+    #             logging.debug('current game for ' + SUMMONERS[index] + ' not found!')
+    #             current_game_info[index] = {}
+    #             current_game_info[index]['cacheTime'] = time.time()
+    #             if index == len(SUMMONERS)-1:
+    #                 update_title()
+    #         elif not isinstance(result, int):
+    #             logging.debug('current game info for ' + SUMMONERS[index] + ' cached')
+    #             current_game_info[index] = result
+    #             current_game_info[index]['cacheTime'] = time.time()
+    #             update_title(index)
+    #
+    # return 1
 
 
 # new version of update_cb that uses database instead of memory
@@ -257,11 +265,11 @@ def update_database_cb(userdata):
     cg_cap = 60                     # current game query exponential back-off cap
 
     c.execute('SELECT summoner, twitch_username, info_cache_time, match_list_cache_time, '
-              'current_game_cache_time FROM summoners')
+              'current_game_cache_time, region FROM summoners')
     summoners = c.fetchall()
 
     for index in range(len(summoners)):
-        c.execute('SELECT summonerId FROM summonerInfo WHERE summoner=%s',
+        c.execute('SELECT summonerId FROM summonerInfo' + '_' + summoners[index][5] + ' WHERE summoner=%s',
                   [summoners[index][0]])
         summoner_info = c.fetchone()
         c.execute('SELECT last_command_use FROM users WHERE twitch_username=%s', [summoners[index][1]])
@@ -270,39 +278,41 @@ def update_database_cb(userdata):
         # summoner_info_query_wait = random.randint(0, min(siq_cap, summoner_info_query_base * 2 ** last_command_use))
         summoner_info_query_wait = summoner_info_query_base
         if summoner_info is None or (time.time() - summoners[index][2]) > summoner_info_query_wait:
-            result = api.get_summoner_by_name(summoners[index][0])
+            result = api.get_summoner_by_name(summoners[index][0], summoners[index][5])
             if not isinstance(result, int):
                 temp_summoner_name = ''.join(summoners[index][0].split()).lower()
                 temp_cache_time = time.time()
                 print('summoner info for '+temp_summoner_name+' cached')
                 # c.execute('INSERT OR REPLACE INTO summonerInfo (summoner, summonerId)'
                 #           'VALUES (%s,%s)', [temp_summoner_name, result[temp_summoner_name]['id']])
-                c.execute('INSERT INTO summonerInfo (summoner, summonerId) '
+                c.execute('INSERT INTO summonerInfo' + '_' + summoners[index][5] + ' (summoner, summonerId) '
                           'VALUES (%s, %s) '
                           'ON CONFLICT (summonerId) '
                           'DO UPDATE SET summoner=EXCLUDED.summoner, summonerId=EXCLUDED.summonerId',
                           [temp_summoner_name, result[temp_summoner_name]['id']])
-                c.execute('UPDATE summoners SET info_cache_time=%s WHERE summoner=%s',
-                          [temp_cache_time, temp_summoner_name])
+                c.execute('UPDATE summoners SET info_cache_time=%s WHERE summoner=%s AND region=%s',
+                          [temp_cache_time, temp_summoner_name, summoners[index][5]])
                 conn.commit()
             else:
                 continue
-        c.execute('SELECT summonerId FROM summonerInfo WHERE summoner=%s',
+        c.execute('SELECT summonerId FROM summonerInfo' + '_' + summoners[index][5] +
+                  ' WHERE summoner=%s',
                   [summoners[index][0]])
         summoner_info = c.fetchone()
         # match_list_query_wait = random.randint(0, min(ml_cap, match_list_query_base * 2 ** last_command_use))
         match_list_query_wait = match_list_query_base
         if summoners[index][3] == 0 or (time.time() - summoners[index][3] > match_list_query_wait):
-            result = api.get_matchlist(summoner_info[0])
+            result = api.get_matchlist(summoner_info[0], summoners[index][5])
             if not isinstance(result, int):
-                c.execute('UPDATE summoners SET match_list_cache_time=%s WHERE summoner=%s',
-                          [time.time(), summoners[index][0]])
+                c.execute('UPDATE summoners SET match_list_cache_time=%s WHERE summoner=%s AND region=%s',
+                          [time.time(), summoners[index][0], summoners[index][5]])
                 if result['totalGames'] != 0:
                     for match in result['matches']:
                         # c.execute('INSERT OR REPLACE INTO matchList (matchId, timestamp, summonerId, lane) '
                         #           'VALUES (%s,%s,%s,%s)',
                         #           [match['matchId'], match['timestamp'], summoner_info[0], match['lane']])
-                        c.execute('INSERT INTO matchList (matchId, timestamp, summonerId, lane) '
+                        c.execute('INSERT INTO matchList' + '_' + summoners[index][5] +
+                                  ' (matchId, timestamp, summonerId, lane) '
                                   'VALUES (%s, %s, %s, %s) '
                                   'ON CONFLICT DO NOTHING',    # is it correct to do nothing here? I think so.
                                   [match['matchId'], match['timestamp'], summoner_info[0], match['lane']])
@@ -314,13 +324,15 @@ def update_database_cb(userdata):
         # current_game_query_wait = random.randint(0, min(cg_cap, current_game_query_base * 2 ** last_command_use))
         current_game_query_wait = current_game_query_base
         if summoners[index][4] == 0 or (time.time() - summoners[index][4] > current_game_query_wait):
-            result = api.get_current_game(summoner_info[0])
+            result = api.get_current_game(summoner_info[0], summoners[index][5])
             if result == 404:
                 print('current game for ' + summoners[index][0] + ' not found')
                 c.execute('UPDATE summoners SET current_game_exists=%s, current_game_cache_time=%s '
-                          'WHERE summoner=%s', [0, time.time(), summoners[index][0]])
-                c.execute('DELETE from currentRunes where summoner=%s', [summoners[index][0]])
-                c.execute('DELETE from currentBans where summoner=%s', [summoners[index][0]])
+                          'WHERE summoner=%s AND region=%s', ['false', time.time(), summoners[index][0], summoners[index][5]])
+                c.execute('DELETE from currentRunes' + '_' + summoners[index][5] +
+                          ' WHERE summoner=%s', [summoners[index][0]])
+                c.execute('DELETE from currentBans' + '_' + summoners[index][5] +
+                          ' WHERE summoner=%s', [summoners[index][0]])
                 conn.commit()
                 # TODO: update title if necessary
             elif not isinstance(result, int):
@@ -331,41 +343,45 @@ def update_database_cb(userdata):
                         active_game_champId = participants['championId']
                         active_game_runes = participants['runes']
                 c.execute('UPDATE summoners SET current_game_exists=%s, current_game_cache_time=%s, gameLength=%s,'
-                          ' championId=%s, gameId=%s WHERE summoner=%s',
-                          [1, time.time(), active_game_length, active_game_champId, result['gameId'],
-                           summoners[index][0]])
+                          ' championId=%s, gameId=%s WHERE summoner=%s AND region=%s',
+                          ['true', time.time(), active_game_length, active_game_champId, result['gameId'],
+                           summoners[index][0], summoners[index][5]])
                 for rune in active_game_runes:
                     # c.execute('INSERT OR REPLACE INTO currentRunes (count, runeId, summoner, gameId) '
                     #           'VALUES (%s,%s,%s,%s)',
                     #           [rune['count'], rune['runeId'], summoners[index][0], result['gameId']])
-                    c.execute('INSERT INTO currentRunes (count, runeId, summoner, gameId) '
+                    c.execute('INSERT INTO currentRunes' + '_' + summoners[index][5] +
+                              ' (count, runeId, summoner, gameId) '
                               'VALUES (%s,%s,%s,%s) '
                               'ON CONFLICT DO NOTHING',
                               [rune['count'], rune['runeId'], summoners[index][0], result['gameId']])
                 for ban in result['bannedChampions']:
                     # c.execute('INSERT OR REPLACE INTO currentBans (championId, summoner, gameId) VALUES (%s,%s,%s)',
                     #           [ban['championId'], summoners[index][0], result['gameId']])
-                    c.execute('INSERT INTO currentBans (championId, summoner, gameId) '
+                    c.execute('INSERT INTO currentBans' + '_' + summoners[index][5] +
+                              ' (championId, summoner, gameId) '
                               'VALUES (%s,%s,%s) '
                               'ON CONFLICT DO NOTHING',
                               [ban['championId'], summoners[index][0], result['gameId']])
                 conn.commit()
 
         # TODO: is it necessary to execute this every time? maybe have a global list of unstored matches?
-        c.execute('SELECT matchId, timestamp FROM matchList WHERE matchId NOT IN (SELECT matchId FROM match) '
+        c.execute('SELECT matchId, timestamp FROM matchList' + '_' + summoners[index][5] +
+                  ' WHERE matchId NOT IN (SELECT matchId FROM match' + '_' + summoners[index][5] + ') '
                   'ORDER BY timestamp DESC')
         unstored_matches = c.fetchall()  # list of 1-tuples
         if len(unstored_matches) != 0:
-            result = api.get_match_info((unstored_matches.pop(0))[0])
+            result = api.get_match_info((unstored_matches.pop(0))[0], summoners[index][5])
             if not isinstance(result, int):
                 print('Updating matches from match list')
                 logging.debug(result['matchId'])
                 logging.debug(result['matchCreation'])
                 logging.debug(result['matchDuration'])
-                c.execute('INSERT INTO match (matchId,matchCreation,matchDuration) '
+                c.execute('INSERT INTO match' + '_' + summoners[index][5] + ' (matchId,matchCreation,matchDuration) '
                           'VALUES (%s,%s,%s)', [result['matchId'], result['matchCreation'], result['matchDuration']])
                 for participantIdentity in result['participantIdentities']:
-                    c.execute('INSERT INTO participantIdentities (matchId,participantId,summonerId) '
+                    c.execute('INSERT INTO participantIdentities' + '_' + summoners[index][5] +
+                              ' (matchId,participantId,summonerId) '
                               'VALUES (%s,%s,%s)',
                               [result['matchId'],
                                participantIdentity['participantId'],
@@ -394,9 +410,8 @@ def update_database_cb(userdata):
                 #  than only being concerned with disk space). This is due to Heroku PostgreSQL row-restriction on
                 #  hobby plans.
                 for participant in result['participants']:
-                    print(participant['runes'])
-                    c.execute('INSERT INTO participants '
-                              '(matchId,championId,participantId,kills,deaths,assists,winner,runes) '
+                    c.execute('INSERT INTO participants' + '_' + summoners[index][5] +
+                              ' (matchId,championId,participantId,kills,deaths,assists,winner,runes) '
                               'VALUES (%s,%s,%s,%s,%s,%s,%s,%s)',
                               [result['matchId'], participant['championId'], participant['participantId'],
                                participant['stats']['kills'], participant['stats']['deaths'],
@@ -409,7 +424,7 @@ def update_database_cb(userdata):
     return hexchat.EAT_ALL
 
 
-# TODO: finish this sucker
+# TODO: finish this sucker (perhaps turn it into a TwitchAPI class)
 # def twitch_request(data={}):
 #     url = 'https://api.twitch.tv/kraken/channels/jakehoffmann'
 #     headers = {'Accept': 'application/vnd.twitchtv.v3+json',
@@ -472,9 +487,71 @@ def update_title(active_summoner=-1):
     logging.debug(response.status_code)
 
 
+def update_twitch_title(userdata):
+    """This updates the title of a currently streaming twitch user who last had their title updated more than 60
+     seconds ago. If a twitch_username is specified, it updates that specific users title
+    """
+    print('updating titles')
+    c.execute("SELECT twitch_username, token, title_base FROM users "
+              "WHERE channel_live='true' AND %s - last_title_update > 60 "
+              "ORDER BY last_title_update DESC "
+              "LIMIT 1", [time.time()])
+    row = c.fetchone()
+    if row is None:
+        return hexchat.EAT_ALL
+    user = row[0]
+    token = row[1]
+    title_base = row[2]
+
+    c.execute("SELECT summoner,gameId,gameLength,championId,region FROM summoners "
+              "WHERE twitch_username=%s AND current_game_exists='true'", [user])
+    current_game = c.fetchone()
+    if current_game is None:
+        title_dynamic = ''
+    else:
+        summoner = current_game[0]
+        game_length = current_game[2]
+        champ_id = current_game[3]
+        region = current_game[4]
+
+        minutes = (game_length // 60) + 3   # game length in minutes (+3 minutes due to spectator delay)
+        champ = CHAMPIONS.get(champ_id, str(champ_id))
+
+        if game_length == 0:
+            title_dynamic = '[Going into game as {champ}]'.format(champ=champ)
+        else:
+            title_dynamic = '[In game as {champ} for {length}m]'.format(champ=champ, length=minutes)
+
+    # TODO: again we may want to put this into a function/class especially if we start using other endpoints
+    url = 'https://api.twitch.tv/kraken/channels/{user}'.format(user=user)
+    data = {'channel': {'status': (title_dynamic + ' ' + title_base) if title_dynamic != '' else title_base}}
+    print('Setting title to:')
+    print(data)
+    headers = {'Accept': 'application/vnd.twitchtv.v3+json',
+               'Authorization': 'OAuth {token}'.format(token=token),
+               'Client-ID': '49mrp5ljn2nj44sx1czezi44ql151h2',
+               'content-type': 'application/json'
+               }
+    response = requests.put(url, data=json.dumps(data), headers=headers)
+    if response.status_code != 200:
+        print('say Twitch API call failed :(.')
+        return hexchat.EAT_ALL
+    print('response: ')
+    print(response)
+    print('twitch API status code: ')
+    print(response.status_code)
+    c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
+    return hexchat.EAT_ALL
+
 def channel_message_cb(word, word_eol, userdata):
+    """Is called whenever a message is received in HexChat. After a message is detected, we check if it is a valid
+    command. If it is, we handle it appropriately. See HexChat Python documentation for information about this
+    functions arguments and what it returns.
+    """
     global lastgame_timeout
     global currentgame_timeout
+
+    # TODO: FIRST THING TO DO in this function is check if it's a valid command. Otherwise we can drop it and move on!
 
     command = word[1].split()[0]  # the first word of a Twitch chat message, possibly a command
     channel = hexchat.get_info('channel')[1:]  # the channel in which the command was used
@@ -492,34 +569,189 @@ def channel_message_cb(word, word_eol, userdata):
         lastgame_timeout = time.time()
         logging.debug('lastgame')
 
-        # The next 4 lines put !lastgame in jake-only mode
-        username = word[0]
-        if username != 'jakehoffmann':
-            hexchat.command('say !lastgame is Jake-only for testing at the moment :)')
-            return hexchat.EAT_ALL
+        # The next lines put the command in jake-only mode
+        # username = word[0]
+        # if username != 'jakehoffmann':
+        #     hexchat.command('say ' + command[1:] + ' is Jake-only for testing at the moment :)')
+        #     return hexchat.EAT_ALL
 
-        c.execute('SELECT kills,deaths,assists,matchCreation,matchDuration,participants.championId,winner,lane,'
-                  'summoners.summoner, participants.matchId '
+        # c.execute('SELECT kills,deaths,assists,matchCreation,matchDuration,participants.championId,winner,lane,'
+        #           'summoners.summoner, participants.matchId '
+        #           'FROM summoners '
+        #           'INNER JOIN summonerInfo ON summoners.summoner = summonerInfo.summoner '
+        #           'INNER JOIN participantIdentities '
+        #           'ON participantIdentities.summonerId = summonerInfo.summonerId '
+        #           'INNER JOIN participants ON participantIdentities.participantId = participants.participantId '
+        #           'AND participantIdentities.matchId = participants.matchId '
+        #           'INNER JOIN match ON participants.matchId = match.matchId '
+        #           'INNER JOIN matchList ON participants.matchId = matchList.matchId '
+        #           'WHERE summoners.twitch_username = %s '
+        #           'ORDER BY matchCreation DESC '
+        #           'LIMIT 1', [channel])
+#############################
+
+        # This query selects all the summoners related to the current twitch user, orders them by when they last
+        #  played a match, and then selects the most recent one.
+        c.execute('SELECT kills, deaths, assists, matchCreation, matchDuration, championId, winner, lane, '
+                  'summoner, matchId, region '
+                  'FROM '
+                  '('
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_BR.championId,winner,lane,'
+                  'summoners.summoner, participants_BR.matchId, region '
                   'FROM summoners '
-                  'INNER JOIN summonerInfo ON summoners.summoner = summonerInfo.summoner '
-                  'INNER JOIN participantIdentities '
-                  'ON participantIdentities.summonerId = summonerInfo.summonerId '
-                  'INNER JOIN participants ON participantIdentities.participantId = participants.participantId '
-                  'AND participantIdentities.matchId = participants.matchId '
-                  'INNER JOIN match ON participants.matchId = match.matchId '
-                  'INNER JOIN matchList ON participants.matchId = matchList.matchId '
+                  'INNER JOIN summonerInfo_BR ON summoners.summoner = summonerInfo_BR.summoner '
+                  'INNER JOIN participantIdentities_BR '
+                  'ON participantIdentities_BR.summonerId = summonerInfo_BR.summonerId '
+                  'INNER JOIN participants_BR '
+                  'ON participantIdentities_BR.participantId = participants_BR.participantId '
+                  'AND participantIdentities_BR.matchId = participants_BR.matchId '
+                  'INNER JOIN match_BR ON participants_BR.matchId = match_BR.matchId '
+                  'INNER JOIN matchList_BR ON participants_BR.matchId = matchList_BR.matchId '
                   'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_EUNE.championId,winner,lane,'
+                  'summoners.summoner, participants_EUNE.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_EUNE ON summoners.summoner = summonerInfo_EUNE.summoner '
+                  'INNER JOIN participantIdentities_EUNE '
+                  'ON participantIdentities_EUNE.summonerId = summonerInfo_EUNE.summonerId '
+                  'INNER JOIN participants_EUNE '
+                  'ON participantIdentities_EUNE.participantId = participants_EUNE.participantId '
+                  'AND participantIdentities_EUNE.matchId = participants_EUNE.matchId '
+                  'INNER JOIN match_EUNE ON participants_EUNE.matchId = match_EUNE.matchId '
+                  'INNER JOIN matchList_EUNE ON participants_EUNE.matchId = matchList_EUNE.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_EUW.championId,winner,lane,'
+                  'summoners.summoner, participants_EUW.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_EUW ON summoners.summoner = summonerInfo_EUW.summoner '
+                  'INNER JOIN participantIdentities_EUW '
+                  'ON participantIdentities_EUW.summonerId = summonerInfo_EUW.summonerId '
+                  'INNER JOIN participants_EUW '
+                  'ON participantIdentities_EUW.participantId = participants_EUW.participantId '
+                  'AND participantIdentities_EUW.matchId = participants_EUW.matchId '
+                  'INNER JOIN match_EUW ON participants_EUW.matchId = match_EUW.matchId '
+                  'INNER JOIN matchList_EUW ON participants_EUW.matchId = matchList_EUW.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_JP.championId,winner,lane,'
+                  'summoners.summoner, participants_JP.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_JP ON summoners.summoner = summonerInfo_JP.summoner '
+                  'INNER JOIN participantIdentities_JP '
+                  'ON participantIdentities_JP.summonerId = summonerInfo_JP.summonerId '
+                  'INNER JOIN participants_JP '
+                  'ON participantIdentities_JP.participantId = participants_JP.participantId '
+                  'AND participantIdentities_JP.matchId = participants_JP.matchId '
+                  'INNER JOIN match_JP ON participants_JP.matchId = match_JP.matchId '
+                  'INNER JOIN matchList_JP ON participants_JP.matchId = matchList_JP.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_KR.championId,winner,lane,'
+                  'summoners.summoner, participants_KR.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_KR ON summoners.summoner = summonerInfo_KR.summoner '
+                  'INNER JOIN participantIdentities_KR '
+                  'ON participantIdentities_KR.summonerId = summonerInfo_KR.summonerId '
+                  'INNER JOIN participants_KR '
+                  'ON participantIdentities_KR.participantId = participants_KR.participantId '
+                  'AND participantIdentities_KR.matchId = participants_KR.matchId '
+                  'INNER JOIN match_KR ON participants_KR.matchId = match_KR.matchId '
+                  'INNER JOIN matchList_KR ON participants_KR.matchId = matchList_KR.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_LAN.championId,winner,lane,'
+                  'summoners.summoner, participants_LAN.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_LAN ON summoners.summoner = summonerInfo_LAN.summoner '
+                  'INNER JOIN participantIdentities_LAN '
+                  'ON participantIdentities_LAN.summonerId = summonerInfo_LAN.summonerId '
+                  'INNER JOIN participants_LAN '
+                  'ON participantIdentities_LAN.participantId = participants_LAN.participantId '
+                  'AND participantIdentities_LAN.matchId = participants_LAN.matchId '
+                  'INNER JOIN match_LAN ON participants_LAN.matchId = match_LAN.matchId '
+                  'INNER JOIN matchList_LAN ON participants_LAN.matchId = matchList_LAN.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_LAS.championId,winner,lane,'
+                  'summoners.summoner, participants_LAS.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_LAS ON summoners.summoner = summonerInfo_LAS.summoner '
+                  'INNER JOIN participantIdentities_LAS '
+                  'ON participantIdentities_LAS.summonerId = summonerInfo_LAS.summonerId '
+                  'INNER JOIN participants_LAS '
+                  'ON participantIdentities_LAS.participantId = participants_LAS.participantId '
+                  'AND participantIdentities_LAS.matchId = participants_LAS.matchId '
+                  'INNER JOIN match_LAS ON participants_LAS.matchId = match_LAS.matchId '
+                  'INNER JOIN matchList_LAS ON participants_LAS.matchId = matchList_LAS.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_OCE.championId,winner,lane,'
+                  'summoners.summoner, participants_OCE.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_OCE ON summoners.summoner = summonerInfo_OCE.summoner '
+                  'INNER JOIN participantIdentities_OCE '
+                  'ON participantIdentities_OCE.summonerId = summonerInfo_OCE.summonerId '
+                  'INNER JOIN participants_OCE '
+                  'ON participantIdentities_OCE.participantId = participants_OCE.participantId '
+                  'AND participantIdentities_OCE.matchId = participants_OCE.matchId '
+                  'INNER JOIN match_OCE ON participants_OCE.matchId = match_OCE.matchId '
+                  'INNER JOIN matchList_OCE ON participants_OCE.matchId = matchList_OCE.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_TR.championId,winner,lane,'
+                  'summoners.summoner, participants_TR.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_TR ON summoners.summoner = summonerInfo_TR.summoner '
+                  'INNER JOIN participantIdentities_TR '
+                  'ON participantIdentities_TR.summonerId = summonerInfo_TR.summonerId '
+                  'INNER JOIN participants_TR '
+                  'ON participantIdentities_TR.participantId = participants_TR.participantId '
+                  'AND participantIdentities_TR.matchId = participants_TR.matchId '
+                  'INNER JOIN match_TR ON participants_TR.matchId = match_TR.matchId '
+                  'INNER JOIN matchList_TR ON participants_TR.matchId = matchList_TR.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_RU.championId,winner,lane,'
+                  'summoners.summoner, participants_RU.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_RU ON summoners.summoner = summonerInfo_RU.summoner '
+                  'INNER JOIN participantIdentities_RU '
+                  'ON participantIdentities_RU.summonerId = summonerInfo_RU.summonerId '
+                  'INNER JOIN participants_RU '
+                  'ON participantIdentities_RU.participantId = participants_RU.participantId '
+                  'AND participantIdentities_RU.matchId = participants_RU.matchId '
+                  'INNER JOIN match_RU ON participants_RU.matchId = match_RU.matchId '
+                  'INNER JOIN matchList_RU ON participants_RU.matchId = matchList_RU.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  'UNION '
+                  'SELECT kills,deaths,assists,matchCreation,matchDuration,participants_NA.championId,winner,lane,'
+                  'summoners.summoner, participants_NA.matchId, region '
+                  'FROM summoners '
+                  'INNER JOIN summonerInfo_NA ON summoners.summoner = summonerInfo_NA.summoner '
+                  'INNER JOIN participantIdentities_NA '
+                  'ON participantIdentities_NA.summonerId = summonerInfo_NA.summonerId '
+                  'INNER JOIN participants_NA '
+                  'ON participantIdentities_NA.participantId = participants_NA.participantId '
+                  'AND participantIdentities_NA.matchId = participants_NA.matchId '
+                  'INNER JOIN match_NA ON participants_NA.matchId = match_NA.matchId '
+                  'INNER JOIN matchList_NA ON participants_NA.matchId = matchList_NA.matchId '
+                  'WHERE summoners.twitch_username = %s '
+                  ') AS unitedNations '     # this is a joke, couldn't help myself. it's the union of all the regions
                   'ORDER BY matchCreation DESC '
-                  'LIMIT 1', [channel])
+                  'LIMIT 1', [channel, channel, channel, channel, channel, channel, channel, channel, channel,
+                              channel, channel])
+
         row = c.fetchone()
         if row is None:
             logging.debug('no games found for twitch username: ' + channel)
-            hexchat.command('say No games found for {user}.'.format(
+            hexchat.command('say No games found for {user}.'
+                            ' (Have you registered your summoners at hoffmannbot.com?)'.format(
                 user=alias
             ))
             return hexchat.EAT_ALL
 
-        print(row)
         gameEndTime = int((row[3]/1000)+row[4])
         etimeSinceGame = calendar.timegm(time.gmtime()) - gameEndTime  # current time - start time
         conversion = etimeSinceGame
@@ -541,25 +773,39 @@ def channel_message_cb(word, word_eol, userdata):
         else:
             champ = CHAMPIONS['champId']
 
-        lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} [{days}{hours}{minutes} ago,\
-        account: {account}, http://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/{matchId}]'.format(
-            user=alias,
-            kills=row[0],
-            deaths=row[1],
-            assists=row[2],
-            days=str(days) + 'd' if days != 0 else '',
-            hours=str(hours) + 'h' if hours != 0 else '',
-            minutes=str(minutes) + 'm',
-            champ=champ,
-            result='won' if row[6] else 'lost',
-            lane=row[7].lower(),
-            account=row[8],
-            matchId=row[9]
-        )
+        lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} ' \
+                   '[{days}{hours}{minutes} ago, account: {account}, ' \
+                   'http://matchhistory.{region}.leagueoflegends.com/en/#match-details/{platform}/{matchId}]'\
+            .format(
+               user=alias,
+               kills=row[0],
+               deaths=row[1],
+               assists=row[2],
+               days=str(days) + 'd' if days != 0 else '',
+               hours=str(hours) + 'h' if hours != 0 else '',
+               minutes=str(minutes) + 'm',
+               champ=champ,
+               result='won' if row[6] else 'lost',
+               lane=row[7].lower(),
+               account=row[8],
+               region=REGIONS[row[10]],
+               platform=PLATFORMS[row[10]],
+               matchId=row[9]
+            ) \
+            if not(row[4] < 300 and row[0] == row[1] == row[2] == 0) \
+            else '{user}\'s last game was a remake [{days}{hours}{minutes} ago, account: {account}]'\
+            .format(user=alias, days=str(days) + 'd' if days != 0 else '', hours=str(hours) + 'h' if hours != 0 else '',
+                    minutes=str(minutes) + 'm', account=row[8])
+
         hexchat.command('say ' + lastgame)
         return hexchat.EAT_ALL
 
     elif command == '!refresh':
+        # The next lines put the command in jake-only mode
+        username = word[0]
+        if username != 'jakehoffmann':
+            # hexchat.command('say ' + command[1:] + ' is Jake-only for testing at the moment :)')
+            return hexchat.EAT_ALL
         refresh_channels()
         return hexchat.EAT_ALL
 
@@ -572,8 +818,8 @@ def channel_message_cb(word, word_eol, userdata):
         currentgame_timeout = time.time()
 
         logging.debug('currentgame')
-        c.execute('SELECT summoner,gameId,gameLength,championId FROM summoners '
-                  'WHERE twitch_username=%s AND current_game_exists=1', [channel])
+        c.execute("SELECT summoner,gameId,gameLength,championId,region FROM summoners "
+                  "WHERE twitch_username=%s AND current_game_exists='true'", [channel])
         current_game = c.fetchone()
         if current_game is None:
             logging.debug('no current game found for twitch username: ' + channel)
@@ -586,14 +832,14 @@ def channel_message_cb(word, word_eol, userdata):
         active_game_champ = CHAMPIONS[current_game[3]]
 
         rune_list = ''
-        c.execute('SELECT count,runeId FROM currentRunes '
+        c.execute('SELECT count,runeId FROM currentRunes' + '_' + current_game[4] + ' '
                   'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]])
         for row in c:
             rune_list += str(row[0])+'x '+RUNES[row[1]]+', '
         rune_list = rune_list[:-2]
 
         banned_champ_list = ''
-        c.execute('SELECT championId FROM currentBans '
+        c.execute('SELECT championId FROM currentBans' + '_' + current_game[4] + ' '
                   'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]])
         for row in c:
             banned_champ_list += CHAMPIONS[row[0]]
@@ -776,10 +1022,12 @@ def channelmessage_cb(word, word_eol, userdata):
         return hexchat.EAT_ALL
     elif command == '!title':
         username = word[0]
-        if username != 'jakehoffmann':
-            hexchat.command('say No! Not for you!')
+        print('username: ' + username + ' channel: ' + hexchat.get_info('channel')[1:])
+        if username != hexchat.get_info('channel')[1:]:
+            # hexchat.command('say No! Not for you!')
             return hexchat.EAT_ALL
-        title_base = word[1][7:]
+        c.execute('UPDATE users SET title_base=%s', [word[1][7:]])
+        # title_base = word[1][7:]
         update_title()
         return hexchat.EAT_ALL
     elif command == '!hi':
@@ -822,10 +1070,9 @@ print('==========Hoffmannbot loaded============')
 #     RUNES[runes_data['data'][rune]['id']] = runes_data['data'][rune]['name']
 # logging.debug(RUNES)
 
-refresh_channels()
-
 ### database versions
-hexchat.hook_timer(3000, update_database_cb)
+hexchat.hook_timer(5000, update_twitch_title)
+hexchat.hook_timer(5000, update_database_cb)
 hexchat.hook_print('Channel Message', channel_message_cb)
 # hexchat.hook_timer(300000, refresh_channels)    # refresh the channel list every 5 mins (300k milliseconds)
 
