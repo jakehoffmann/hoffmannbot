@@ -59,3 +59,11 @@ a:link {
 #newSummoner {
     width: 25%;
 }
+
+/* 
+ *  The following stylize the modal images (/modals/modalImage.html)
+ */
+.modal-image .image-wrapper img {
+    max-width: 560px;
+    max-height: 560px;
+}

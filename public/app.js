@@ -7,7 +7,7 @@ myApp.config(function ($routeProvider) {
         templateUrl: 'pages/home.html',
         controller: 'MainCtrl'
     })
-    .when('/hoffmannbot/', {
+    .when('/hoffmannbot/', {  // removed this route as it was not useful!
         templateUrl: 'pages/hoffmannbot.html',
         controller: 'MainCtrl'
     })
@@ -31,6 +31,10 @@ myApp.config(function ($routeProvider) {
         templateUrl: 'pages/login.html',
         controller: 'AuthCtrl'
     })
+//    .when('/support/', {
+//        templateUrl: 'pages/support.html',
+//        controller: 'MainCtrl'
+//    })
 });
 
 // sends oauth code to server (this is a work in progress, will replace the analogous 
