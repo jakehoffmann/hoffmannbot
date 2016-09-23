@@ -75,3 +75,11 @@ a:link {
     max-width: 560px;
     max-height: 560px;
 }
+
+div .image-wrapper { 
+    width: 600px;
+}
+img #modal-image { 
+    max-width: 100%;
+}
+
