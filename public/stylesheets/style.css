@@ -63,7 +63,15 @@ a:link {
 /* 
  *  The following stylize the modal images (/modals/modalImage.html)
  */
+
+/*
 .modal-image .image-wrapper img {
+    max-width: 560px;
+    max-height: 560px;
+}
+*/
+
+#modal-image {
     max-width: 560px;
     max-height: 560px;
 }
