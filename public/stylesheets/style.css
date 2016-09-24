@@ -71,15 +71,23 @@ a:link {
 }
 */
 
+/*
 #modal-image {
     max-width: 560px;
     max-height: 560px;
 }
+*/
 
+/*
 div .image-wrapper { 
     width: 600px;
 }
 img #modal-image { 
     max-width: 100%;
 }
+*/
 
+img.resize{
+    width:560px; /* you can use % */
+    height: auto;
+}
