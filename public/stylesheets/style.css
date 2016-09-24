@@ -78,16 +78,18 @@ a:link {
 }
 */
 
-/*
+
 div .image-wrapper { 
     width: 600px;
 }
-img #modal-image { 
+#modal-image { 
     max-width: 100%;
 }
-*/
+
+/*
 
 img.resize{
-    width:560px; /* you can use % */
+    width:560px;
     height: auto;
 }
+*/
