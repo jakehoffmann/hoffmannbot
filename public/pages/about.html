@@ -8,14 +8,12 @@
 <div class="row">
 <div ng-repeat="image in screenshots">
     <div class="col-xs-12">
-    <p class="text-muted">
-    {{image.desc}}
-    </p>
-    </div>
-    <div class="col-xs-12">
-    <img ng-src="{{image.src}}" alt="{{image.desc}}" class="img-responsive" />
+    <figure class="figure">
+    <img ng-src="{{image.src}}" alt="{{image.desc}}" class="img-fluid img-figure img-rounded img-responsive" />
+    <figcaption class="figure-caption">{{image.desc}}</figcaption>
 <!--         ng-click="openModal(image)" />-->
-        
+
+    </figure>        
     </div>
 </div>
 </div>
