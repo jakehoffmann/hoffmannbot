@@ -265,9 +265,9 @@ def update_database_cb(userdata):
 
     # base delay in seconds before querying Riot API again (before exponential back-off)
     summoner_info_query_base = 90000000  # TODO: how often to re-query this, if ever?
-    match_list_query_base = 900000000000
+    match_list_query_base = 60
     current_game_query_base = 60
-    league_query_base = 600
+    league_query_base = 60
 
     siq_cap = 3600                  # summoner info query exponential back-off cap
     ml_cap = 180                    # match list query exponential back-off cap
