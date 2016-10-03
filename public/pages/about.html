@@ -1,16 +1,18 @@
 <secondary-nav></secondary-nav>
 <br />
-<p class="text-muted">
+<h1 class="page-header">Overview</h1>
+<p class="lead">
     HoffmannBot is a free Twitch chat bot that integrates League of Legends data into your channel and chat.
 </p>
 <br />
 <br />
+<h2>Features</h2>
 <div ng-repeat="image in screenshots">
 <div class="row">
     <div class="col-xs-12">
     <figure class="figure">
     <img ng-src="{{image.src}}" alt="{{image.desc}}" class="img-fluid img-figure img-rounded img-responsive" />
-    <figcaption class="figure-caption text-muted">{{image.desc}}</figcaption>
+    <figcaption class="figure-caption">{{image.desc}}</figcaption>
 <!--         ng-click="openModal(image)" />-->
 
     </figure>        
@@ -20,6 +22,6 @@
 </div>
 <br />
 <br />
-<p class="text-muted">
+<p>
     HoffmannBot isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
 </p>
