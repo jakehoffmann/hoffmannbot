@@ -4,13 +4,15 @@ URL = {
     'summoner_by_name': 'v{version}/summoner/by-name/{names}',
     'matchlist': 'v{version}/matchlist/by-summoner/{id}',
     'match': 'v{version}/match/{matchId}',
+    'league': 'v{version}/league/by-summoner/{id}/entry',
     'currentgame': '{id}'
 }
 
 API_VERSIONS = {
     'summoner': '1.4',
     'matchlist': '2.2',
-    'match': '2.2'
+    'match': '2.2',
+    'league': '2.5'
 }
 
 REGIONS = {

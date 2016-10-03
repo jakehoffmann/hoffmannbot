@@ -2,7 +2,7 @@
 myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'auth',
                               function ($scope, $http, $uibModal, auth) {
     $scope.checkAuth = auth.isAuthed; // Unsure if I am using this in the view
-    $scope.screenshots = [] //['/images/lastcommand.png', '/images/test.png']                                  
+    $scope.screenshots = ['/images/lastcommand.png'] // '/images/test.png']                                  
     $scope.openModal = function(src) {
         $uibModal.open({
             templateUrl: 'modals/modalImage.html',
