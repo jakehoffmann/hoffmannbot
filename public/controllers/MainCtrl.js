@@ -2,7 +2,12 @@
 myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'auth',
                               function ($scope, $http, $uibModal, auth) {
     $scope.checkAuth = auth.isAuthed; // Unsure if I am using this in the view
-    $scope.screenshots = ['/images/lastcommand.png', '/images/titleupdate.png'] 
+    $scope.screenshots = [{src: '/images/lastcommand.png',
+                           desc: 'Displays stats from your last game in chat'
+                          }, 
+                          {src: '/images/titleupdate.png',
+                           desc: 'Updates your title with your in-game info'
+                          }] 
     
     $scope.openModal = function(src) {
         $uibModal.open({

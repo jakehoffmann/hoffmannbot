@@ -65,3 +65,5 @@ img.resize{
     height: auto;
 }
 */
+
+.top-buffer { margin-top:20px; }
