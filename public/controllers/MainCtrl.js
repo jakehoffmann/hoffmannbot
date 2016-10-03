@@ -6,7 +6,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'auth',
     $scope.openModal = function(src) {
         $uibModal.open({
             templateUrl: 'modals/modalImage.html',
-            size: 'lg',
+//            size: 'lg',
             controller: ["$scope", "imgSrc", function($scope, imgSrc) {
                 $scope.imgSrc = imgSrc;
             }],
