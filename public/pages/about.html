@@ -5,10 +5,14 @@
 </p>
 <br />
 <br />
+<div class="row">
 <div ng-repeat="image in screenshots">
-    <img ng-src="{{image}}"
-         alt="{{image-name}}" />
+    <div class="col-xs-4">
+    <img ng-src="{{image}}" alt="{{image-name}}" class="img-responsive" />
 <!--         ng-click="openModal(image)" />-->
+        
+    </div>
+</div>
 </div>
 <br />
 <br />
