@@ -67,15 +67,3 @@ img.resize{
 */
 
 .top-buffer { margin-top:20px; }
-
-/*
- *  The following is for making figcaption width the same as its image
- */ 
-
-figure {
-    display: table;
-    width: 1px; /* This can be any width, so long as it's narrower than any image */
-}
-img, figcaption {
-    display: table-row;
-}

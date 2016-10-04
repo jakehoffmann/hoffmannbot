@@ -1,7 +1,8 @@
 // Takes care of the main, unauthorized view. The unauthorized view is very simple, mostly showing static data.
-myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'auth',
-                              function ($scope, $http, $uibModal, auth) {
+myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', 'auth',
+                              function ($scope, $http, $uibModal, $route, auth) {
     $scope.checkAuth = auth.isAuthed; // Unsure if I am using this in the view
+    $scope.$route = $route; 
     $scope.screenshots = [{
                               src: '/images/lastcommand.png',
                               desc: 'Displays stats from your last game in chat'

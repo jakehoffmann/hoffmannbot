@@ -18,14 +18,17 @@ myApp.config(function ($routeProvider) {
     .when('/hoffmannbot/get/', {
         templateUrl: 'pages/get.html',
         controller: 'AuthCtrl',
+        activetab: 'get'
     })
     .when('/hoffmannbot/commands', {
         templateUrl: 'pages/commands.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        activetab: 'commands'
     })
     .when('/hoffmannbot/about', {
         templateUrl: 'pages/about.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        activetab: 'about'
     })
     .when('/login', {
         templateUrl: 'pages/login.html',

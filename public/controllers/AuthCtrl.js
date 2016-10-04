@@ -1,5 +1,5 @@
 // Provides functionality for the login/authorized view.
-myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "auth", "userState", 'editSummoners', function ($scope, $http, $location, auth, userState, editSummoners) {
+myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", "userState", 'editSummoners', function ($scope, $http, $location, $route, auth, userState, editSummoners) {
     $scope.code = $location.search().code;
     $scope.code = userState.code;
     $scope.summoners = userState.summoners;
@@ -7,7 +7,8 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "auth", "userState
     $scope.auth = auth.auth;
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
-
+    $scope.$route = $route;                          
+                              
     $scope.repeatEntry = function () {
         var filteredSummoner = $scope.inputSummoner.toLowerCase().replace(/\s+/g, '');
         for (var i = 0; i < $scope.summoners.length; i++) {
