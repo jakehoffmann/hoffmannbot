@@ -16,7 +16,7 @@ import os
 sys.path.append(os.getcwd()+'\\..')
 logging.debug('Directory added to sys.path: '+os.getcwd()+'\\..')
 
-from static_data import RUNES, CHAMPIONS
+from static_data_shortened import RUNES, CHAMPIONS
 from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
 
 logging.basicConfig(filename='D:\hoffmannbot\logs\log.txt', level=logging.DEBUG)
@@ -123,7 +123,7 @@ class RiotAPI(object):
             id=summonerid
         )
         return self._request(api_url, region, params={'rankedQueues': 'TEAM_BUILDER_DRAFT_RANKED_5x5',
-                                                      'beginIndex': '0', 'endIndex': '10'})
+                                                      'beginIndex': '0', 'endIndex': '5'})
 
 # get current game info. uses special request due to the base URL being unique in Riot API
     def get_current_game(self, summoner_id, region):
@@ -305,10 +305,13 @@ def update_database_cb(userdata):
                 conn.commit()
             else:
                 continue
+
+        # TODO: Is this database query necessary? could manually set summoner_info using the info obtained above
         c.execute('SELECT summonerId FROM summonerInfo' + '_' + summoners[index][5] +
                   ' WHERE summoner=%s',
                   [summoners[index][0]])
         summoner_info = c.fetchone()
+
         # match_list_query_wait = random.randint(0, min(ml_cap, match_list_query_base * 2 ** last_command_use))
         match_list_query_wait = match_list_query_base
         if summoners[index][3] == 0 or (time.time() - summoners[index][3] > match_list_query_wait):
@@ -812,8 +815,9 @@ def channel_message_cb(word, word_eol, userdata):
             champ = CHAMPIONS['champId']
 
         lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} ' \
-                   '[{days}{hours}{minutes} ago, account: {account} ({region}), ' \
-                   'http://matchhistory.{region}.leagueoflegends.com/en/#match-details/{platform}/{matchId}]'\
+                   '[{days}{hours}{minutes} ago, account: {account} ({region})' \
+                   ', http://matchhistory.{region}.leagueoflegends.com/en/#match-details/{platform}/{matchId}' \
+                   ']'\
             .format(
                user=alias,
                kills=row[0],
@@ -906,7 +910,7 @@ def channel_message_cb(word, word_eol, userdata):
         c.execute('SELECT championId FROM currentBans' + '_' + current_game[4] + ' '
                   'WHERE summoner=%s AND gameId=%s', [current_game[0], current_game[1]])
         for row in c:
-            banned_champ_list += CHAMPIONS[row[0]]
+            banned_champ_list += CHAMPIONS[row[0]]+'/'
 
         minutes = (active_game_length // 60) + 3
         hexchat.command('say {beginning} as {champ}{length}.{runes}{bans}'.format(
@@ -914,7 +918,7 @@ def channel_message_cb(word, word_eol, userdata):
             champ=active_game_champ,
             length=' for '+str(minutes)+'m' if active_game_length != 0 else '',
             runes=' ' + rune_list + '.' if 'runes' in word[1].split() else '',
-            bans=' Bans: ' + banned_champ_list + '.' if 'bans' in word[1].split() else ''
+            bans=' Bans: ' + banned_champ_list[:-1] + '.' if 'bans' in word[1].split() else ''
         ))
         return hexchat.EAT_ALL
 
