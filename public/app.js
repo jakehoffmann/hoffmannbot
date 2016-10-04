@@ -32,7 +32,8 @@ myApp.config(function ($routeProvider) {
     })
     .when('/login', {
         templateUrl: 'pages/login.html',
-        controller: 'AuthCtrl'
+        controller: 'AuthCtrl',
+        activetab: 'get'
     })
 //    .when('/support/', {
 //        templateUrl: 'pages/support.html',
