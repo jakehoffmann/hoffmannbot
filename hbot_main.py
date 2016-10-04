@@ -589,6 +589,7 @@ def channel_message_cb(word, word_eol, userdata):
     # TODO: FIRST THING TO DO in this function is check if it's a valid command. Otherwise we can drop it and move on!
 
     command = word[1].split()[0]  # the first word of a Twitch chat message, possibly a command
+    user = word[0]
     channel = hexchat.get_info('channel')[1:]  # the channel in which the command was used
     c.execute('SELECT alias,lcu_last,lcu_current,lcu_hi,lcu_rank FROM users WHERE twitch_username=%s', [channel])
     is_valid_user = c.fetchone()
@@ -872,7 +873,7 @@ def channel_message_cb(word, word_eol, userdata):
 
     elif command == '!hi':
         command_use_time = time.time()
-        if (command_use_time - lcu_hi) <= 5:
+        if (command_use_time - lcu_hi) <= 10:
             return hexchat.EAT_ALL
         c.execute('UPDATE users SET lcu_hi=%s,last_command_use=%s '
                   'WHERE twitch_username=%s', [command_use_time, command_use_time, channel])
@@ -922,6 +923,16 @@ def channel_message_cb(word, word_eol, userdata):
         ))
         return hexchat.EAT_ALL
 
+    elif command == "!title":
+        print('user: ', user)
+        print('channel: ', channel)
+        print('title: ', word[1][7:139])
+        if user != channel:
+            return hexchat.EAT_ALL
+        c.execute('UPDATE users SET title_base=%s WHERE twitch_username=%s', [word[1][7:139], channel])
+        conn.commit()
+        hexchat.command('say Submitted! Your title will reflect the change shortly.')
+        return hexchat.EAT_ALL
 
 # ---- OLD VERSION ---- #
 # ----             ---- #
