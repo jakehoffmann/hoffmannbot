@@ -524,7 +524,7 @@ def update_twitch_title(userdata):
     """
     print('updating titles')
     c.execute("SELECT twitch_username, token, title_base FROM users "
-              "WHERE channel_live='true' AND %s - last_title_update > 60 "
+              "WHERE receives_title_updates='true' AND channel_live='true' AND %s - last_title_update > 60 "
               "ORDER BY last_title_update DESC "
               "LIMIT 1", [time.time()])
     row = c.fetchone()
@@ -861,7 +861,7 @@ def channel_message_cb(word, word_eol, userdata):
             hexchat.command('say No summoners found!')
             return hexchat.EAT_ALL
         for summoner in summoners:
-            ranks_list += (summoner[0] + ': ' + summoner[1].title() + ' ' + summoner[2] + ' ' + str(summoner[3]) +
+            ranks_list += (summoner[0] + ': ' + summoner[1].title() + ' ' + summoner[2] + ', ' + str(summoner[3]) +
                            'LP, ')
         hexchat.command('say ' + ranks_list[:-2])
         return hexchat.EAT_ALL
@@ -1135,7 +1135,7 @@ print('==========Hoffmannbot loaded============')
 # logging.debug(RUNES)
 
 ### database versions
-hexchat.hook_timer(5000, update_twitch_title)
+# hexchat.hook_timer(5000, update_twitch_title)
 hexchat.hook_timer(5000, update_database_cb)
 hexchat.hook_print('Channel Message', channel_message_cb)
 # hexchat.hook_timer(300000, refresh_channels)    # refresh the channel list every 5 mins (300k milliseconds)
