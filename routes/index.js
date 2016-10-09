@@ -63,8 +63,12 @@ router.post('/auth', function(req, res, next) {
             response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             console.log('pushed this: ', {'summoner': row.summoner, 'region': row.region})
             response['twitch_username'] = row.twitch_username;
-            response['settings']['title_updates'] = row.receives_title_updates;
-            response['settings']['alias'] = row.alias;
+//            response['settings']['title_updates'] = row.receives_title_updates;
+//            response['settings']['alias'] = row.alias;
+            response['settings'] = {
+                title_updates: row.receives_title_updates,
+                alias: row.alias            
+            }
         });
         query.on('end', function(result) {
             if (result.rowCount === 0) {
@@ -112,8 +116,11 @@ router.post('/auth', function(req, res, next) {
                                     });
                                     query.on('row', function(row) {
                                         response.summoners.push({'summoner': row.summoner, 'region': row.region});
-                                        response['settings']['title_updates'] = row.receives_title_updates;
-                                        response['settings']['alias'] = row.alias;
+//                                        response['settings']['title_updates'] = row.receives_title_updates;
+//                                        response['settings']['alias'] = row.alias;
+                                        response['settings'] = {
+                title_updates: row.receives_title_updates,
+                alias: row.alias  
                                     });
                                     query.on('end', function(result) {
                                         console.log(response);
