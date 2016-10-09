@@ -120,7 +120,6 @@ router.post('/auth', function(req, res, next) {
                                     });
                                     query.on('row', function(row) {
                                         response.summoners.push({'summoner': row.summoner, 'region': row.region});
-                                        };
                                     });
                                     query.on('end', function(result) {
                                         console.log(response);
