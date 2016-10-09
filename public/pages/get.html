@@ -3,7 +3,9 @@
 <br />
 <br />
 <div class="col-xs-6" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
-<div class="col-xs-6">empty column</div>
+<div class="col-xs-6"></div>
+<br />
+<br />
 <h3>
 Your summoners
 </h3>
@@ -56,15 +58,16 @@ No summoners registered!
     <br />
 </div>
 <h3>
+<div class="col-xs-6"></div>
+<br />
 Your settings
 </h3>
 <br />
-The bot refers to you as <b>{{ getAlias() }}</b>. 
+The bot refers to you as <b>{{ getAlias() }}</b>.
+<br />
 Title updating 
 <span class="label label-success" ng-show="settings.title_updates">ON</span>
 <span class="label label-danger" ng-show="!settings.title_updates">OFF</span>
-<input type="submit" class="btn btn-default" value="Disable" ng-show="settings.title_updates">
-<input type="submit" class="btn btn-default" value="Enable" ng-show="!settings.title_updates">
-<a class="btn btn-default" ng-show="settings.title_updates"><i class="glyphicon glyphicon-off"></i>" Disable"</a>
-<a class="btn btn-default" ng-show="!settings.title_updates"><i class="glyphicon glyphicon-off"></i>" Enable"</a>
+<a class="btn btn-default" ng-show="settings.title_updates"><i class="glyphicon glyphicon-off"></i> Disable</a>
+<a class="btn btn-default" ng-show="!settings.title_updates"><i class="glyphicon glyphicon-off"></i> Enable</a>
  
