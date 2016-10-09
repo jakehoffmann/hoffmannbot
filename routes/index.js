@@ -75,7 +75,7 @@ router.post('/auth', function(req, res, next) {
                                 form: { client_id: '49mrp5ljn2nj44sx1czezi44ql151h2',
                                         client_secret: 'mz513m1xu5ga9mhrxuvb9sbwjgjw2ys',
                                         grant_type: 'authorization_code',
-                                        redirect_uri: 'http://hoffmannbot.herokuapp.com/#/hoffmannbot/get/',
+                                        redirect_uri: 'http://hoffmannbot.com/#/hoffmannbot/get/',
                                         code: req.body.code}},
                                 function(err, httpResponse, body) {
                     if (err) {
