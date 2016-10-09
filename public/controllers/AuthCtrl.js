@@ -62,6 +62,15 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
            console.error('Error response while trying to remove summoner', err); 
         });
     };
+    
+    $scope.getAlias = function() {
+        if ($scope.settings.alias === 'noalias') {
+            return $scope.user;
+        }
+        else {
+            return $scope.settings.alias;
+        }
+    };
 
     // is there a more compact way to do these?
     $scope.$watch('code', function() {
@@ -72,6 +81,9 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     });
     $scope.$watch('user', function() {
         userState.user = $scope.user;
+    });
+    $scope.$watch('settings', function() {
+        userState.settings = $scope.settings; 
     });
        
     // if the user is returning from agreeing to give us access (ie. code is in query strings) ...
@@ -90,6 +102,7 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
             console.log('response: ', response.data);
             $scope.summoners = response.data.summoners;
             $scope.user = response.data.twitch_username;
+            $scope.settings = response.data.settings;
         }, function errorCallback(response) {
             console.log('error sending request to server in AuthCtrl')
         });

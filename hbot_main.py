@@ -819,6 +819,10 @@ def channel_message_cb(word, word_eol, userdata):
         else:
             champ = CHAMPIONS['champId']
 
+        # lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} ' \
+        #            '[{days}{hours}{minutes} ago, account: {account} ({region})' \
+        #            ', <match history link>' \
+        #            ']'\
         lastgame = '{user} went {kills}/{deaths}/{assists} on {champ} {lane} and {result} ' \
                    '[{days}{hours}{minutes} ago, account: {account} ({region})' \
                    ', http://matchhistory.{region}.leagueoflegends.com/en/#match-details/{platform}/{matchId}' \

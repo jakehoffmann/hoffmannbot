@@ -2,7 +2,7 @@
 
 <br />
 <br />
-<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+<div class="col-xs-6" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
 <div ng-hide="summoners.length ===0">
 Your summoners
 </div>
@@ -54,4 +54,13 @@ No summoners registered!
     This summoner name has already been registered for this region!
     <br />
 </div>
+Your settings
+<br />
+The bot refers to you as <b>{{getAlias()}}</b>. 
+Title updating 
+<span class="label label-success" ng-show="settings.title_updates">ON</span>
+<span class="label label-success" ng-show="!settings.title_updates">OFF</span>
+<input type="submit" class="btn btn-default" value="Disable" ng-show="settings.title_updates">
+<input type="submit" class="btn btn-default" value="Enable" ng-show="!settings.title_updates">
+
  
