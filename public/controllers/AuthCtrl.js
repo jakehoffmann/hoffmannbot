@@ -71,7 +71,7 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     };
     
     $scope.getAlias = function() {
-        console.log('user state: ', userState.settings);
+        console.log('user state: ', userState);
         if (userState.settings.alias === 'noalias' || !userState.settings.alias) {
             return userState.user;
         }

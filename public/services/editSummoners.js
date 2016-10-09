@@ -3,6 +3,7 @@ myApp.factory('editSummoners', ['$http', 'userState', function ($http, userState
     var factory = {};
     
     factory.editSummoners = function(action, twitch_username, summonerName, region) {
+        console.log('From editSummoners, action: ', action)
         return  $http({
                 method: 'POST',
                 url: '/api/summoner/'+action+'/'+twitch_username+'/'+summonerName+'/'+region,
