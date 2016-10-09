@@ -121,7 +121,7 @@ router.post('/auth', function(req, res, next) {
                                         response['settings'] = {
                 title_updates: row.receives_title_updates,
                 alias: row.alias  
-                                    });
+                                    };
                                     query.on('end', function(result) {
                                         console.log(response);
                                         res.json(response);
