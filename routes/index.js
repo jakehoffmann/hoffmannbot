@@ -63,7 +63,6 @@ router.post('/auth', function(req, res, next) {
             response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             console.log('pushed this: ', {'summoner': row.summoner, 'region': row.region})
             response['twitch_username'] = row.twitch_username;
-            }
         });
         query.on('end', function(result) {
             if (result.rowCount === 0) {
