@@ -14,13 +14,14 @@ import os
 #  that modules are loaded from. I include it explicitly in the following line(s).
 # sys.path.append(r'D:\hoffmannbot')
 sys.path.append(os.getcwd()+'\\..')
-logging.debug('Directory added to sys.path: '+os.getcwd()+'\\..')
 
 from static_data_shortened import RUNES, CHAMPIONS
 from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
 
 logging.basicConfig(filename='D:\hoffmannbot\logs\log.txt', level=logging.DEBUG)
 # logging.basicConfig(level=logging.DEBUG)
+
+logging.debug('Directory added to sys.path: '+os.getcwd()+'\\..')
 
 __module_name__ = "hoffmannbot"
 __module_version__ = "1.0"
@@ -53,9 +54,10 @@ SUMMONERS = {}
 
 
 class RiotAPI(object):
+    last_riot_api_query = 0
 
     def __init__(self, api_key):
-                 # region=REGIONS['north_america'], platform=PLATFORMS['north_america']):
+        # region=REGIONS['north_america'], platform=PLATFORMS['north_america']):
         self.api_key = api_key
         # self.region = region
         # self.platform = platform
@@ -71,7 +73,9 @@ class RiotAPI(object):
         :return: returns an integer on failure, json response on success
         """
         global last_request_time
-        diff = time.time() - last_request_time
+        logging.debug('class timer variable: ' + str(RiotAPI.last_riot_api_query))
+        logging.debug('global timer variable: ' + str(last_request_time))
+        diff = time.time() - RiotAPI.last_riot_api_query
         if diff <= 5:
             return 1
         args = {'api_key': self.api_key}
@@ -96,7 +100,7 @@ class RiotAPI(object):
                 ),
                 params=args
             )
-        last_request_time = time.time()
+        last_request_time = RiotAPI.last_riot_api_query = time.time()
         logging.debug('status code: ')
         logging.debug(response.status_code)
         if response.status_code != 200:
@@ -847,7 +851,7 @@ def channel_message_cb(word, word_eol, userdata):
         # The next lines put the command in jake-only mode
         username = word[0]
         if username != 'jakehoffmann':
-            # hexchat.command('say ' + command[1:] + ' is Jake-only for testing at the moment :)')
+            hexchat.command('say ' + command + ' is Jake-only')
             return hexchat.EAT_ALL
         refresh_channels()
         return hexchat.EAT_ALL

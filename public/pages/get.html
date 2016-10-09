@@ -2,7 +2,12 @@
 
 <br />
 <br />
+<div ng-hide="summoners.length ===0">
 Your summoners
+</div>
+<div ng-show="summoners.length === 0">
+No summoners registered!
+</div>
 <div ng-repeat="sum in summoners">
     <span class="tag label label-primary">
         <span>{{ sum.summoner }} {{ sum.region }}</span>

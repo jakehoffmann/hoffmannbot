@@ -8,7 +8,14 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
     $scope.$route = $route;                          
-                              
+    $scope.alerts = [
+        {type: 'danger', msg: 'Please remember to make HoffmannBot a moderator in your twitch chat!'}
+    ];
+    
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+    
     $scope.repeatEntry = function () {
         var filteredSummoner = $scope.inputSummoner.toLowerCase().replace(/\s+/g, '');
         for (var i = 0; i < $scope.summoners.length; i++) {
