@@ -63,7 +63,6 @@ router.post('/auth', function(req, res, next) {
             response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             console.log('pushed this: ', {'summoner': row.summoner, 'region': row.region})
             response['twitch_username'] = row.twitch_username;
-            console.log('HERE U GO: ', row.receives_title_updates, row.alias);
             response['settings']['title_updates'] = row.receives_title_updates;
             response['settings']['alias'] = row.alias;
         });
@@ -107,12 +106,14 @@ router.post('/auth', function(req, res, next) {
                                     query.on('error', function(err) {
                                        console.error('There was an error inserting/updating a (user,code,token)', err); 
                                     });
-                                    query = client.query('SELECT users.twitch_username, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
+                                    query = client.query('SELECT users.twitch_username, receives_title_updates, alias, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
                                     query.on('error', function(err) {
                                        console.error('error finding summoners for user', err); 
                                     });
                                     query.on('row', function(row) {
                                         response.summoners.push({'summoner': row.summoner, 'region': row.region});
+                                        response['settings']['title_updates'] = row.receives_title_updates;
+                                        response['settings']['alias'] = row.alias;
                                     });
                                     query.on('end', function(result) {
                                         console.log(response);
