@@ -55,16 +55,22 @@ router.post('/auth', function(req, res, next) {
                             return console.error('errur running query');
                         }
         }); */
-        query = client.query('SELECT users.twitch_username, summoner, region, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
+        
+        query = client.query('SELECT twitch_username, receives_title_updates, alias, code FROM users WHERE code=$1', [req.body.code]);
+//        query = client.query('SELECT users.twitch_username, summoner, region, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
         query.on('error', function(err) {
             console.error('error with query (312)', err); 
         });
         query.on('row', function(row) {
-            response['summoners'].push({'summoner': row.summoner, 'region': row.region});
-            console.log('pushed this: ', {'summoner': row.summoner, 'region': row.region})
+//            response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             response['twitch_username'] = row.twitch_username;
+            response['settings'] = {
+                title_updates: row.receives_title_updates,
+                alias: row.alias    
+            }
         });
         query.on('end', function(result) {
+            // this if will be the result when a new user/log-in session is occurring
             if (result.rowCount === 0) {
                 console.log('No such user found with this code.');
                 // No such user found with this code. POST to Twitch for token and possibly make a new user
@@ -129,8 +135,19 @@ router.post('/auth', function(req, res, next) {
                 });
                                    
             }
+            // this is for a page refresh (same code appears again)
             else {
-                res.json(response);
+                query = client.query('SELECT users.twitch_username, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE twitch_username=$1', [twitch_username]);
+                query.on('error', function(err) { 
+                    console.error('Node, page refresh, database query error ', err);
+                });
+                query.on('row', function(row) {
+                    response['summoners'].push({'summoner': row.summoner, 'region': row.region});
+                });
+                query.on('end', function() {
+                    res.json(response);
+                });
+                
             }
         });
     });
