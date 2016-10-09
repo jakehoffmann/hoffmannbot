@@ -2,13 +2,17 @@
 
 <br />
 <br />
+<div class="row">
 <div class="col-xs-6" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
 <div class="col-xs-6"></div>
-<br />
-<br />
-<h3>
-Your summoners
-</h3>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h3>
+            Your summoners
+        </h3>
+    </div>
+</div>
 <div ng-show="summoners.length === 0">
 No summoners registered!
 </div>
