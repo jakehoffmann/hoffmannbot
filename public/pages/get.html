@@ -2,7 +2,7 @@
 
 <br />
 <br />
-<div class="col-xs-6" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+<div class="col-xs-6" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
 <div ng-hide="summoners.length ===0">
 Your summoners
 </div>

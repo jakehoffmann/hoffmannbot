@@ -64,11 +64,11 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     };
     
     $scope.getAlias = function() {
-        if ($scope.settings.alias === 'noalias') {
-            return $scope.user;
+        if (userState.settings.alias === 'noalias') {
+            return userState.user;
         }
         else {
-            return $scope.settings.alias;
+            return userState.settings.alias;
         }
     };
 
