@@ -111,7 +111,8 @@ router.post('/auth', function(req, res, next) {
                                     query.on('row', function(row) {
                                         response['settings'] = {
                 title_updates: row.receives_title_updates,
-                alias: row.alias     
+                alias: row.alias    
+                                        }
                                     });
                                     query = client.query('SELECT users.twitch_username, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
                                     query.on('error', function(err) {
