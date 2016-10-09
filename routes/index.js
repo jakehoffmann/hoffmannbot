@@ -55,7 +55,7 @@ router.post('/auth', function(req, res, next) {
                             return console.error('errur running query');
                         }
         }); */
-        query = client.query('SELECT users.twitch_username, receives_title_updates, alias, summoner, region, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
+        query = client.query('SELECT users.twitch_username, summoner, region, code FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE code=$1', [req.body.code]);
         query.on('error', function(err) {
             console.error('error with query (312)', err); 
         });
@@ -63,11 +63,6 @@ router.post('/auth', function(req, res, next) {
             response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             console.log('pushed this: ', {'summoner': row.summoner, 'region': row.region})
             response['twitch_username'] = row.twitch_username;
-//            response['settings']['title_updates'] = row.receives_title_updates;
-//            response['settings']['alias'] = row.alias;
-            response['settings'] = {
-                title_updates: row.receives_title_updates,
-                alias: row.alias            
             }
         });
         query.on('end', function(result) {
@@ -110,17 +105,21 @@ router.post('/auth', function(req, res, next) {
                                     query.on('error', function(err) {
                                        console.error('There was an error inserting/updating a (user,code,token)', err); 
                                     });
-                                    query = client.query('SELECT users.twitch_username, receives_title_updates, alias, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
+                                    query = client.query('SELECT twitch_username, receives_title_updates, alias FROM users WHERE twitch_username=$1', [twitch_username]);
+                                    query.on('error', function(err) {
+                                       console.error('error finding user settings'); 
+                                    });
+                                    query.on('row', function(row) {
+                                        response['settings'] = {
+                title_updates: row.receives_title_updates,
+                alias: row.alias     
+                                    });
+                                    query = client.query('SELECT users.twitch_username, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
                                     query.on('error', function(err) {
                                        console.error('error finding summoners for user', err); 
                                     });
                                     query.on('row', function(row) {
                                         response.summoners.push({'summoner': row.summoner, 'region': row.region});
-//                                        response['settings']['title_updates'] = row.receives_title_updates;
-//                                        response['settings']['alias'] = row.alias;
-                                        response['settings'] = {
-                title_updates: row.receives_title_updates,
-                alias: row.alias  
                                         };
                                     });
                                     query.on('end', function(result) {
