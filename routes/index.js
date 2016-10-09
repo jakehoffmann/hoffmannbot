@@ -137,7 +137,7 @@ router.post('/auth', function(req, res, next) {
             }
             // this is for a page refresh (same code appears again)
             else {
-                query = client.query('SELECT users.twitch_username, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE twitch_username=$1', [twitch_username]);
+                query = client.query('SELECT users.twitch_username, summoner, region FROM users INNER JOIN summoners ON (users.twitch_username = summoners.twitch_username) WHERE users.twitch_username=$1', [twitch_username]);
                 query.on('error', function(err) { 
                     console.error('Node, page refresh, database query error ', err);
                 });
