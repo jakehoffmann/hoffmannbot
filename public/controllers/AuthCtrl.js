@@ -16,7 +16,7 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     $scope.$route = $route; 
 
     $scope.alerts = [
-        {type: 'danger', msg: 'Please remember to make HoffmannBot a moderator in your twitch chat!'}
+        {type: 'danger', msg: 'Please remember to type /mod hoffmannbot in your twitch chat!'}
     ];
     
     $scope.closeAlert = function(index) {

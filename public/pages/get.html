@@ -52,15 +52,15 @@
                     Summoner names must be at least 3 characters long!
                     <br />
                 </div>
-                <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(inputSummoner.length < 17)">
+                <div class="alert alert-danger col-xs-12" role="alert" ng-hide="(inputSummoner.length < 17)">
                     Summoner names must be no more than 16 characters long!
                     <br />
                 </div>
-                <div class="alert alert-danger col-xs-6" role="alert" ng-hide="(summoners.length < 7)">
+                <div class="alert alert-danger col-xs-12" role="alert" ng-hide="(summoners.length < 7)">
                     You've reached the maximum (7) number of summoners!
                     <br />
                 </div>
-                <div class="alert alert-danger col-xs-6" role="alert" ng-show="repeatEntry()">
+                <div class="alert alert-danger col-xs-12" role="alert" ng-show="repeatEntry()">
                     This summoner name has already been registered for this region!
                     <br />
                 </div>
@@ -75,7 +75,13 @@
                 </h3>
             </div>
             <div class="col-xs-12">
-            The bot refers to you as <b>{{ getAlias() }}</b>.
+                The bot refers to you as <b>{{ getAlias() }}</b>.
+                <form class="form-inline" ng-submit="">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newAlias" onfocus="this.select()" ng-model="settings.alias">
+                        <input type="submit" class="btn-btn-default" value="Submit" ng-disabled="(settings.alias.length < 3) || (settings.alias.length > 16)">
+                    </div>
+                </form>
             </div>
             <div class="row"></div>
             <div class="col-xs-12">
