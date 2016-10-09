@@ -1,13 +1,20 @@
 // Provides functionality for the login/authorized view.
 myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", "userState", 'editSummoners', function ($scope, $http, $location, $route, auth, userState, editSummoners) {
+    // sort out this code thing!
     $scope.code = $location.search().code;
     $scope.code = userState.code;
+    
     $scope.summoners = userState.summoners;
     $scope.user = userState.user;
+    $scope.settings = userState.settings;
+
     $scope.auth = auth.auth;
+
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
-    $scope.$route = $route;                          
+
+    $scope.$route = $route; 
+
     $scope.alerts = [
         {type: 'danger', msg: 'Please remember to make HoffmannBot a moderator in your twitch chat!'}
     ];
