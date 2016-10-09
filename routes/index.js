@@ -63,6 +63,7 @@ router.post('/auth', function(req, res, next) {
             response['summoners'].push({'summoner': row.summoner, 'region': row.region});
             console.log('pushed this: ', {'summoner': row.summoner, 'region': row.region})
             response['twitch_username'] = row.twitch_username;
+            console.log('HERE U GO: ', row.receives_title_updates, row.alias);
             response['settings']['title_updates'] = row.receives_title_updates;
             response['settings']['alias'] = row.alias;
         });
