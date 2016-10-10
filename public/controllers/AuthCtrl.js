@@ -1,5 +1,5 @@
 // Provides functionality for the login/authorized view.
-myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", "userState", 'editSummoners', function ($scope, $http, $location, $route, auth, userState, editSummoners) {
+myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", "userState", 'editSummoners', 'updateSettings', function ($scope, $http, $location, $route, auth, userState, editSummoners, updateSettings) {
     // sort out this code thing!
     $scope.code = $location.search().code;
     $scope.code = userState.code;
