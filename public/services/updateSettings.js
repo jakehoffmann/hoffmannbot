@@ -13,7 +13,8 @@ myApp.factory('updateSettings', ['$http', 'userState', function ($http, userStat
                 settings: {
                     receives_title_updates: userState.settings.receives_title_updates,
                     alias: userState.settings.alias
-                }
+                },
+                code: userState.code
             }
         });
     };
