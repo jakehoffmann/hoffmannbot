@@ -278,11 +278,13 @@ router.post('/api/user/update/:user', function(req, res, next) {
                 query.on('error', function(err) {
                     console.error('Node, User update query error ', err);    
                 });
+                query.on('end', function(result) {
+                    res.status(200).send('User updated.');
+                });
             }
         });
         done();
     })
-    res.status(200).send('User updated.');
     
 });
 
