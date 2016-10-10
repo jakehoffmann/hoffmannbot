@@ -3,6 +3,7 @@ myApp.factory('updateSettings', ['$http', 'userState', function ($http, userStat
     var factory = {};
     
     factory.updateSettings = function() {
+        console.log()
         return $http({
             method: 'POST',
             url: '/api/user/update/' + userState.user,
@@ -11,7 +12,7 @@ myApp.factory('updateSettings', ['$http', 'userState', function ($http, userStat
             },
             data: { 
                 settings: {
-                    receives_title_updates: userState.settings.receives_title_updates,
+                    receives_title_updates: userState.settings.title_updates,
                     alias: userState.settings.alias
                 },
                 code: userState.code
