@@ -88,8 +88,8 @@
                 Title updating 
                 <span class="label label-success" ng-show="settings.title_updates">ON</span>
                 <span class="label label-danger" ng-show="!settings.title_updates">OFF</span>
-                <a class="btn btn-default" ng-show="settings.title_updates" ng-submit="settings.title_updates = false; updateSettings()"><i class="glyphicon glyphicon-off"></i> Disable</a>
-                <a class="btn btn-default" ng-show="!settings.title_updates"><i class="glyphicon glyphicon-off" ng-submit="settings.title_updates = true; updateSettings()"></i> Enable</a>
+                <a class="btn btn-default" ng-show="settings.title_updates" ng-click="settings.title_updates = false; updateSettings()"><i class="glyphicon glyphicon-off"></i> Disable</a>
+                <a class="btn btn-default" ng-show="!settings.title_updates"><i class="glyphicon glyphicon-off" ng-click="settings.title_updates = true; updateSettings()"></i> Enable</a>
             </div>
         </div>
     </div>
