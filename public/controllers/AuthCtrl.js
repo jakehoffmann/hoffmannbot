@@ -12,6 +12,7 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
 
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
+    $scope.inputAlias = "Your alias"
 
     $scope.$route = $route; 
 
@@ -79,6 +80,8 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
             return userState.settings.alias;
         }
     };
+    
+    $scope.updateSettings = updateSettings.updateSettings;
 
     // is there a more compact way to do these?
     $scope.$watch('code', function() {

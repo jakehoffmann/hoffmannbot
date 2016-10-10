@@ -253,27 +253,37 @@ router.post('/api/summoner/:action/:user/:summoner/:region', function(req, res, 
     });
 });
     
-
-
-// I believe this endpoint is also not needed
-/*
-router.get('/api/read/:user', function(req, res, next) {
-    console.log('here 3');
+// endpoint for updating a user object
+router.post('/api/user/update/:user', function(req, res, next) {
     
-    response = {"summoners":[]};
     pool.connect(function(err, client, done) {
         if (err) {
             return console.error('error fetching client from pool', err);
         }
-        query = client.query('SELECT summoner FROM summoners WHERE twitch_username=?', [req.params.user]);
-        query.on('row', function(row) {
-            response["summoners"].push(row.summoner);
-        })
+        
+        // The following query is for validating the code submitted with the username
+        query = client.query('SELECT twitch_username, code FROM users WHERE code=$1 and twitch_username=$2', [req.body.code, req.params.user]);
+        
+        query.on('error', function(err) {
+            console.error('Error while validating code.', err);
+        });
+        
+        query.on('end', function(result) {
+            if (result.rowCount === 0) {
+                console.log('Incorrect code.');
+                res.status(401).send('Incorrect code.');
+            }
+            else {
+                query = client.query('UPDATE users SET receives_title_updates=$1, alias=$2 WHERE twitch_username=$3', [req.body.settings.receives_title_updates, req.body.settings.alias, req.params.user]);
+                query.on('error', function(err) {
+                    console.error('Node, User update query error ', err);    
+                });
+            }
+        });
         done();
     })
-    res.json(response);
+    res.status(200).send('User updated.');
     
 });
-*/
 
 module.exports = router;
