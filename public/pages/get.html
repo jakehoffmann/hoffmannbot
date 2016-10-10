@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="col-xs-6">
-        <div class="row">
+        <div class="row bottom-buffer">
             <div class="col-xs-12">
                 <h3>
                     Your settings
@@ -86,7 +86,7 @@
             <div class="row top-buffer"></div>
             <div class="col-xs-12">
                 Title updating 
-                <i tooltip-placement="top" uib-tooltip="Updates your stream title to include [In game as <champ> for <gameLength>] at the beginning" class="glyphicon glyphicon-question-sign"></i>
+                <i tooltip-placement="top" uib-tooltip="Updates your stream title to include [In game as <champ> for <gameLength>] at the front of your title" class="glyphicon glyphicon-question-sign"></i>
                 <span class="label label-success" ng-show="settings.title_updates">ON</span>
                 <span class="label label-danger" ng-show="!settings.title_updates">OFF</span>
                 <a class="btn btn-default" ng-show="settings.title_updates" ng-click="settings.title_updates = false; updateSettings()"><i class="glyphicon glyphicon-off"></i> Disable</a>
