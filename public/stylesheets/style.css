@@ -13,7 +13,7 @@
   opacity: 0.6;
 }
 .tag a:hover {
-  opacity: 1.0
+  opacity: 1.0;
 }
 .tag .remove {
   vertical-align: bottom;
