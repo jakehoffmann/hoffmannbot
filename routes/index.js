@@ -264,6 +264,8 @@ router.post('/api/user/update/:user', function(req, res, next) {
         // The following query is for validating the code submitted with the username
         query = client.query('SELECT twitch_username, code FROM users WHERE code=$1 and twitch_username=$2', [req.body.code, req.params.user]);
         
+        console.log('UPDATE, code: ', req.body.code, ' user: ', req.params.user);
+        
         query.on('error', function(err) {
             console.error('Error while validating code.', err);
         });
