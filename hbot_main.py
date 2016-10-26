@@ -16,7 +16,9 @@ import os
 sys.path.append(os.getcwd()+'\\..')
 
 from static_data_shortened import RUNES, CHAMPIONS
-from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
+import Riot_API_consts as Riot_Consts
+import Twitch_API_consts as Twitch_Consts
+# from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
 
 logging.basicConfig(filename='D:\hoffmannbot\logs\log.txt', level=logging.DEBUG)
 # logging.basicConfig(level=logging.DEBUG)
@@ -53,6 +55,95 @@ lastgame_timeout = 0
 SUMMONERS = {}
 
 
+class TwitchAPI(object):
+    last_twitch_api_query = 0
+
+    def __init__(self, client_id):
+        self.client_id = client_id
+
+    def _request(self, api_url, action, token='', params={}, data={}):
+        """
+        Launches request to Twitch API
+        :param api_url: the api url of the appropriate endpoint (from Twitch_API_constants.py)
+        :param params: html request params
+        :return: response code if error, otherwise json response
+        """
+        diff = time.time() - TwitchAPI.last_twitch_api_query
+        # TODO: put some exponential back-off when the API call fails
+
+        args = {}
+        for key, value in params.items():
+            if key not in args:
+                args[key] = value
+
+        if action == 'get':
+            headers = {
+                'Accept': 'application/vnd.twitchtv.v3+json',
+                'Authorization': 'OAuth {token}'.format(token=token) if token != '' else '',
+                'Client-ID': '{client_id}'.format(client_id=self.client_id),
+            }
+            response = requests.get(
+                Twitch_Consts.URL['base'].format(
+                    url=api_url
+                ),
+                params=args,
+                headers=headers
+            )
+            TwitchAPI.last_twitch_api_query = time.time()
+            if response.status_code != 200:
+                logging.debug('twitch API json response: ')
+                logging.debug(response.json())
+                return response.status_code
+
+            logging.debug(response.url)
+            print(response.url)
+            return response.json()
+        elif action == 'put':
+            headers = {
+                'Accept': 'application/vnd.twitchtv.v3+json',
+                'Authorization': 'OAuth {token}'.format(token=token) if token != '' else '',
+                'Client-ID': '{client_id}'.format(client_id=self.client_id),
+                'content-type': 'application/json'
+            }
+            logging.debug('here is all the shit: ')
+            logging.debug(Twitch_Consts.URL['base'].format(url=api_url))
+            logging.debug(args)
+            logging.debug(headers)
+            logging.debug(data)
+            response = requests.put(
+                Twitch_Consts.URL['base'].format(
+                    url=api_url
+                ),
+                params=args,
+                headers=headers,
+                data=json.dumps(data)
+            )
+            TwitchAPI.last_twitch_api_query = time.time()
+            if response.status_code != 200:
+                logging.debug('twitch API json response: ')
+                logging.debug(response.json())
+                return response.status_code
+
+            logging.debug(response.url)
+            print(response.url)
+            return response.json()
+
+    def update_title(self, token, user, title):
+        api_url = Twitch_Consts.URL['channels'].format(
+            user=user
+        )
+        data = {'channel': {'status': title[:139]}}
+        return self._request(api_url, 'put', token=token, data=data)
+
+    def get_live_streams(self, users):
+        """The response will be a collection of stream objects corresponding to the subset of 'users' which are live
+        :param users: dictionary of twitch users
+        :return: the Twitch API JSON response
+        """
+        api_url = Twitch_Consts.URL['streams']
+        return self._request(api_url, 'get', params=users)
+
+
 class RiotAPI(object):
     last_riot_api_query = 0
 
@@ -76,7 +167,9 @@ class RiotAPI(object):
         logging.debug('class timer variable: ' + str(RiotAPI.last_riot_api_query))
         logging.debug('global timer variable: ' + str(last_request_time))
         diff = time.time() - RiotAPI.last_riot_api_query
-        if diff <= 5:
+        # 180,000 requests every 10 minutes and 3000 requests every 10 seconds (production key)
+        # 500 requests every 10 minutes and 10 requests every 10 seconds (development key)
+        if diff <= 0.005:
             return 1
         args = {'api_key': self.api_key}
         for key, value in params.items():
@@ -84,27 +177,27 @@ class RiotAPI(object):
                 args[key] = value
         if not spectator:
             response = requests.get(
-                URL['base'].format(
-                    proxy=REGIONS[region],      # proxy and region are the same at this time
-                    region=REGIONS[region],
+                Riot_Consts.URL['base'].format(
+                    proxy=Riot_Consts.REGIONS[region],      # proxy and region are the same at this time
+                    region=Riot_Consts.REGIONS[region],
                     url=api_url
                 ),
                 params=args
             )
         else:
             response = requests.get(
-                URL['spectator_base'].format(
-                    proxy=REGIONS[region],      # proxy and region are the same at this time
-                    platform=PLATFORMS[region],
+                Riot_Consts.URL['spectator_base'].format(
+                    proxy=Riot_Consts.REGIONS[region],      # proxy and region are the same at this time
+                    platform=Riot_Consts.PLATFORMS[region],
                     url=api_url
                 ),
                 params=args
             )
         last_request_time = RiotAPI.last_riot_api_query = time.time()
-        logging.debug('status code: ')
+        logging.debug('riot API status code: ')
         logging.debug(response.status_code)
         if response.status_code != 200:
-            logging.debug('headers: ')
+            logging.debug('riot API headers: ')
             logging.debug(response.headers)
             return response.status_code
 
@@ -114,43 +207,44 @@ class RiotAPI(object):
 
 # get info about a summoner
     def get_summoner_by_name(self, name, region):
-        api_url = URL['summoner_by_name'].format(
-            version=API_VERSIONS['summoner'],
+        api_url = Riot_Consts.URL['summoner_by_name'].format(
+            version=Riot_Consts.API_VERSIONS['summoner'],
             names=name
         )
         return self._request(api_url, region)
 
 # get match history. hardcoded in to be only last 10 games. Edit the endIndex to change this
     def get_matchlist(self, summonerid, region):
-        api_url = URL['matchlist'].format(
-            version=API_VERSIONS['matchlist'],
+        api_url = Riot_Consts.URL['matchlist'].format(
+            version=Riot_Consts.API_VERSIONS['matchlist'],
             id=summonerid
         )
         return self._request(api_url, region, params={'rankedQueues': 'TEAM_BUILDER_DRAFT_RANKED_5x5',
                                                       'beginIndex': '0', 'endIndex': '5'})
 
-# get current game info. uses special request due to the base URL being unique in Riot API
+# get current game info. uses special request due to the base Riot_Consts.URL being unique in Riot API
     def get_current_game(self, summoner_id, region):
-        api_url = URL['currentgame'].format(
+        api_url = Riot_Consts.URL['currentgame'].format(
             id=summoner_id
         )
         return self._request(api_url, region, spectator=1)
 
     def get_match_info(self, matchId, region):
-        api_url = URL['match'].format(
-            version=API_VERSIONS['match'],
+        api_url = Riot_Consts.URL['match'].format(
+            version=Riot_Consts.API_VERSIONS['match'],
             matchId=matchId
         )
         return self._request(api_url, region)
 
     def get_league_data(self, summoner_id, region):
-        api_url = URL['league'].format(
-            version=API_VERSIONS['league'],
+        api_url = Riot_Consts.URL['league'].format(
+            version=Riot_Consts.API_VERSIONS['league'],
             id=summoner_id
         )
         return self._request(api_url, region)
 
 
+# not in use anymore
 def load_data():
     global title_base
     url = 'https://api.twitch.tv/kraken/channels/jakehoffmann'
@@ -166,11 +260,22 @@ def load_data():
 
 
 # might want to hide this in a file. easy locally but need a heroku solution
-# the solution: put it in heroku ENV variables
-def fetch_key():
-    key = '50992d27-0c22-4d2d-b529-903be10b4e64'
+#  the solution: put it in heroku ENV variables
+def fetch_riot_key():
+    """Returns the Riot API key"""
+
+    # production key
+    key = 'RGAPI-476c21b9-3346-4022-8036-2af99fea7c47'
+
+    # development key
+    # key = '50992d27-0c22-4d2d-b529-903be10b4e64'
     return key
 
+def fetch_twitch_client_id():
+    """Returns the Twitch client ID"""
+
+    client_id = '49mrp5ljn2nj44sx1czezi44ql151h2'
+    return client_id
 
 def refresh_channels():
     """checks for IRC channels to /join and /part
@@ -204,6 +309,7 @@ def refresh_channels():
         hexchat.command('join #' + channel[0])
 
 
+# not in use anymore
 # this gets called automatically every X minutes (via hook_timer at bottom of script)
 # updates the database with information from Riot API
 def update_cb(userdata):
@@ -261,11 +367,13 @@ def update_cb(userdata):
 
 # new version of update_cb that uses database instead of memory
 def update_database_cb(userdata):
+    """Function that updates Heroku postgres database.
+    """
     print('Recaching API data')
 
     # TODO: RE performance: perhaps insert a line here that will return if the Riot API has been called too recently
 
-    api = RiotAPI(fetch_key())
+    api = RiotAPI(fetch_riot_key())
 
     # base delay in seconds before querying Riot API again (before exponential back-off)
     summoner_info_query_base = 90000000  # TODO: how often to re-query this, if ever?
@@ -449,10 +557,25 @@ def update_database_cb(userdata):
                         league = mode['tier']
                         division = mode['entries'][0]['division']
                         league_points = mode['entries'][0]['leaguePoints']
+                        if "miniSeries" in mode['entries'][0]:
+                            in_series = True
+                            series_wins = mode['entries'][0]['miniSeries']['wins']
+                            series_losses = mode['entries'][0]['miniSeries']['losses']
+                        else:
+                            in_series = False
                         break
-                c.execute('UPDATE summoners SET league_cache_time=%s, league=%s, division=%s, league_points=%s '
-                          'WHERE summoner=%s AND region=%s',
-                          [time.time(), league, division, league_points, summoners[index][0], summoners[index][5]])
+                if not in_series:
+                   c.execute('UPDATE summoners SET league_cache_time=%s, league=%s, division=%s, league_points=%s, '
+                             'in_series=%s '
+                             'WHERE summoner=%s AND region=%s',
+                             [time.time(), league, division, league_points, 'false', summoners[index][0],
+                              summoners[index][5]])
+                else:
+                    c.execute('UPDATE summoners SET league_cache_time=%s, league=%s, division=%s, league_points=%s, '
+                              'in_series=%s, series_wins=%s, series_losses=%s '
+                              'WHERE summoner=%s AND region=%s',
+                              [time.time(), league, division, league_points, 'true', series_wins, series_losses,
+                               summoners[index][0], summoners[index][5]])
                 conn.commit()
                 print('league data for ' + summoners[index][0] + ' cached')
             else:
@@ -525,6 +648,20 @@ def update_title(active_summoner=-1):
     logging.debug(response.status_code)
 
 
+def refresh_live_streams():
+    """Updates the channel_live column in the database"""
+
+    print('checking if streams are live')
+    c.execute("SELECT twitch_username, status_cache_time FROM users "
+              "WHERE receives_title_updates='true' AND %s - status_cache_time > 1800 "
+              "ORDER BY status_cache_time "
+              "LIMIT 100", [time.time()])
+    rows = c.fetchall()
+    users = {}
+    for row in rows:
+
+
+
 def update_twitch_title(userdata):
     """This updates the title of a currently streaming twitch user who last had their title updated more than 60
      seconds ago. If a twitch_username is specified, it updates that specific users title
@@ -564,25 +701,38 @@ def update_twitch_title(userdata):
         else:
             title_dynamic = '[In game as {champ} for {length}m]'.format(champ=champ, length=minutes)
 
-    # TODO: again we may want to put this into a function/class especially if we start using other endpoints
-    url = 'https://api.twitch.tv/kraken/channels/{user}'.format(user=user)
     title = (title_dynamic + ' ' + title_base) if title_dynamic != '' else title_base
     data = {'channel': {'status': title[:139]}}
     print('Setting channel to:')
     print(data)
-    headers = {'Accept': 'application/vnd.twitchtv.v3+json',
-               'Authorization': 'OAuth {token}'.format(token=token),
-               'Client-ID': '49mrp5ljn2nj44sx1czezi44ql151h2',
-               'content-type': 'application/json'
-               }
-    response = requests.put(url, data=json.dumps(data), headers=headers)
-    if response.status_code != 200:
-        print('say Twitch API call failed :(.')
+
+    api = TwitchAPI(fetch_twitch_client_id())
+    result = api.update_title(token, user, title)
+    if not isinstance(result, int):
+        print('twitch API result: ')
+        print(result)
+        c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
         return hexchat.EAT_ALL
-    print('twitch API status code: ')
-    print(response.status_code)
-    c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
-    return hexchat.EAT_ALL
+    else:
+        print('say Twitch API call failed :(.')
+        print('status code: ' + str(result))
+        return hexchat.EAT_ALL
+
+    # TODO: again we may want to put this into a function/class especially if we start using other endpoints
+    #     url = 'https://api.twitch.tv/kraken/channels/{user}'.format(user=user)
+    # headers = {'Accept': 'application/vnd.twitchtv.v3+json',
+    #            'Authorization': 'OAuth {token}'.format(token=token),
+    #            'Client-ID': '49mrp5ljn2nj44sx1czezi44ql151h2',
+    #            'content-type': 'application/json'
+    #            }
+    # response = requests.put(url, data=json.dumps(data), headers=headers)
+    # if response.status_code != 200:
+    #     print('say Twitch API call failed :(.')
+    #     return hexchat.EAT_ALL
+    # print('twitch API status code: ')
+    # print(response.status_code)
+    # c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
+    # return hexchat.EAT_ALL
 
 
 def channel_message_cb(word, word_eol, userdata):
@@ -839,8 +989,8 @@ def channel_message_cb(word, word_eol, userdata):
                result='won' if row[6] else 'lost',
                lane=row[7].lower(),
                account=row[8],
-               region=(REGIONS[row[10]]).upper(),
-               platform=PLATFORMS[row[10]],
+               region=(Riot_Consts.REGIONS[row[10]]).upper(),
+               platform=Riot_Consts.PLATFORMS[row[10]],
                matchId=row[9]
             ) \
             if not(row[4] < 300 and row[0] == row[1] == row[2] == 0) \
@@ -851,23 +1001,24 @@ def channel_message_cb(word, word_eol, userdata):
         hexchat.command('say ' + lastgame)
         return hexchat.EAT_ALL
 
-    elif command == '!refresh':
+    elif command == '!debug':
         # The next lines put the command in jake-only mode
         username = word[0]
         if username != 'jakehoffmann':
             hexchat.command('say ' + command + ' is Jake-only')
             return hexchat.EAT_ALL
-        refresh_channels()
+        refresh_live_streams()
         return hexchat.EAT_ALL
 
     elif command == '!rank':
         command_use_time = time.time()
-        if (command_use_time - lcu_rank) <= 5:
+        if (command_use_time - lcu_rank) <= 10:
             return hexchat.EAT_ALL
         c.execute('UPDATE users SET lcu_rank=%s,last_command_use=%s '
                   'WHERE twitch_username=%s', [command_use_time, command_use_time, channel])
 
-        c.execute("SELECT summoner,league,division,league_points FROM summoners WHERE twitch_username=%s", [channel])
+        c.execute("SELECT summoner,league,division,league_points,in_series,series_wins,series_losses "
+                  "FROM summoners WHERE twitch_username=%s", [channel])
         summoners = c.fetchall()
         ranks_list = ''
         if not summoners:
@@ -875,7 +1026,11 @@ def channel_message_cb(word, word_eol, userdata):
             return hexchat.EAT_ALL
         for summoner in summoners:
             ranks_list += (summoner[0] + ': ' + summoner[1].title() + ' ' + summoner[2] + ', ' + str(summoner[3]) +
-                           'LP, ')
+                           'LP')
+            if summoner[4]:
+                ranks_list += ' (Series, ' + str(summoner[5]) + '-' + str(summoner[6]) + '), '
+            else:
+                ranks_list += ', '
         hexchat.command('say ' + ranks_list[:-2])
         return hexchat.EAT_ALL
 
@@ -1139,6 +1294,7 @@ def unload_cb(userdata):
 
 
 print('==========Hoffmannbot loaded============')
+refresh_channels()
 
 # load_data()
 
@@ -1158,10 +1314,11 @@ print('==========Hoffmannbot loaded============')
 # logging.debug(RUNES)
 
 ### database versions
-# hexchat.hook_timer(5000, update_twitch_title)
-hexchat.hook_timer(5000, update_database_cb)
-hexchat.hook_print('Channel Message', channel_message_cb)
-# hexchat.hook_timer(300000, refresh_channels)    # refresh the channel list every 5 mins (300k milliseconds)
+# hexchat.hook_timer(5000, refresh_live_streams)             # update which streams are currently live
+# hexchat.hook_timer(5000, update_twitch_title)              # update twitch titles
+# hexchat.hook_timer(5000, update_database_cb)               # update the database with new Riot API info
+hexchat.hook_print('Channel Message', channel_message_cb)  # respond to Twitch chat messages
+# hexchat.hook_timer(300000, refresh_channels)               # refresh the channel list every 5 mins (300k milliseconds)
 
 ### local only versions
 # update_cb('')
