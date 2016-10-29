@@ -24,6 +24,9 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', 'auth',
     $scope.currentlyLiveStreams = [{name: 'jakehoffmann'}]
 //    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
     
+    $scope.getIframeSrc = function (channel) {
+        return 'https://player.twitch.tv/?channel=' + channel;
+    }
     
     $scope.openModal = function(src) {
         $uibModal.open({
