@@ -302,7 +302,7 @@ router.get('/livestreams', function(req, res, next) {
         response = [];
         
         // maybe order this by viewership later on. Would need to store viewer stats in 'users' table 
-        query = client.query('SELECT twitch_username FROM users WHERE channel_live=$1 LIMIT 10');
+        query = client.query('SELECT twitch_username FROM users WHERE channel_live=$1 LIMIT 10', ['true']);
         
         query.on('error', function(err) {
             console.error('Error while selecting live channels', err); 
