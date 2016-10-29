@@ -1,6 +1,6 @@
 // Takes care of the main, unauthorized view. The unauthorized view is very simple, mostly showing static data.
-myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', 'auth',
-                              function ($scope, $http, $uibModal, $route, auth) {
+myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 'auth',
+                              function ($scope, $http, $uibModal, $route, $sce, auth) {
     $scope.checkAuth = auth.isAuthed; // Unsure if I am using this in the view
     $scope.$route = $route; 
     $scope.screenshots = [{
@@ -25,7 +25,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', 'auth',
 //    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
     
     $scope.getIframeSrc = function (channel) {
-        return 'https://player.twitch.tv/?channel=' + channel;
+        return $sce.trustAsResourceUrl('https://player.twitch.tv/?channel=' + channel);
     }
     
     $scope.openModal = function(src) {
