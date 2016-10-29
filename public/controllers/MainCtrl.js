@@ -2,7 +2,7 @@
 myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 'auth', 'getLiveStreams',
                               function ($scope, $http, $uibModal, $route, $sce, auth, getLiveStreams) {
     $scope.checkAuth = auth.isAuthed; // Unsure if I am using this in the view
-    $scope.$route = $route; 
+    $scope.$route = $route;                                     
     $scope.screenshots = [{
                               src: '/images/lastcommand.png',
                               desc: 'Displays stats from your last game in chat'
@@ -19,18 +19,22 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
                               src: '/images/currentcommand.png',
                               desc: 'Shows what you are currently playing, as well as (optionally) your runes and the bans for the game'
                           }
-                          ] 
- 
+                          ];
+                                   
     $scope.getIframeSrc = function (channel) {
         return $sce.trustAsResourceUrl('https://player.twitch.tv/?autoplay=false&muted=true&channel=' + channel);
-    };
+    };                                  
     
     $scope.currentlyLiveStreams = getLiveStreams.getLiveStreams();
     
 //    $scope.$watch('currentlyLiveStreams', function() {
 //        getLiveStreams.currentlyLiveStreams = $scope.currentlyLiveStreams;    
-//    });
-                                  
+//    });   
+    
+    $scope.test = function() {
+        console.log(currentlyLiveStreams);    
+    };
+                              
     $scope.getStreams = function() {
         getLiveStreams.getLiveStreams()
         .then(
@@ -44,6 +48,8 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
         });
         return $scope.currentlyLiveStreams;
     };
+                                  
+    
     
     $scope.openModal = function(src) {
         $uibModal.open({
