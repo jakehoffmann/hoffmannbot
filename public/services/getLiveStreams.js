@@ -18,6 +18,7 @@ myApp.factory('getLiveStreams', ['$http', function ($http) {
             url: '/livestreams'
         }).then(
             function(response) {
+                console.log('response.data:', response.data);
                 return response.data;
             },
             function(err) {
