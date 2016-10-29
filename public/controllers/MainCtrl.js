@@ -22,7 +22,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', 'auth',
                           ] 
  
     $scope.currentlyLiveStreams = [{name: 'jakehoffmann'}]
-    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
+//    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
     
     
     $scope.openModal = function(src) {
