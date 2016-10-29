@@ -5,6 +5,10 @@
 <h2 ng-hide="liveStreams.length == 0">Streamers currently using HoffmannBot:</h2>
 
 <div ng-repeat="channel in currentlyLiveStreams">
+    channel: {{channel.name}}
+    <br />
+    player: 
+    <br />
     <iframe 
         src="http://player.twitch.tv/?channel={{channel.name}}" 
         height="720" 
