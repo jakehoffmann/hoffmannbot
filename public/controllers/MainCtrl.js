@@ -32,7 +32,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
 //    });   
     
     $scope.test = function() {
-        console.log(currentlyLiveStreams);    
+        console.log($scope.currentlyLiveStreams);    
     };
                               
     $scope.getStreams = function() {
