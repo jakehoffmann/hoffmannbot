@@ -5,7 +5,7 @@ myApp.config(function ($routeProvider) {
     $routeProvider
     .when('/', {
         templateUrl: 'pages/home.html',
-        controller: 'AuthCtrl'
+        controller: 'MainCtrl'
     })
     .when('/hoffmannbot/', {  // removed this route as it was not useful!
         templateUrl: 'pages/hoffmannbot.html',

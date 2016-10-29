@@ -20,6 +20,10 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', 'auth',
                               desc: 'Shows what you are currently playing, as well as (optionally) your runes and the bans for the game'
                           }
                           ] 
+ 
+    $scope.currentlyLiveStreams = [{name: 'jakehoffmann'}]
+    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
+    
     
     $scope.openModal = function(src) {
         $uibModal.open({
