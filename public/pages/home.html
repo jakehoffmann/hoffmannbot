@@ -6,11 +6,11 @@
 <div ng-show="currentlyLiveStreams.length == 1">test</div>
 <div class="row">
 <div ng-repeat="channel in currentlyLiveStreams">
+    <div class="xs-col-6">
     channel: {{ channel.name }}
     <br />
     player: 
     <br />
-    <div class="xs-col-12">
         <iframe 
             ng-src="{{getIframeSrc(channel.name)}}"
             frameborder="0" 
