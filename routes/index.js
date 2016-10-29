@@ -309,6 +309,7 @@ router.get('/livestreams', function(req, res, next) {
         });
         
         query.on('row', function(row) {
+            console.log('responding with online user: ', row.twitch_username);
             response.push({name: row.twitch_username});    
         });
         

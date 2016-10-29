@@ -553,7 +553,6 @@ def update_database_cb(userdata):
                 in_series = None
                 for mode in result[str(summoner_info[0])]:
                     if mode['queue'] == 'RANKED_SOLO_5x5':
-                        print('asscunt')
                         league = mode['tier']
                         division = mode['entries'][0]['division']
                         league_points = mode['entries'][0]['leaguePoints']
@@ -567,7 +566,6 @@ def update_database_cb(userdata):
                 if in_series is None:
                     pass
                 elif not in_series:
-                    print('cuckboy')
                     c.execute('UPDATE summoners SET league_cache_time=%s, league=%s, division=%s, league_points=%s, '
                               'in_series=%s '
                               'WHERE summoner=%s AND region=%s',
@@ -575,7 +573,6 @@ def update_database_cb(userdata):
                                summoners[index][5]])
 
                 elif in_series:
-                    print('fuckboy')
                     c.execute('UPDATE summoners SET league_cache_time=%s, league=%s, division=%s, league_points=%s, '
                               'in_series=%s, series_wins=%s, series_losses=%s '
                               'WHERE summoner=%s AND region=%s',
@@ -656,27 +653,46 @@ def update_title(active_summoner=-1):
 def refresh_live_streams(userdata):
     """Updates the channel_live column in the database"""
 
-    print('checking if streams are live')
+    print('Checking if streams are live. ', end="")
     c.execute("SELECT twitch_username, status_cache_time FROM users "
-              "WHERE receives_title_updates='true' AND %s - status_cache_time > 1800 "
+              "WHERE %s - status_cache_time > 1800 "
               "ORDER BY status_cache_time "
               "LIMIT 100", [time.time()])
     rows = c.fetchall()
-
+    if not rows:
+        print('No users need channel status update.')
+        return hexchat.EAT_ALL
+    print('')
     users = ''
+    print('users: ', end="")
     for row in rows:
+        print(row[0] + ', ', end="")
         users += row[0] + ','
+    print('')
+
     channels = {'channel': users[:-1]}
 
     api = TwitchAPI(fetch_twitch_client_id())
     result = api.get_live_streams(channels)
     live_streams = []
+    print('live channels: ', end="")
     for stream in result['streams']:
+        print(stream['channel']['name'] + ', ', end="")
         live_streams.append(stream['channel']['name'])
+    print('')
     for row in rows:
         if row[0] in live_streams:
+            print('Following user set to LIVE: ' + str(row[0]))
             c.execute('UPDATE users SET channel_live=%s, status_cache_time=%s '
                       'WHERE twitch_username=%s', ['true', time.time(), row[0]])
+            conn.commit()
+        else:
+            print('Following user set to NOT LIVE: ' + str(row[0]))
+            c.execute('UPDATE users SET channel_live=%s, status_cache_time=%s '
+                      'WHERE twitch_username=%s', ['false', time.time(), row[0]])
+            conn.commit()
+    return hexchat.EAT_ALL
+
 
 
 def update_twitch_title(userdata):
@@ -1335,7 +1351,7 @@ refresh_channels()
 
 ### database versions
 hexchat.hook_timer(5000, refresh_live_streams)             # update which streams are currently live
-# hexchat.hook_timer(5000, update_twitch_title)              # update twitch titles
+hexchat.hook_timer(5000, update_twitch_title)              # update twitch titles
 hexchat.hook_timer(5000, update_database_cb)               # update the database with new Riot API info
 hexchat.hook_print('Channel Message', channel_message_cb)  # respond to Twitch chat messages
 hexchat.hook_timer(300000, refresh_channels)               # refresh the channel list every 5 mins (300k milliseconds)
