@@ -15,7 +15,8 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     $scope.inputAlias = "Your alias"
     
     $scope.currentlyLiveStreams = [{name: 'jakehoffmann'}]
-
+    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
+    
     $scope.$route = $route; 
 
     $scope.alerts = [

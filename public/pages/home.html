@@ -2,10 +2,10 @@
 <p>
     HoffmannBot is a <b>free</b> service that integrates League of Legends game info into your Twitch channel and chat. Here you can see what exactly the bot does and configure the bot for your channel.
 </p>
-<h2 ng-hide="currentlyLiveStreams.length == 0">Streamers currently using HoffmannBot: {{currentlyLiveStreams.length}}</h2>
+<h2 ng-hide="currentlyLiveStreams.length == 0">Streamers currently using HoffmannBot: {{ getLive() }}</h2>
 <div ng-show="currentlyLiveStreams.length == 1">test</div>
 <div ng-repeat="channel in currentlyLiveStreams">
-    channel: {{channel.name}}
+    channel: {{ channel.name }}
     <br />
     player: 
     <br />
