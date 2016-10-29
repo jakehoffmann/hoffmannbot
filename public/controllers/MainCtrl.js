@@ -25,7 +25,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
 //    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
     
     $scope.getIframeSrc = function (channel) {
-        return $sce.trustAsResourceUrl('https://player.twitch.tv/?channel=' + channel);
+        return $sce.trustAsResourceUrl('https://player.twitch.tv/?autoplay=false&muted=true&channel=' + channel);
     }
     
     $scope.openModal = function(src) {
