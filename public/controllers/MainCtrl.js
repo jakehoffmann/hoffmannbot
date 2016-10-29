@@ -21,24 +21,28 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
                           }
                           ] 
  
-    var currentlyLiveStreams = []//{name: 'jakehoffmann'}, {name: 'tsm_dyrus'}]
-    
     $scope.getIframeSrc = function (channel) {
         return $sce.trustAsResourceUrl('https://player.twitch.tv/?autoplay=false&muted=true&channel=' + channel);
-    }
+    };
     
+    $scope.currentlyLiveStreams = getLiveStreams.getLiveStreams();
+    
+    $scope.$watch('currentlyLiveStreams', function() {
+        getLiveStreams.currentlyLiveStreams = $scope.currentlyLiveStreams;    
+    });
+                                  
     $scope.getStreams = function() {
         getLiveStreams.getLiveStreams()
         .then(
         function(response) {
-            currentlyLiveStreams = response.data;
+            $scope.currentlyLiveStreams = response.data;
             console.log('response: ', response);
             console.log('how many live streams?: ', currentlyLiveStreams.length);
          },
         function(err) {
             console.error('Error in angular while trying to get live streams.', err);
         });
-        return currentlyLiveStreams;
+        return $scope.currentlyLiveStreams;
     };
     
     $scope.openModal = function(src) {
