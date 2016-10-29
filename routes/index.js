@@ -298,6 +298,7 @@ router.get('/livestreams', function(req, res, next) {
             return console.error('error fetching client from pool', err);
         }
         
+        console.log('livestreams endpoint entered');
         response = [];
         
         // maybe order this by viewership later on. Would need to store viewer stats in 'users' table 
@@ -312,6 +313,7 @@ router.get('/livestreams', function(req, res, next) {
         });
         
         query.on('end', function() {
+            console.log('livestreams endpoint query ended');
             res.json(response);    
         });
         

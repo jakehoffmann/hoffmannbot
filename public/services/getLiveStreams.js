@@ -6,7 +6,7 @@ myApp.factory('getLiveStreams', ['$http', function ($http) {
         console.log('Getting live streams...')
         return $http({
                method: 'GET',
-               url: '/livestreams',
+               url: '/livestreams'
         });
     };
     
