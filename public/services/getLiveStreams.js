@@ -2,7 +2,7 @@
 myApp.factory('getLiveStreams', ['$http', function ($http) {
     var factory = {};
     
-    factory.currentlyLiveStreams = []
+//    factory.currentlyLiveStreams = []
 //    factory.getLiveStreams = function() {
 //        console.log('Getting live streams...')
 //        return $http({
@@ -12,7 +12,7 @@ myApp.factory('getLiveStreams', ['$http', function ($http) {
 //    };
     
     factory.getLiveStreams = function() {
-        console.log('getting live streams 2');
+        console.log('getting live streams #2');
         $http({
             method: 'GET',
             url: '/livestreams'

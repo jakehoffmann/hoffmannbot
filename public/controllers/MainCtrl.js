@@ -27,9 +27,9 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
     
     $scope.currentlyLiveStreams = getLiveStreams.getLiveStreams();
     
-    $scope.$watch('currentlyLiveStreams', function() {
-        getLiveStreams.currentlyLiveStreams = $scope.currentlyLiveStreams;    
-    });
+//    $scope.$watch('currentlyLiveStreams', function() {
+//        getLiveStreams.currentlyLiveStreams = $scope.currentlyLiveStreams;    
+//    });
                                   
     $scope.getStreams = function() {
         getLiveStreams.getLiveStreams()
