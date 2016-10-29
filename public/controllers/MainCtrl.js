@@ -38,7 +38,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
         function(err) {
             console.error('Error in angular while trying to get live streams.', err);
         });
-        return $scope.currentlyLiveStreams.length;
+//        return $scope.currentlyLiveStreams.length;
     };
     
     $scope.openModal = function(src) {
