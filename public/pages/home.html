@@ -4,19 +4,23 @@
 </p>
 <h2 ng-hide="currentlyLiveStreams.length == 0">Streamers currently using HoffmannBot: {{ getLive() }}</h2>
 <div ng-show="currentlyLiveStreams.length == 1">test</div>
+<div class="row">
 <div ng-repeat="channel in currentlyLiveStreams">
     channel: {{ channel.name }}
     <br />
     player: 
     <br />
-    <iframe 
-        ng-src="{{getIframeSrc(channel.name)}}" 
-        height="720" 
-        width="1280" 
-        frameborder="0" 
-        scrolling="no"
-        allowfullscreen="true"
-        autoplay="false"
-        muted="true">
-    </iframe>
+    <div class="xs-col-6">
+        <iframe 
+            ng-src="{{getIframeSrc(channel.name)}}" 
+            height="720" 
+            width="1280" 
+            frameborder="0" 
+            scrolling="no"
+            allowfullscreen="true"
+            autoplay="false"
+            muted="true">
+        </iframe>
+    </div>
+</div>
 </div>
