@@ -11,14 +11,15 @@
     <br />
     player: 
     <br />
-        <iframe 
-            ng-src="{{getIframeSrc(channel.name)}}"
-            frameborder="0" 
-            scrolling="no"
-            height="360"
-            width="640"
-            allowfullscreen="true">
-        </iframe>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item"
+                ng-src="{{getIframeSrc(channel.name)}}"
+                scrolling="no"
+                height="360"
+                width="640"
+                allowfullscreen="true">
+            </iframe>
+        </div>
     </div>
 </div>
 </div>
