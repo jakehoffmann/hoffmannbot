@@ -286,7 +286,36 @@ router.post('/api/user/update/:user', function(req, res, next) {
             }
         });
         done();
-    })
+    });
+    
+});
+
+// endpoint for retrieving currently LIVE streams that are using hoffmannbot 
+router.get('/livestreams', function(req, res, next) {
+    
+    pool.connect(function(err, client, done) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+        
+        response = [];
+        
+        // maybe order this by viewership later on. Would need to store viewer stats in 'users' table 
+        query = client.query('SELECT twitch_username FROM users WHERE channel_live=$1 LIMIT 10');
+        
+        query.on('error', function(err) {
+            console.error('Error while selecting live channels', err); 
+        });
+        
+        query.on('row', function(row) {
+            response.push({name: row.twitch_username});    
+        });
+        
+        query.on('end', function() {
+            res.json(response);    
+        });
+        
+    });
     
 });
 

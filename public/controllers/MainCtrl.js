@@ -1,6 +1,6 @@
 // Takes care of the main, unauthorized view. The unauthorized view is very simple, mostly showing static data.
-myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 'auth',
-                              function ($scope, $http, $uibModal, $route, $sce, auth) {
+myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 'auth', 'getLiveStreams',
+                              function ($scope, $http, $uibModal, $route, $sce, auth, getLiveStreams) {
     $scope.checkAuth = auth.isAuthed; // Unsure if I am using this in the view
     $scope.$route = $route; 
     $scope.screenshots = [{
@@ -22,11 +22,25 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
                           ] 
  
     $scope.currentlyLiveStreams = []//{name: 'jakehoffmann'}, {name: 'tsm_dyrus'}]
-//    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
     
     $scope.getIframeSrc = function (channel) {
         return $sce.trustAsResourceUrl('https://player.twitch.tv/?autoplay=false&muted=true&channel=' + channel);
     }
+    
+    $scope.getStreams = function() {
+        getLiveStreams.getLiveStreams()
+        .then(
+        function(response) {
+            $scope.currentlyLiveStreams = response.data;
+            console.log('response: ', response);
+            console.log('how many live streams?: ', $scope.currentlyLiveStreams.length);
+            return $scope.currentlyLiveStreams.length;
+        },
+        function(err) {
+            console.error('Error in angular while trying to get live streams.', err);
+            return false;
+        });
+    };
     
     $scope.openModal = function(src) {
         $uibModal.open({
