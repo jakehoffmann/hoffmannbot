@@ -13,6 +13,8 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     $scope.inputSummoner = "new summoner";
     $scope.region = 'NA';
     $scope.inputAlias = "Your alias"
+    
+    $scope.currentlyLiveStreams = [{name: 'jakehoffmann'}]
 
     $scope.$route = $route; 
 
