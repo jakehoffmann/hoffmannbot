@@ -34,12 +34,11 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
             $scope.currentlyLiveStreams = response.data;
             console.log('response: ', response);
             console.log('how many live streams?: ', $scope.currentlyLiveStreams.length);
-            return $scope.currentlyLiveStreams.length;
-        },
+         },
         function(err) {
             console.error('Error in angular while trying to get live streams.', err);
-            return false;
         });
+        return $scope.currentlyLiveStreams.length;
     };
     
     $scope.openModal = function(src) {
