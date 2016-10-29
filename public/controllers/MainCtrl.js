@@ -21,7 +21,7 @@ myApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', '$route', '$sce', 
                           }
                           ] 
  
-    $scope.currentlyLiveStreams = [{name: 'jakehoffmann'}, {name: 'tsm_dyrus'}]
+    $scope.currentlyLiveStreams = []//{name: 'jakehoffmann'}, {name: 'tsm_dyrus'}]
 //    $scope.getLive = function () { return String(currentlyLiveStreams.length) }
     
     $scope.getIframeSrc = function (channel) {
