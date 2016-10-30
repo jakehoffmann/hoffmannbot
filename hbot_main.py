@@ -1085,7 +1085,7 @@ def channel_message_cb(word, word_eol, userdata):
         hexchat.command('say Find the commands here: http://www.hoffmannbot.com/#/hoffmannbot/commands')
         return hexchat.EAT_ALL
 
-    elif command == '!currentgame' or command == '!current':
+    elif command == '!currentgame' or command == '!current' or command == '!runes' or command == '!bans':
         command_use_time = time.time()
         if (command_use_time - lcu_current) <= 5:
             return hexchat.EAT_ALL
@@ -1126,8 +1126,8 @@ def channel_message_cb(word, word_eol, userdata):
             beginning='Going into game' if active_game_length == 0 else 'In game',
             champ=active_game_champ,
             length=' for ' + str(minutes) + 'm' if active_game_length != 0 else '',
-            runes=' ' + rune_list + '.' if 'runes' in word[1].split() else '',
-            bans=' Bans: ' + banned_champ_list[:-1] + '.' if 'bans' in word[1].split() else ''
+            runes=' ' + rune_list + '.' if 'runes' or command == '!runes' in word[1].split() else '',
+            bans=' Bans: ' + banned_champ_list[:-1] + '.' if 'bans' in word[1].split() or command == '!bans' else ''
         ))
         return hexchat.EAT_ALL
 
