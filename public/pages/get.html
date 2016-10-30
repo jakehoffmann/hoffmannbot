@@ -3,7 +3,7 @@
 <br />
 <br />
 <div class="row">
-<div class="col-xs-6" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
+<div class="col-xs-6" uib-alert ng-repeat="alert in default_alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
 <div class="col-xs-6"></div>
 </div>
 <div class="row">
@@ -61,7 +61,7 @@
                     <br />
                 </div>
                 <div class="alert alert-danger col-xs-12" role="alert" ng-show="repeatEntry()">
-                    This summoner name has already been registered for this region!
+                    This summoner name has been registered for this region!
                     <br />
                 </div>
             </div>
@@ -99,6 +99,9 @@
                 <a class="btn btn-default" ng-show="settings.title_updates" ng-click="settings.title_updates = false; updateSettings()"><i class="glyphicon glyphicon-off"></i> Disable</a>
                 <a class="btn btn-default" ng-show="!settings.title_updates" ng-click="settings.title_updates = true; updateSettings()"><i class="glyphicon glyphicon-off"></i> Enable</a>
             </div>       
+        </div>
+        <div class="row" ng-show="settings.title_updates">
+        <div class="col-xs-12" uib-alert ng-repeat="alert in title_alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
         </div>
     </div>
 </div>
