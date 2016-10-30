@@ -29,7 +29,7 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
         if (alert_type == 'default') {
             $scope.default_alerts.splice(index, 1);
         }
-        else if (alert_Type == 'title') {
+        else if (alert_type == 'title') {
             $scope.title_alerts.splice(index, 1);
         }
     };
