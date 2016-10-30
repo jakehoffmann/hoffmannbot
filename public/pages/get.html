@@ -3,7 +3,7 @@
 <br />
 <br />
 <div class="row">
-<div class="col-xs-6" uib-alert ng-repeat="alert in default_alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
+<div class="col-xs-6" uib-alert ng-repeat="alert in default_alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index, 'default')">{{alert.msg}}<br /></div>
 <div class="col-xs-6"></div>
 </div>
 <div class="row">
@@ -101,7 +101,7 @@
             </div>       
         </div>
         <div class="row" ng-show="settings.title_updates">
-        <div class="col-xs-12" uib-alert ng-repeat="alert in title_alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}<br /></div>
+        <div class="col-xs-12" uib-alert ng-repeat="alert in title_alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index, 'title')">{{alert.msg}}<br /></div>
         </div>
     </div>
 </div>
