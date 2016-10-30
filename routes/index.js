@@ -317,7 +317,7 @@ router.get('/livestreams', function(req, res, next) {
             console.log('livestreams endpoint query ended');
             res.json(response);    
         });
-        
+        done();
     });
     
 });

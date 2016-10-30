@@ -778,7 +778,7 @@ def channel_message_cb(word, word_eol, userdata):
     command = word[1].split()[0]  # the first word of a Twitch chat message, possibly a command
     user = word[0]
     channel = hexchat.get_info('channel')[1:]  # the channel in which the command was used
-    c.execute('SELECT alias,lcu_last,lcu_current,lcu_hi,lcu_rank FROM users WHERE twitch_username=%s', [channel])
+    c.execute('SELECT alias,lcu_last,lcu_current,lcu_hi,lcu_rank,lcu_commands FROM users WHERE twitch_username=%s', [channel])
     is_valid_user = c.fetchone()
     if is_valid_user is None:
         hexchat.command('say I\'m not supposed to be in this channel, goodbye!')
@@ -789,6 +789,7 @@ def channel_message_cb(word, word_eol, userdata):
     lcu_current = is_valid_user[2]
     lcu_hi = is_valid_user[3]
     lcu_rank = is_valid_user[4]
+    lcu_commands = is_valid_user[5]
 
     if command == '!lastgame' or command == '!last':
         command_use_time = time.time()
@@ -1075,6 +1076,15 @@ def channel_message_cb(word, word_eol, userdata):
                   'WHERE twitch_username=%s', [command_use_time, command_use_time, channel])
         hexchat.command('say Hello, I\'m here!')
 
+    elif command == '!commands':
+        command_use_time = time.time()
+        if (command_use_time - lcu_commands) <= 10:
+            return hexchat.EAT_ALL
+        c.execute('UPDATE users SET lcu_commands=%s, last_command_use=%s '
+                  'WHERE twitch_username=%s', [command_use_time, command_use_time, channel])
+        hexchat.command('say Find the commands here: http://www.hoffmannbot.com/#/hoffmannbot/commands')
+        return hexchat.EAT_ALL
+
     elif command == '!currentgame' or command == '!current':
         command_use_time = time.time()
         if (command_use_time - lcu_current) <= 5:
@@ -1297,6 +1307,9 @@ def channelmessage_cb(word, word_eol, userdata):
         return hexchat.EAT_ALL
     elif command == '!time' or command == '!now':
         # TODO: write this function to display the time in my timezone
+        return hexchat.EAT_ALL
+    elif command == '!commands':
+        hexchat.command('say Find the commands here: http://www.hoffmannbot.com/#/hoffmannbot/commands')
         return hexchat.EAT_ALL
     elif command == '!title':
         username = word[0]
