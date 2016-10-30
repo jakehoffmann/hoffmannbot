@@ -25,8 +25,13 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
         {type: 'danger', msg: 'Change your title by typing !title <desired title> in your chat'}
     ];
     
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
+    $scope.closeAlert = function(index, alert_type) {
+        if (alert_type == 'default') {
+            $scope.default_alerts.splice(index, 1);
+        }
+        else if (alert_Type == 'title') {
+            $scope.title_alerts.splice(index, 1);
+        }
     };
     
     $scope.repeatEntry = function () {
