@@ -16,8 +16,13 @@ myApp.controller('AuthCtrl', ["$scope", "$http", "$location", "$route", "auth", 
     
     $scope.$route = $route; 
 
-    $scope.alerts = [
+    $scope.default_alerts = [
         {type: 'danger', msg: 'Please remember to type /mod hoffmannbot in your twitch chat!'}
+    ];
+    
+    $scope.title_alerts = [
+        {type: 'danger', msg: 'You may want to disable !title commands from other Twitch Chat bots.'},
+        {type: 'danger', msg: 'Change your title by typing !title <desired title> in your chat'}
     ];
     
     $scope.closeAlert = function(index) {
