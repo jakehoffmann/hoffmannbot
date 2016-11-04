@@ -35,7 +35,7 @@ urllib.parse.uses_netloc.append("postgres")
 
 # url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
 url = urllib.parse.urlparse(
-    'postgres://apujurenpledps:I8ReS0Zp3289k4V-HTeEDkSLf_@ec2-54-243-217-22.compute-1.amazonaws.com:5432/d4kg1tud3ujhui')
+    'postgres://suyfcwqppnenub:gajpaa6AMbZjd51zoT6swolqcx@ec2-23-23-225-81.compute-1.amazonaws.com:5432/d5731e9r3ilceu')
 
 # TODO: Remove the above line for production, OBVIOUSLY
 
@@ -49,7 +49,6 @@ conn = psycopg2.connect(
 c = conn.cursor()
 
 # variables to make sure I don't spam Twitch chat
-last_request_time = 0
 currentgame_timeout = 0
 lastgame_timeout = 0
 
@@ -103,7 +102,7 @@ class TwitchAPI(object):
                 return response.status_code
 
             logging.debug(response.url)
-            print(response.url)
+            logging.debug(response.url)
             return response.json()
         elif action == 'put':
             headers = {
@@ -132,7 +131,7 @@ class TwitchAPI(object):
                 return response.status_code
 
             logging.debug(response.url)
-            print(response.url)
+            logging.debug(response.url)
             return response.json()
 
     def update_title(self, token, user, title):
@@ -174,9 +173,6 @@ class RiotAPI(object):
         if params is None:
             params = {}
 
-        global last_request_time
-        logging.debug('class timer variable: ' + str(RiotAPI.last_riot_api_query))
-        logging.debug('global timer variable: ' + str(last_request_time))
         diff = time.time() - RiotAPI.last_riot_api_query
         # 180,000 requests every 10 minutes and 3000 requests every 10 seconds (production key)
         # 500 requests every 10 minutes and 10 requests every 10 seconds (development key)
@@ -204,7 +200,7 @@ class RiotAPI(object):
                 ),
                 params=args
             )
-        last_request_time = RiotAPI.last_riot_api_query = time.time()
+        RiotAPI.last_riot_api_query = time.time()
         logging.debug('riot API status code: ')
         logging.debug(response.status_code)
         if response.status_code != 200:
@@ -213,7 +209,7 @@ class RiotAPI(object):
             return response.status_code
 
         logging.debug(response.url)
-        print(response.url)
+        logging.debug(response.url)
         return response.json()
 
     # get info about a summoner
@@ -275,7 +271,7 @@ def fetch_twitch_client_id():
     return client_id
 
 
-def refresh_channels():
+def refresh_channels(userdata):
     """checks for IRC channels to /join and /part
 
     Retrieves the list of twitch users that are using the bot and /join's new ones and /part's ones that have decided
@@ -287,23 +283,23 @@ def refresh_channels():
     current_channels = hexchat.get_list("channels")
 
     for channel in current_channels[:]:
-        print('looking at ' + channel.channel)
-        print(type(channel.channel))
+        logging.debug('looking at ' + channel.channel)
+        logging.debug(type(channel.channel))
         if channel.channel == 'Twitch':
             current_channels.remove(channel)
         elif channel.channel == '':
             current_channels.remove(channel)
         elif (channel.channel[1:],) in updated_channels:
-            print('remove from channels to join and channels to part lists: ' + channel.channel)
+            logging.debug('remove from channels to join and channels to part lists: ' + channel.channel)
             current_channels.remove(channel)
             updated_channels.remove((channel.channel[1:],))
 
     for channel in current_channels:
-        print('Executed command: part ' + channel.channel)
+        logging.debug('Executed command: part ' + channel.channel)
         hexchat.command('part ' + channel.channel)
 
     for channel in updated_channels:
-        print('Executed command: join #' + channel[0])
+        logging.debug('Executed command: join #' + channel[0])
         hexchat.command('join #' + channel[0])
 
 
@@ -366,7 +362,7 @@ def update_cb(userdata):
 def update_database_cb(userdata):
     """Function that updates Heroku postgres database.
     """
-    print('Recaching API data')
+    logging.debug('Recaching API data')
 
     # TODO: RE performance: perhaps insert a line here that will return if the Riot API has been called too recently
 
@@ -401,9 +397,7 @@ def update_database_cb(userdata):
             if not isinstance(result, int):
                 temp_summoner_name = ''.join(summoners[index][0].split()).lower()
                 temp_cache_time = time.time()
-                print('summoner info for ' + temp_summoner_name + ' cached')
-                # c.execute('INSERT OR REPLACE INTO summonerInfo (summoner, summonerId)'
-                #           'VALUES (%s,%s)', [temp_summoner_name, result[temp_summoner_name]['id']])
+                # logging.debug('summoner info for ' + temp_summoner_name + ' cached')
                 c.execute('INSERT INTO summonerInfo' + '_' + summoners[index][5] + ' (summoner, summonerId) '
                                                                                    'VALUES (%s, %s) '
                                                                                    'ON CONFLICT (summonerId) '
@@ -439,7 +433,7 @@ def update_database_cb(userdata):
                                   'ON CONFLICT DO NOTHING',  # is it correct to do nothing here? I think so.
                                   [match['matchId'], match['timestamp'], summoner_info[0], match['lane']])
                 conn.commit()
-                print('match list cached for ' + summoners[index][0])
+                # logging.debug('match list cached for ' + summoners[index][0])
             else:
                 continue
 
@@ -448,7 +442,7 @@ def update_database_cb(userdata):
         if summoners[index][4] == 0 or (time.time() - summoners[index][4] > current_game_query_wait):
             result = api.get_current_game(summoner_info[0], summoners[index][5])
             if result == 404:
-                print('current game for ' + summoners[index][0] + ' not found')
+                # logging.debug('current game for ' + summoners[index][0] + ' not found')
                 c.execute('UPDATE summoners SET current_game_exists=%s, current_game_cache_time=%s '
                           'WHERE summoner=%s AND region=%s',
                           ['false', time.time(), summoners[index][0], summoners[index][5]])
@@ -459,7 +453,7 @@ def update_database_cb(userdata):
                 conn.commit()
                 # TODO: update title if necessary
             elif not isinstance(result, int):
-                print('current game info for ' + summoners[index][0] + ' cached')
+                # logging.debug('current game info for ' + summoners[index][0] + ' cached')
                 active_game_length = result['gameLength']
                 for participants in result['participants']:
                     if ''.join(participants['summonerName'].split()).lower() == summoners[index][0]:
@@ -496,7 +490,7 @@ def update_database_cb(userdata):
         if len(unstored_matches) != 0:
             result = api.get_match_info((unstored_matches.pop(0))[0], summoners[index][5])
             if not isinstance(result, int):
-                print('Updating matches from match list')
+                logging.debug('Updating matches from match list')
                 logging.debug(result['matchId'])
                 logging.debug(result['matchCreation'])
                 logging.debug(result['matchDuration'])
@@ -579,7 +573,7 @@ def update_database_cb(userdata):
                               [time.time(), league, division, league_points, 'true', series_wins, series_losses,
                                summoners[index][0], summoners[index][5]])
                 conn.commit()
-                print('league data for ' + summoners[index][0] + ' cached')
+                # logging.debug('league data for ' + summoners[index][0] + ' cached')
             else:
                 continue
     return hexchat.EAT_ALL
@@ -595,7 +589,7 @@ def update_database_cb(userdata):
 #                }
 #     response = requests.put(url, data=json.dumps(data), headers=headers)
 #     if response.status_code != 200:
-#         print('Twitch API call failed :( status code: '+str(response.status_code))
+#         logging.debug('Twitch API call failed :( status code: '+str(response.status_code))
 
 
 # ---- OLD VERSION ---- #
@@ -653,41 +647,41 @@ def update_title(active_summoner=-1):
 def refresh_live_streams(userdata):
     """Updates the channel_live column in the database"""
 
-    print('Checking if streams are live. ', end="")
+    logging.debug('Checking if streams are live. ')
     c.execute("SELECT twitch_username, status_cache_time FROM users "
-              "WHERE %s - status_cache_time > 1800 "
+              "WHERE %s - status_cache_time > 300 "
               "ORDER BY status_cache_time "
               "LIMIT 100", [time.time()])
     rows = c.fetchall()
     if not rows:
-        print('No users need channel status update.')
+        logging.debug('No users need channel status update.')
         return hexchat.EAT_ALL
-    print('')
+    logging.debug('')
     users = ''
-    print('users: ', end="")
+    logging.debug('users: ')
     for row in rows:
-        print(row[0] + ', ', end="")
+        logging.debug(row[0] + ', ')
         users += row[0] + ','
-    print('')
+    logging.debug('')
 
     channels = {'channel': users[:-1]}
 
     api = TwitchAPI(fetch_twitch_client_id())
     result = api.get_live_streams(channels)
     live_streams = []
-    print('live channels: ', end="")
+    logging.debug('live channels: ')
     for stream in result['streams']:
-        print(stream['channel']['name'] + ', ', end="")
+        logging.debug(stream['channel']['name'] + ', ')
         live_streams.append(stream['channel']['name'])
-    print('')
+    logging.debug('')
     for row in rows:
         if row[0] in live_streams:
-            print('Following user set to LIVE: ' + str(row[0]))
+            logging.debug('Following user set to LIVE: ' + str(row[0]))
             c.execute('UPDATE users SET channel_live=%s, status_cache_time=%s '
                       'WHERE twitch_username=%s', ['true', time.time(), row[0]])
             conn.commit()
         else:
-            print('Following user set to NOT LIVE: ' + str(row[0]))
+            logging.debug('Following user set to NOT LIVE: ' + str(row[0]))
             c.execute('UPDATE users SET channel_live=%s, status_cache_time=%s '
                       'WHERE twitch_username=%s', ['false', time.time(), row[0]])
             conn.commit()
@@ -699,7 +693,7 @@ def update_twitch_title(userdata):
     """This updates the title of a currently streaming twitch user who last had their title updated more than 60
      seconds ago. If a twitch_username is specified, it updates that specific users title
     """
-    print('updating titles')
+    logging.debug('updating titles')
     c.execute("SELECT twitch_username, token, title_base FROM users "
               "WHERE receives_title_updates='true' AND channel_live='true' AND %s - last_title_update > 60 "
               "ORDER BY last_title_update DESC "
@@ -736,19 +730,19 @@ def update_twitch_title(userdata):
 
     title = (title_dynamic + ' ' + title_base) if title_dynamic != '' else title_base
     data = {'channel': {'status': title[:139]}}
-    print('Setting channel to:')
-    print(data)
+    logging.debug('Setting channel to:')
+    logging.debug(data)
 
     api = TwitchAPI(fetch_twitch_client_id())
     result = api.update_title(token, user, title)
     if not isinstance(result, int):
-        print('twitch API result: ')
-        print(result)
+        logging.debug('twitch API result: ')
+        logging.debug(result)
         c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
         return hexchat.EAT_ALL
     else:
-        print('say Twitch API call failed :(.')
-        print('status code: ' + str(result))
+        logging.debug('say Twitch API call failed :(.')
+        logging.debug('status code: ' + str(result))
         return hexchat.EAT_ALL
 
         # TODO: again we may want to put this into a function/class especially if we start using other endpoints
@@ -760,10 +754,10 @@ def update_twitch_title(userdata):
         #            }
         # response = requests.put(url, data=json.dumps(data), headers=headers)
         # if response.status_code != 200:
-        #     print('say Twitch API call failed :(.')
+        #     logging.debug('say Twitch API call failed :(.')
         #     return hexchat.EAT_ALL
-        # print('twitch API status code: ')
-        # print(response.status_code)
+        # logging.debug('twitch API status code: ')
+        # logging.debug(response.status_code)
         # c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
         # return hexchat.EAT_ALL
 
@@ -804,21 +798,6 @@ def channel_message_cb(word, word_eol, userdata):
         # if username != 'jakehoffmann':
         #     hexchat.command('say ' + command[1:] + ' is Jake-only for testing at the moment :)')
         #     return hexchat.EAT_ALL
-
-        # c.execute('SELECT kills,deaths,assists,matchCreation,matchDuration,participants.championId,winner,lane,'
-        #           'summoners.summoner, participants.matchId '
-        #           'FROM summoners '
-        #           'INNER JOIN summonerInfo ON summoners.summoner = summonerInfo.summoner '
-        #           'INNER JOIN participantIdentities '
-        #           'ON participantIdentities.summonerId = summonerInfo.summonerId '
-        #           'INNER JOIN participants ON participantIdentities.participantId = participants.participantId '
-        #           'AND participantIdentities.matchId = participants.matchId '
-        #           'INNER JOIN match ON participants.matchId = match.matchId '
-        #           'INNER JOIN matchList ON participants.matchId = matchList.matchId '
-        #           'WHERE summoners.twitch_username = %s '
-        #           'ORDER BY matchCreation DESC '
-        #           'LIMIT 1', [channel])
-        #############################
 
         # This query selects all the summoners related to the current twitch user, orders them by when they last
         #  played a match, and then selects the most recent one.
@@ -1041,7 +1020,7 @@ def channel_message_cb(word, word_eol, userdata):
         if username != 'jakehoffmann':
             hexchat.command('say ' + command + ' is Jake-only')
             return hexchat.EAT_ALL
-        refresh_live_streams()
+        refresh_channels(None)
         return hexchat.EAT_ALL
 
     elif command == '!rank':
@@ -1126,15 +1105,15 @@ def channel_message_cb(word, word_eol, userdata):
             beginning='Going into game' if active_game_length == 0 else 'In game',
             champ=active_game_champ,
             length=' for ' + str(minutes) + 'm' if active_game_length != 0 else '',
-            runes=' ' + rune_list + '.' if 'runes' or command == '!runes' in word[1].split() else '',
+            runes=' ' + rune_list + '.' if 'runes' in word[1].split() or command == '!runes' else '',
             bans=' Bans: ' + banned_champ_list[:-1] + '.' if 'bans' in word[1].split() or command == '!bans' else ''
         ))
         return hexchat.EAT_ALL
 
     elif command == "!title":
-        print('user: ', user)
-        print('channel: ', channel)
-        print('title: ', word[1][7:139])
+        logging.debug('user: ', user)
+        logging.debug('channel: ', channel)
+        logging.debug('title: ', word[1][7:139])
         if user != channel:
             return hexchat.EAT_ALL
         c.execute('UPDATE users SET title_base=%s WHERE twitch_username=%s', [word[1][7:139], channel])
@@ -1313,7 +1292,7 @@ def channelmessage_cb(word, word_eol, userdata):
         return hexchat.EAT_ALL
     elif command == '!title':
         username = word[0]
-        print('username: ' + username + ' channel: ' + hexchat.get_info('channel')[1:])
+        logging.debug('username: ' + username + ' channel: ' + hexchat.get_info('channel')[1:])
         if username != hexchat.get_info('channel')[1:]:
             # hexchat.command('say No! Not for you!')
             return hexchat.EAT_ALL
@@ -1324,14 +1303,15 @@ def channelmessage_cb(word, word_eol, userdata):
     elif command == '!hi':
         hexchat.command('say Hello, I\'m here!')
     elif command == "!test":
-        print(hexchat.get_info('channel'))
+        logging.debug(hexchat.get_info('channel'))
         hexchat.command('say hello ' + hexchat.get_info('channel'))
     else:
         return hexchat.EAT_ALL
 
 
 def loaded_cb(userdata):
-    print('Hoffmannbot loaded...')
+    refresh_channels(None)
+    logging.debug('Hoffmannbot loaded...')
     return 1
 
 
@@ -1343,17 +1323,16 @@ def unload_cb(userdata):
 
 
 print('==========Hoffmannbot loaded============')
-refresh_channels()
 
 # load_data()
 
 ### champion static data
 # response = requests.get('https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?api_key=50992d27-0c22-4d2d-b529-903be10b4e64')
 # champion_data = response.json()
-# print(champion_data['data'])
+# logging.debug(champion_data['data'])
 # for champ in champion_data['data']:
 #     CHAMPIONS[champion_data['data'][champ]['id']] = champion_data['data'][champ]['name']
-#     print(str(champion_data['data'][champ]['id'])+':\''+champion_data['data'][champ]['name']+'\',')
+#     logging.debug(str(champion_data['data'][champ]['id'])+':\''+champion_data['data'][champ]['name']+'\',')
 
 ### runes static data
 # response = requests.get('https://global.api.pvp.net/api/lol/static-data/na/v1.2/rune?api_key=50992d27-0c22-4d2d-b529-903be10b4e64')
@@ -1367,7 +1346,7 @@ hexchat.hook_timer(5000, refresh_live_streams)             # update which stream
 hexchat.hook_timer(5000, update_twitch_title)              # update twitch titles
 hexchat.hook_timer(5000, update_database_cb)               # update the database with new Riot API info
 hexchat.hook_print('Channel Message', channel_message_cb)  # respond to Twitch chat messages
-hexchat.hook_timer(300000, refresh_channels)               # refresh the channel list every 5 mins (300k milliseconds)
+hexchat.hook_timer(60000, refresh_channels)               # refresh the channel list every 1 mins (60k milliseconds)
 
 ### local only versions
 # update_cb('')
