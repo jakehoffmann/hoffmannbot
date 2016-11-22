@@ -25,8 +25,17 @@ logging.basicConfig(filename=r'D:\hoffmannbot\logs\updater_log.txt',
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     level=logging.DEBUG)
 
-url = urllib.parse.urlparse(
-    'postgres://suyfcwqppnenub:gajpaa6AMbZjd51zoT6swolqcx@ec2-23-23-225-81.compute-1.amazonaws.com:5432/d5731e9r3ilceu')
+f = open('apikey.txt', 'r')
+riot_api_key = f.readline()
+f.close()
+f = open('clientid.txt', 'r')
+client_id = f.readline()
+f.close()
+f = open('postgresurl.txt', 'r')
+postgres_url = f.readline()[:-2]
+f.close()
+
+url = urllib.parse.urlparse(postgres_url)
 conn = psycopg2.connect(
     database=url.path[1:],
     user=url.username,
@@ -231,24 +240,18 @@ class RiotAPI(object):
         return self._request(api_url, region)
 
 
-# might want to hide this in a file. easy locally but need a heroku solution
-#  the solution: put it in heroku ENV variables
 def fetch_riot_key():
     """Returns the Riot API key"""
 
-    # production key
-    key = 'RGAPI-476c21b9-3346-4022-8036-2af99fea7c47'
-
-    # development key
-    # key = '50992d27-0c22-4d2d-b529-903be10b4e64'
-    return key
+    global riot_api_key
+    return riot_api_key[:-2]
 
 
 def fetch_twitch_client_id():
     """Returns the Twitch client ID (like an API key)"""
 
-    client_id = '49mrp5ljn2nj44sx1czezi44ql151h2'
-    return client_id
+    global client_id
+    return client_id[:-2]
 
 
 def update_database_cb(userdata):
@@ -577,22 +580,6 @@ def update_twitch_title(userdata):
         logging.debug('say Twitch API call failed :(.')
         logging.debug('status code: ' + str(result))
         return hexchat.EAT_ALL
-
-        # TODO: again we may want to put this into a function/class especially if we start using other endpoints
-        #     url = 'https://api.twitch.tv/kraken/channels/{user}'.format(user=user)
-        # headers = {'Accept': 'application/vnd.twitchtv.v3+json',
-        #            'Authorization': 'OAuth {token}'.format(token=token),
-        #            'Client-ID': '49mrp5ljn2nj44sx1czezi44ql151h2',
-        #            'content-type': 'application/json'
-        #            }
-        # response = requests.put(url, data=json.dumps(data), headers=headers)
-        # if response.status_code != 200:
-        #     logging.debug('say Twitch API call failed :(.')
-        #     return hexchat.EAT_ALL
-        # logging.debug('twitch API status code: ')
-        # logging.debug(response.status_code)
-        # c.execute('UPDATE users SET last_title_update=%s WHERE twitch_username=%s', [time.time(), user])
-        # return hexchat.EAT_ALL
 
 
 def unload_cb(userdata):

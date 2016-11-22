@@ -36,9 +36,17 @@ __module_description__ = "Twitch Chat Bot with Jake's custom commands"
 # connecting to postgres database
 urllib.parse.uses_netloc.append("postgres")
 
-# url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-url = urllib.parse.urlparse(
-    'postgres://suyfcwqppnenub:gajpaa6AMbZjd51zoT6swolqcx@ec2-23-23-225-81.compute-1.amazonaws.com:5432/d5731e9r3ilceu')
+f = open('apikey.txt', 'r')
+riot_api_key = f.readline()
+f.close()
+f = open('clientid.txt', 'r')
+client_id = f.readline()
+f.close()
+f = open('postgresurl.txt', 'r')
+postgres_url = f.readline()[:-2]
+f.close()
+
+url = urllib.parse.urlparse(postgres_url)
 
 # TODO: Remove the above line for production, OBVIOUSLY
 
@@ -55,10 +63,7 @@ c = conn.cursor()
 currentgame_timeout = 0
 lastgame_timeout = 0
 
-# TODO: remove this once I clean up its instances
-SUMMONERS = {}
-
-riot_api_issues = False
+issues_exist = False
 
 
 class TwitchAPI(object):
@@ -256,24 +261,18 @@ class RiotAPI(object):
         return self._request(api_url, region)
 
 
-# might want to hide this in a file. easy locally but need a heroku solution
-#  the solution: put it in heroku ENV variables
 def fetch_riot_key():
     """Returns the Riot API key"""
 
-    # production key
-    key = 'RGAPI-476c21b9-3346-4022-8036-2af99fea7c47'
-
-    # development key
-    # key = '50992d27-0c22-4d2d-b529-903be10b4e64'
-    return key
+    global riot_api_key
+    return riot_api_key[:-2]
 
 
 def fetch_twitch_client_id():
     """Returns the Twitch client ID (like an API key)"""
 
-    client_id = '49mrp5ljn2nj44sx1czezi44ql151h2'
-    return client_id
+    global client_id
+    return client_id[:-2]
 
 
 def refresh_channels(userdata):
@@ -711,7 +710,7 @@ def channel_message_cb(word, word_eol, userdata):
     functions arguments and what it returns.
     """
 
-    global riot_api_issues
+    global issues_exist
     announcement = "(11/16) There are some issues retrieving Flex queue data. "
 
     command = word[1].split()[0]  # the first word of a Twitch chat message, possibly a command
@@ -916,8 +915,9 @@ def channel_message_cb(word, word_eol, userdata):
 
         if 'champId' not in CHAMPIONS:
             static_data_response = requests.get(
-                'https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/{champId}?api_key=RGAPI-476c21b9-3346-4022-8036-2af99fea7c47'.format(
-                    champId=int(row[5])
+                'https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/{champId}?api_key={api_key}'.format(
+                    champId=int(row[5]),
+                    api_key=fetch_riot_key()
                 )
             )
             logging.debug(static_data_response.url)
@@ -952,7 +952,7 @@ def channel_message_cb(word, word_eol, userdata):
             region=(Riot_Consts.REGIONS[row[10]]).upper(),
             platform=Riot_Consts.PLATFORMS[row[10]],
             matchId=row[9],
-            issues=announcement if riot_api_issues else ''
+            issues=announcement if issues_exist else ''
 
         ) \
             if not (row[4] < 300 and row[0] == row[1] == row[2] == 0) \
@@ -985,7 +985,7 @@ def channel_message_cb(word, word_eol, userdata):
             else:
                 ranks_list += ', '
         hexchat.command('say {issues}'.format(
-            issues=announcement if riot_api_issues else ''
+            issues=announcement if issues_exist else ''
                         ) + ranks_list[:-2]
                         )
         return hexchat.EAT_ALL
@@ -1024,7 +1024,7 @@ def channel_message_cb(word, word_eol, userdata):
             logging.debug('no current game found for twitch username: ' + channel)
             hexchat.command('say {issues}{user} is not in a game.'.format(
                 user=alias,
-                issues=announcement if riot_api_issues else ''
+                issues=announcement if issues_exist else ''
             ))
             return hexchat.EAT_ALL
         logging.debug('active summoner: {}'.format(current_game[0]))
@@ -1053,7 +1053,7 @@ def channel_message_cb(word, word_eol, userdata):
             length=' for ' + str(minutes) + 'm' if active_game_length != 0 else '',
             runes=' ' + rune_list + '.' if 'runes' in word[1].split() or command == '!runes' else '',
             bans=' Bans: ' + banned_champ_list[:-1] + '.' if 'bans' in word[1].split() or command == '!bans' else '',
-            issues=announcement if riot_api_issues else ''
+            issues=announcement if issues_exist else ''
         ))
         return hexchat.EAT_ALL
 
@@ -1119,9 +1119,9 @@ def channel_message_cb(word, word_eol, userdata):
         if username != 'jakehoffmann':
             hexchat.command('say ' + command + ' is Jake-only')
             return hexchat.EAT_ALL
-        hexchat.command('say Riot API issues noted...')
-        global riot_api_issues
-        riot_api_issues = True
+        hexchat.command('say Issues noted...')
+        global issues_exist
+        issues_exist = True
         return hexchat.EAT_ALL
 
     elif command == '!issuesoff':
@@ -1130,9 +1130,9 @@ def channel_message_cb(word, word_eol, userdata):
         if username != 'jakehoffmann':
             hexchat.command('say ' + command + ' is Jake-only')
             return hexchat.EAT_ALL
-        hexchat.command('say No more Riot API issues...')
-        global riot_api_issues
-        riot_api_issues = False
+        hexchat.command('say No more issues...')
+        global issues_exist
+        issues_exist = False
         return hexchat.EAT_ALL
 
 
@@ -1175,7 +1175,7 @@ def configure(mode):
 # load_data()
 
 # champion static data
-# response = requests.get('https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?api_key=RGAPI-476c21b9-3346-4022-8036-2af99fea7c47')
+# response = requests.get('https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?api_key={api_key}'.format(api_key=fetch_riot_key()))
 # champion_data = response.json()
 # logging.debug(champion_data['data'])
 # for champ in champion_data['data']:
@@ -1183,7 +1183,7 @@ def configure(mode):
 #     logging.debug(str(champion_data['data'][champ]['id'])+':\''+champion_data['data'][champ]['name']+'\',')
 
 # runes static data
-# response = requests.get('https://global.api.pvp.net/api/lol/static-data/na/v1.2/rune?api_key=RGAPI-476c21b9-3346-4022-8036-2af99fea7c47')
+# response = requests.get('https://global.api.pvp.net/api/lol/static-data/na/v1.2/rune?api_key={api_key}'.format(api_key=fetch_riot_key()))
 # runes_data = response.json()
 # for rune in runes_data['data']:
 #     RUNES[runes_data['data'][rune]['id']] = runes_data['data'][rune]['name']
