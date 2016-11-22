@@ -961,7 +961,7 @@ def channel_message_cb(word, word_eol, userdata):
                   'WHERE twitch_username=%s', [command_use_time, command_use_time, channel])
         conn.commit()
         logging.debug('currentgame')
-        c.execute("SELECT summoner,gameId,gameLength,championId,region FROM summoners "
+        c.execute("SELECT summoner,gameId,gameLength,championId,region,gameStartTime FROM summoners "
                   "WHERE twitch_username=%s AND current_game_exists='true'", [channel])
         current_game = c.fetchone()
         if current_game is None:
@@ -974,6 +974,7 @@ def channel_message_cb(word, word_eol, userdata):
         logging.debug('active summoner: {}'.format(current_game[0]))
         active_game_length = current_game[2]
         active_game_champ = CHAMPIONS[current_game[3]]
+        active_game_start_time = current_game[5]
 
         rune_list = ''
         c.execute('SELECT count,runeId FROM currentRunes' + '_' + current_game[4] + ' '
@@ -990,7 +991,11 @@ def channel_message_cb(word, word_eol, userdata):
         for row in c:
             banned_champ_list += CHAMPIONS[row[0]] + '/'
 
-        minutes = (active_game_length // 60) + 3
+        # This was my original (flawed?) method for displaying time elapsed
+        # minutes = (active_game_length // 60) + 3
+
+        # Here is the new way for doing the above
+        minutes = int((time.time() - active_game_start_time/1000) // 60)
         hexchat.command('say {issues}{beginning} as {champ}{length}.{runes}{bans}'.format(
             beginning='Going into game' if active_game_length == 0 else 'In game',
             champ=active_game_champ,
@@ -1092,7 +1097,6 @@ update_database_timer = 5*1000
 refresh_channels_timer = 60*1000
 
 print('==========Hoffmannbot loaded============')
-refresh_channels(None)
 
 
 def configure(mode):
@@ -1132,7 +1136,7 @@ def configure(mode):
 hook_1 = None
 hook_2 = None
 hook_3 = None
-hook_4 = None
+hook_4 = hexchat.hook_timer(60 * 1000, refresh_channels)
 hexchat.hook_print('Channel Message', channel_message_cb)    # respond to Twitch chat messages
 
 # local only versions

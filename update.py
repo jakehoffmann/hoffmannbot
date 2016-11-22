@@ -351,13 +351,14 @@ def update_database_cb(userdata):
             elif not isinstance(result, int):
                 # logging.debug('current game info for ' + summoners[index][0] + ' cached')
                 active_game_length = result['gameLength']
+                game_start_time = result['gameStartTime']
                 for participants in result['participants']:
                     if ''.join(participants['summonerName'].split()).lower() == summoners[index][0]:
                         active_game_champId = participants['championId']
                         active_game_runes = participants['runes']
                 c.execute('UPDATE summoners SET current_game_exists=%s, current_game_cache_time=%s, gameLength=%s,'
-                          ' championId=%s, gameId=%s WHERE summoner=%s AND region=%s',
-                          ['true', time.time(), active_game_length, active_game_champId, result['gameId'],
+                          ' gameStartTime=%s, championId=%s, gameId=%s WHERE summoner=%s AND region=%s',
+                          ['true', time.time(), active_game_length, game_start_time, active_game_champId, result['gameId'],
                            summoners[index][0], summoners[index][5]])
                 for rune in active_game_runes:
                     # c.execute('INSERT OR REPLACE INTO currentRunes (count, runeId, summoner, gameId) '
