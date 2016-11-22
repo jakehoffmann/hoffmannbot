@@ -25,14 +25,14 @@ logging.basicConfig(filename=r'D:\hoffmannbot\logs\updater_log.txt',
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     level=logging.DEBUG)
 
-f = open('apikey.txt', 'r')
+f = open('d:/hoffmannbot/apikey.txt', 'r')
 riot_api_key = f.readline()
 f.close()
-f = open('clientid.txt', 'r')
+f = open('d:/hoffmannbot/clientid.txt', 'r')
 client_id = f.readline()
 f.close()
-f = open('postgresurl.txt', 'r')
-postgres_url = f.readline()[:-2]
+f = open('d:/hoffmannbot/postgresurl.txt', 'r')
+postgres_url = f.readline()[:-1]
 f.close()
 
 url = urllib.parse.urlparse(postgres_url)
@@ -215,7 +215,7 @@ class RiotAPI(object):
             id=summonerid
         )
         return self._request(api_url, region,
-                             params={'rankedQueues': ['TEAM_BUILDER_DRAFT_RANKED_5x5', 'RANKED_FLEX_SR'],
+                             params={'rankedQueues': 'TEAM_BUILDER_DRAFT_RANKED_5x5,RANKED_FLEX_SR,TEAM_BUILDER_RANKED_SOLO',
                                      'beginIndex': '0', 'endIndex': '5'})
 
     # get current game info. uses special request due to the base Riot_Consts.URL being unique in Riot API
@@ -244,14 +244,14 @@ def fetch_riot_key():
     """Returns the Riot API key"""
 
     global riot_api_key
-    return riot_api_key[:-2]
+    return riot_api_key[:-1]
 
 
 def fetch_twitch_client_id():
     """Returns the Twitch client ID (like an API key)"""
 
     global client_id
-    return client_id[:-2]
+    return client_id[:-1]
 
 
 def update_database_cb(userdata):

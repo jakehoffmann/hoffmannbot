@@ -36,14 +36,14 @@ __module_description__ = "Twitch Chat Bot with Jake's custom commands"
 # connecting to postgres database
 urllib.parse.uses_netloc.append("postgres")
 
-f = open('apikey.txt', 'r')
+f = open('d:/hoffmannbot/apikey.txt', 'r')
 riot_api_key = f.readline()
 f.close()
-f = open('clientid.txt', 'r')
+f = open('d:/hoffmannbot/clientid.txt', 'r')
 client_id = f.readline()
 f.close()
-f = open('postgresurl.txt', 'r')
-postgres_url = f.readline()[:-2]
+f = open('d:/hoffmannbot/postgresurl.txt', 'r')
+postgres_url = f.readline()[:-1]
 f.close()
 
 url = urllib.parse.urlparse(postgres_url)
@@ -265,14 +265,14 @@ def fetch_riot_key():
     """Returns the Riot API key"""
 
     global riot_api_key
-    return riot_api_key[:-2]
+    return riot_api_key[:-1]
 
 
 def fetch_twitch_client_id():
     """Returns the Twitch client ID (like an API key)"""
 
     global client_id
-    return client_id[:-2]
+    return client_id[:-1]
 
 
 def refresh_channels(userdata):
