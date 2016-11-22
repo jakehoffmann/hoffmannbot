@@ -79,7 +79,7 @@ router.post('/auth', function(req, res, next) {
                 // this request goes to twitch kraken and gets the access token for the auth'd user
                 request.post( { url:'https://api.twitch.tv/kraken/oauth2/token',
                                 form: { client_id: '49mrp5ljn2nj44sx1czezi44ql151h2',
-                                        client_secret: 'mz513m1xu5ga9mhrxuvb9sbwjgjw2ys',
+                                        client_secret: process.env.CLIENT_SECRET,
                                         grant_type: 'authorization_code',
                                         redirect_uri: 'http://hoffmannbot.com/#/hoffmannbot/get/',
                                         code: req.body.code}},

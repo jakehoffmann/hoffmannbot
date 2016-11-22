@@ -1080,12 +1080,6 @@ def channel_message_cb(word, word_eol, userdata):
         return hexchat.EAT_ALL
 
 
-def loaded_cb(userdata):
-    refresh_channels(None)
-    logging.debug('Hoffmannbot loaded...')
-    return 1
-
-
 def unload_cb(userdata):
     conn.commit()
     c.close()
@@ -1098,6 +1092,7 @@ update_database_timer = 5*1000
 refresh_channels_timer = 60*1000
 
 print('==========Hoffmannbot loaded============')
+refresh_channels(None)
 
 
 def configure(mode):
