@@ -18,5 +18,5 @@ CHAMPIONS = {
     83: 'Yorick',22: 'Ashe',15: 'Sivir',126: 'Jayce',99: 'Lux',6: 'Urgot',68: 'Rumble',30: 'Karthus',27: 'Singed',
     266: 'Aatrox',98: 'Shen',90: 'Malzahar',223: 'Tahm Kench',154: 'Zac',48: 'Trundle',33: 'Rammus',161: 'Vel\'Koz',
     20: 'Nunu',245: 'Ekko',9: 'Fiddlesticks',121: 'Kha\'Zix',114: 'Fiora',79: 'Gragas',134: 'Syndra',54: 'Malphite',
-    133: 'Quinn',23: 'Tryndamere',106: 'Volibear',110: 'Varus'
+    133: 'Quinn',23: 'Tryndamere',106: 'Volibear',110: 'Varus', 427: 'Ivern'
 }

@@ -1,1 +1,0 @@
-/py load D:\hoffmannbot\hbot_main.py
