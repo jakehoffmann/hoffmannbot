@@ -307,62 +307,6 @@ def refresh_channels(userdata):
         hexchat.command('join #' + channel[0])
 
 
-# not in use anymore
-# this gets called automatically every X minutes (via hook_timer at bottom of script)
-# updates the database with information from Riot API
-def update_cb(userdata):
-    logging.debug('Recaching API data')
-    #
-    # global r
-    # global matchList
-    # global matchInfo
-    # global current_game_info
-    #
-    # api = RiotAPI('50992d27-0c22-4d2d-b529-903be10b4e64')
-    # for index in range(len(SUMMONERS)):
-    #     if not r[index] or (time.time() - r[index].get('cacheTime', 0)) > 300:
-    #         result = api.get_summoner_by_name(SUMMONERS[index])
-    #         if not isinstance(result, int):
-    #             logging.debug('summoner info for '+SUMMONERS[index]+' cached')
-    #             r[index] = result
-    #             r[index]['cacheTime'] = time.time()
-    #         else:
-    #             continue
-    #     if not matchList[index] or (time.time() - matchList[index].get('cacheTime', 0)) > 300:
-    #         summ_id = r[index][SUMMONERS[index]]['id']
-    #         result = api.get_matchlist(summ_id)
-    #         if not isinstance(result, int):
-    #             logging.debug('summoner matchlist for ' + SUMMONERS[index] + ' cached')
-    #             matchList[index] = result
-    #             matchList[index]['cacheTime'] = time.time()
-    #         else:
-    #             continue
-    #     if not matchInfo[index] or (time.time() - matchInfo[index].get('cacheTime', 0)) > 300:
-    #         matchId = matchList[index]['matches'][0]['matchId']
-    #         result = api.get_match_info(matchId)
-    #         if not isinstance(result, int):
-    #             logging.debug('summoner matchinfo for ' + SUMMONERS[index] + ' cached')
-    #             matchInfo[index] = result
-    #             matchInfo[index]['cacheTime'] = time.time()
-    #     if not current_game_info[index] or (time.time() - current_game_info[index].get('cacheTime', 0)) > 60:
-    #         summ_id = r[index][SUMMONERS[index]]['id']
-    #         result = api.get_current_game(summ_id)
-    #         if result == 404:
-    #             logging.debug('current game for ' + SUMMONERS[index] + ' not found!')
-    #             current_game_info[index] = {}
-    #             current_game_info[index]['cacheTime'] = time.time()
-    #             if index == len(SUMMONERS)-1:
-    #                 update_title()
-    #         elif not isinstance(result, int):
-    #             logging.debug('current game info for ' + SUMMONERS[index] + ' cached')
-    #             current_game_info[index] = result
-    #             current_game_info[index]['cacheTime'] = time.time()
-    #             update_title(index)
-    #
-    # return 1
-
-
-# new version of update_cb that uses database instead of memory
 def update_database_cb(userdata):
     """Function that updates Heroku postgres database with fresh data from the Riot API.
     """
