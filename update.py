@@ -542,7 +542,7 @@ def update_twitch_title(userdata):
     token = row[1]
     title_base = row[2]
 
-    c.execute("SELECT summoner,gameId,gameLength,championId,region,league,league_points FROM summoners "
+    c.execute("SELECT summoner,gameId,gameLength,championId,region,league,league_points,gameStartTime FROM summoners "
               "WHERE twitch_username=%s AND current_game_exists='true'", [user])
     current_game = c.fetchone()
     if current_game is None:
@@ -552,12 +552,17 @@ def update_twitch_title(userdata):
         game_length = current_game[2]
         champ_id = current_game[3]
         region = current_game[4]
+        active_game_start_time = current_game[7]
 
         # maybe add this into the updated title information at some point
         league = current_game[5]
         league_points = current_game[6]
 
-        minutes = (game_length // 60) + 3  # game length in minutes (+3 minutes due to spectator delay)
+        # This was my original (flawed?) method for displaying time elapsed
+        # minutes = (active_game_length // 60) + 3
+
+        # Here is the new way for doing the above
+        minutes = int((time.time() - active_game_start_time/1000) // 60)
         champ = CHAMPIONS.get(champ_id, str(champ_id))
 
         if game_length == 0:
