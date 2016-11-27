@@ -265,7 +265,7 @@ def update_database_cb(userdata):
     api = RiotAPI(fetch_riot_key())
 
     # base delay in seconds before querying Riot API again (before exponential back-off)
-    summoner_info_query_base = 90000000  # TODO: how often to re-query this, if ever?
+    summoner_info_query_base = 600  # TODO: how often to re-query this, if ever?
     match_list_query_base = 60
     current_game_query_base = 60
     league_query_base = 60
@@ -349,7 +349,8 @@ def update_database_cb(userdata):
                 conn.commit()
                 # TODO: update title if necessary
             elif not isinstance(result, int):
-                # logging.debug('current game info for ' + summoners[index][0] + ' cached')
+                logging.debug('current game info for summoner ' + summoners[index][0] + ' cached')
+                logging.debug('current game info for summoner id ' + str(summoner_info[0]) + ' cached')
                 active_game_length = result['gameLength']
                 game_start_time = result['gameStartTime']
                 for participants in result['participants']:
@@ -588,6 +589,47 @@ def update_twitch_title(userdata):
         return hexchat.EAT_ALL
 
 
+def channel_message_cb(word, word_eol, userdata):
+
+    command = word[1].split()[0]
+    user = word[0]
+
+    if command == '!pauseupdate':
+        # The next lines put the command in jake-only mode
+        username = word[0]
+        if username != 'jakehoffmann':
+            hexchat.command('say ' + command + ' is Jake-only')
+            return hexchat.EAT_ALL
+        hexchat.command('say Pausing updates.')
+        configure('off')
+        return hexchat.EAT_ALL
+
+    elif command == '!resumeupdate':
+        # The next lines put the command in jake-only mode
+        username = word[0]
+        if username != 'jakehoffmann':
+            hexchat.command('say ' + command + ' is Jake-only')
+            return hexchat.EAT_ALL
+        hexchat.command('say Resuming updates.')
+        configure('on')
+        return hexchat.EAT_ALL
+
+
+def configure(mode):
+    global hook_1
+    global hook_2
+    global hook_3
+    global hook_4
+    if mode == 'off':
+        hexchat.unhook(hook_1)
+        hexchat.unhook(hook_2)
+        hexchat.unhook(hook_3)
+    if mode == 'on':
+        hook_1 = hexchat.hook_timer(5 * 1000, refresh_live_streams)  # update which streams are currently live
+        hook_2 = hexchat.hook_timer(5 * 1000, update_twitch_title)  # update twitch titles
+        hook_3 = hexchat.hook_timer(5 * 1000, update_database_cb)  # update the database with new Riot API info
+
+
 def unload_cb(userdata):
     conn.commit()
     c.close()
@@ -599,5 +641,5 @@ print('==========Hoffmannbot Updater loaded==========')
 hook_1 = hexchat.hook_timer(5 * 1000, refresh_live_streams)  # update which streams are currently live
 hook_2 = hexchat.hook_timer(5 * 1000, update_twitch_title)  # update twitch titles
 hook_3 = hexchat.hook_timer(5 * 1000, update_database_cb)  # update the database with new Riot API info
-
+hook_4 = hexchat.hook_print('Channel Message', channel_message_cb)
 hexchat.hook_unload(unload_cb)

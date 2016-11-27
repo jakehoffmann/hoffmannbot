@@ -31,10 +31,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/riot.txt', function(req, res, next) {
-   res.send('public/riot.txt')
-});
-
 // This endpoint takes care of server side oauth and responds with the twitch 
 //   username, corresponding summoner names, [app settings, etc.]
 router.post('/auth', function(req, res, next) {
