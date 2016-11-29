@@ -260,8 +260,6 @@ def update_database_cb(userdata):
     # print('recaching API data')
     logging.debug('Recaching API data')
 
-    # TODO: RE performance: perhaps insert a line here that will return if the Riot API has been called too recently
-
     api = RiotAPI(fetch_riot_key())
 
     # base delay in seconds before querying Riot API again (before exponential back-off)
