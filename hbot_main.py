@@ -6,7 +6,6 @@ import json
 import psycopg2
 import urllib.parse
 import logging
-import random
 import sys
 import os
 
@@ -18,6 +17,7 @@ sys.path.append(os.getcwd() + '\\..')
 from static_data_shortened import RUNES, CHAMPIONS
 import Riot_API_consts as Riot_Consts
 import Twitch_API_consts as Twitch_Consts
+# from maintain_db import maintain_db_connection
 
 # from Riot_API_consts import URL, API_VERSIONS, REGIONS, PLATFORMS
 
@@ -25,7 +25,6 @@ logging.basicConfig(filename='D:\hoffmannbot\logs\log.txt',
                     datefmt='%m-%d %H:%M',
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     level=logging.DEBUG)
-# logging.basicConfig(level=logging.DEBUG)
 
 logging.debug('Directory added to sys.path: ' + os.getcwd() + '\\..')
 
@@ -47,7 +46,6 @@ postgres_url = f.readline()[:-1]
 f.close()
 
 url = urllib.parse.urlparse(postgres_url)
-
 conn = psycopg2.connect(
     database=url.path[1:],
     user=url.username,
@@ -119,7 +117,7 @@ class TwitchAPI(object):
                 'Client-ID': '{client_id}'.format(client_id=self.client_id),
                 'content-type': 'application/json'
             }
-            logging.debug('here is all the shit: ')
+            logging.debug('here is all the stuff: ')
             logging.debug(Twitch_Consts.URL['base'].format(url=api_url))
             logging.debug(args)
             logging.debug(headers)
@@ -305,6 +303,36 @@ def refresh_channels(userdata):
     return hexchat.EAT_ALL
 
 
+def maintain_db_connection(func):
+    def wrapper(*args):
+        try:
+            func(*args)
+        except psycopg2.Error as e:
+            error_time = time.time()
+            n = 1
+            while True:
+                if time.time() - error_time > 2**n:
+                    try:
+                        global conn, c, url
+                        print('Database Error:', e)
+                        conn = psycopg2.connect(
+                            database=url.path[1:],
+                            user=url.username,
+                            password=url.password,
+                            host=url.hostname,
+                            port=url.port
+                        )
+                        c = conn.cursor()
+                        break
+                    except Exception as e:
+                        print('Reconnect failed', n, 'times:', e)
+                        n += 1
+                        pass
+            func(*args)
+    return wrapper
+
+
+@maintain_db_connection
 def channel_message_cb(word, word_eol, userdata):
     """Is called whenever a message is received in HexChat. After a message is detected, we check if it is a valid
     command. If it is, we handle it appropriately. See HexChat Python documentation for information about this
@@ -312,7 +340,7 @@ def channel_message_cb(word, word_eol, userdata):
     """
 
     global issues_exist
-    announcement = "(11/16) There are some issues retrieving Flex queue data. "
+    announcement = ""
 
     command = word[1].split()[0]  # the first word of a Twitch chat message, possibly a command
     user = word[0]
@@ -556,7 +584,7 @@ def channel_message_cb(word, word_eol, userdata):
             issues=announcement if issues_exist else ''
 
         ) \
-            if not (row[4] < 300 and row[0] == row[1] == row[2] == 0) \
+            if not (row[4] < 300) \
             else '{user}\'s last game was a remake [{days}{hours}{minutes} ago, account: {account}]' \
             .format(user=alias, days=str(days) + 'd' if days != 0 else '', hours=str(hours) + 'h' if hours != 0 else '',
                     minutes=str(minutes) + 'm', account=row[8])
@@ -742,6 +770,7 @@ def channel_message_cb(word, word_eol, userdata):
         return hexchat.EAT_ALL
 
 
+@maintain_db_connection
 def unload_cb(userdata):
     conn.commit()
     c.close()
@@ -771,6 +800,7 @@ def configure(mode):
         hook_2 = None
         hook_3 = None
         hook_4 = hexchat.hook_timer(60 * 1000, refresh_channels)  # refresh the channel list every minute
+
 
 # load_data()
 

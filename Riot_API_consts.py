@@ -1,10 +1,17 @@
 URL = {
-    'base': 'https://{proxy}.api.pvp.net/api/lol/{region}/{url}',
+    # 'base': 'https://{proxy}.api.pvp.net/api/lol/{region}/{url}',
+    'base': 'https://{region}.api.riotgames.com/{game}/{service}/{version}/{resource}',
+
     'spectator_base': 'https://{proxy}.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/{platform}/{url}',
+
     'summoner_by_name': 'v{version}/summoner/by-name/{names}',
+
     'matchlist': 'v{version}/matchlist/by-summoner/{id}',
+
     'match': 'v{version}/match/{matchId}',
+
     'league': 'v{version}/league/by-summoner/{id}/entry',
+
     'currentgame': '{id}'
 }
 
